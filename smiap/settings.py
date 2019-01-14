@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import logging
+import logging.config
 from configparser import ConfigParser
 from typing import List
 
 CONFIG = ConfigParser()
 CONFIG.read('config.ini')
+
+logging.config.fileConfig('logging.conf')
+LOG = logging.getLogger('SMiAP')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,13 +30,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = CONFIG.get('smiap', 'secret key')
+SECRET_KEY = CONFIG.get('smiap', 'secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = CONFIG.get('smiap', 'debug')
 
 ALLOWED_HOSTS: List[str] = [
     # '*',
+    'localhost',
     '127.0.0.1',
     '10.8.0.0/24',
     'duck.nepnep.ru',
@@ -67,8 +73,7 @@ ROOT_URLCONF = 'smiap.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             # 'environment': 'smiap.jinja2.environment'

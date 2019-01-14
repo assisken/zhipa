@@ -5,5 +5,7 @@ __pycache__/
 venv/
 static/
 
+.vscode/launch.json
+
 config.ini
 *.sqlite3

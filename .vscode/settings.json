@@ -1,11 +1,18 @@
 {
+  "autoDocstring.docstringFormat": "numpy",
+  "autoDocstring.generateDocstringOnEnter": true,
+  "autoDocstring.includeDescription": false,
+  "autoDocstring.includeName": false,
+  "autoDocstring.newlineBeforeSummary": false,
+  "autoDocstring.guessTypes": true,
   "editor.tabSize": 4,
   "python.pythonPath": "venv/bin/python",
   "python.linting.enabled": true,
   "python.linting.lintOnSave": true,
   "python.linting.mypyEnabled": true,
   "files.associations": {
-    "**/templates/*.html": "jinja-html",
+    // "**/templates/*.html": "jinja-html",
+    "**/templates/**/*.html": "jinja-html",
     "**/templates/*": "django-txt",
     "**/requirements{/**,*}.{txt,in}": "pip-requirements",
   },
@@ -13,4 +20,7 @@
     "django-html": "html",
     "jinja-html": "html",
   },
+  "[python]": {
+    "editor.formatOnSave": true
+  }
 }
