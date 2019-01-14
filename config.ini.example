@@ -1,0 +1,24 @@
+[smiap]
+secret key = 
+
+[database]
+database = 
+host = 
+port = 
+user = 
+password = 
+default-character-set = 
+
+[uwsgi]
+module = smiap.wsgi:application
+plugin = python3
+callable = application
+chdir = /home/aken/smiap
+master = True
+pidfile = /tmp/smiap.pid
+socket = 127.0.0.1:8000
+vacuum = True
+max-requests = 5000
+workers = 4
+venv = /home/aken/smiap/.env
+logto = /home/aken/smiap/logfile.txt
