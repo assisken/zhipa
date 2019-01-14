@@ -1,0 +1,30 @@
+{% extends "app.html" %}
+
+{% block content %}
+    <h1>Неделя: {{ week }}</h1>
+    <h3>Группы</h3>
+    {% for group in groups %}
+        <p>{{ group }}</p>
+    {% endfor %}
+
+    <h3>Расписание</h3>
+    {% for table in schedule %}
+        <div class="container">
+            <div class="row" style="border-top: solid 1px #000">
+                <div class="col">
+                    <div class="row">{{ table.day }}</div>
+                    <div class="row">{{ table.date }}</div>
+                </div>
+                <div class="col">
+                    {% for item in table.items %}
+                        <div class="row" style="border-top: solid 1px #000">{{ item.time }}</div>
+                        <div class="row">{{ item.item_type }}</div>
+                        <div class="row">{{ item.name }}</div>
+                        <div class="row">{{ item.place }}</div>
+                        <div class="row">{{ item.teachers }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}
