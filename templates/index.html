@@ -1,6 +1,7 @@
-{% extends 'app.html' %}
+{% extends 'layout/base.html' %}
 
 
 {% block content %}
     <p>test</p>
+    <p>{{ request.path }}</p>
 {% endblock content %}

@@ -1,0 +1,54 @@
+<!-- Scroll Up Button -->
+<a href="#header" id="scrollup" class="font-medium">
+    <img src="{{ static('images/icons/up.png') }}" alt="Наверх">
+</a>
+
+<header id="header">
+
+	<div class="logo middle center">
+		<a href="/"><img src="{{ static('images/logo_smiap.png') }}" class="smiig_logo" alt="Кафедра СМиАП"></a>
+		<img src="{{ static('images/decorate_logo.png') }}" class="decorate_logo" alt="decorate logo">
+
+		<div class="searchbar" style="display: none">
+			<form method="get" action="#">
+				<input type="text" name="search" placeholder="Поиск по сайту">
+				<button type="submit" name="getsearch">
+
+				</button>
+			</form>
+		</div>
+		<a href="http://www.mai.ru" target="_blank">
+            <img src="{{ static('images/logo_mai.png') }}" class="mati_logo" alt="Московский авиационный институт">
+        </a>
+	</div>
+
+	<div class="mainmenu">
+		<nav class="menustring center">
+		    {% for item in NAV_ITEMS %}
+		    	{% if item['link'].startwith() %}
+		    		{% set activeitem = "menustring_activeitem" %}
+		    	{% endif %}
+
+		    	{% if item['subitems'] == [] and (item['submenu'] == True) %}
+		    		{% set parent = "menustring_parent" %}
+		    	{% else %}
+		    		{% set parent = "" %}
+		    	{% endif %}
+
+		    	<div class="menustring_item {{ activeitem }} {{ parent }}">
+                    <a href="{{ item['link'] }}" class="menustring_item_a">{{ item['title'] }}</a>
+
+		    	    {% if item['subitems'] %}
+    	    			<div class="menustring_subitem">
+    	    				<div class="menustring_linksbox">
+    	    				{% for subitem in item['subitems'] %}
+    	    					<a href="{{ subitem['link'] }}">{{ subitem['title'] }}</a>
+    	    				{% endfor %}
+    	    				</div>
+    	    			</div>
+    	    		{% endif %}
+		    	</div>
+            {% endfor %}
+		</nav>
+	</div>
+</header>

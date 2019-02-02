@@ -16,24 +16,23 @@ import logging.config
 from configparser import ConfigParser
 from typing import List
 
-CONFIG = ConfigParser()
-CONFIG.read('config.ini')
-
-logging.config.fileConfig('logging.conf')
-LOG = logging.getLogger('SMiAP')
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+CONFIG = ConfigParser()
+CONFIG.read(os.path.join(BASE_DIR, 'config.ini'))
+
+logging.config.fileConfig(os.path.join(BASE_DIR, 'logging.ini'))
+LOG = logging.getLogger('SMiAP')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = CONFIG.get('smiap', 'secret-key')
+SECRET_KEY = CONFIG.get('app', 'secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIG.get('smiap', 'debug')
+DEBUG = CONFIG.get('app', 'debug')
 
 ALLOWED_HOSTS: List[str] = [
     # '*',
@@ -42,7 +41,6 @@ ALLOWED_HOSTS: List[str] = [
     '10.8.0.0/24',
     'duck.nepnep.ru',
 ]
-
 
 # Application definition
 
@@ -76,7 +74,10 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
-            # 'environment': 'smiap.jinja2.environment'
+            'context_processors': [
+                'main.context_processors.app_processor',
+            ],
+            'environment': 'smiap.jinja2.environment',
         },
     },
     {
@@ -93,13 +94,13 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'board.context_processors.global_settings',
                 'django.core.context_processors.request',
+                'main.context_processors.app_processor',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'smiap.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -110,7 +111,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -130,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -144,12 +143,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + '/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
