@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from main.models import Staff
+
+
+@admin.register(Staff)
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'regalia', 'leader', 'lecturer', 'hide')
+    list_filter = ('leader', 'lecturer', 'hide')

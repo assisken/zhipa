@@ -31,8 +31,13 @@ def app_processor(request):
         {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []}
     ]
 
+    if request.path == '/':
+        active_items = 'home'
+    else:
+        active_items = request.path.split('/')
+
     return {
         'APP_TITLE': CONFIG.get('brand', 'name'),
         'NAV_ITEMS': nav_items,
-        'URL_NAME': resolve(request.path).url_name
+        'ACTIVE_ITEMS': active_items
     }

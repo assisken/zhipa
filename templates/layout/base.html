@@ -31,7 +31,9 @@
 	<!-- vk share -->
 	<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 
-    <title>{{ pagename + ' :: ' + APP_TITLE if pagename else APP_TITLE }}</title>
+    <title>
+        {% block title %}{{ APP_TITLE }}{% endblock title %}
+    </title>
 
     {% block head %}{% endblock head %}
 </head>

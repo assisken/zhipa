@@ -32,7 +32,7 @@ LOG = logging.getLogger('SMiAP')
 SECRET_KEY = CONFIG.get('app', 'secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIG.get('app', 'debug')
+DEBUG = CONFIG.getboolean('app', 'debug')
 
 ALLOWED_HOSTS: List[str] = [
     # '*',
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'main.apps.SmiapConfig',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,8 +63,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
-]
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
+)
 
 ROOT_URLCONF = 'smiap.urls'
 
@@ -92,8 +94,8 @@ TEMPLATES = [
                 # list if you haven't customized them:
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'board.context_processors.global_settings',
-                'django.core.context_processors.request',
+                # 'board.context_processors.global_settings',
+                # 'django.core.context_processors.request',
                 'main.context_processors.app_processor',
             ],
         },
@@ -147,7 +149,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = CONFIG.get('app', 'static-root')
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -173,3 +181,5 @@ INTERNAL_IPS = [
     '10.8.0.2',
     '10.8.0.9'
 ]
+
+HTML_MINIFY = False if DEBUG else True

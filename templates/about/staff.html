@@ -1,0 +1,54 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    Сотрудники кафедры :: О кафедре :: {{ APP_TITLE }}
+{% endblock title %}
+
+{% block content %}
+    <div class="about animation-fade">
+		<div class="lectures">
+		    <h1 class="center padding-large">Сотрудники кафедры № 316</h1>
+            {% for leader in leaders %}
+                <div class="leader">
+                    <img src="{{ static(leader.img.url) }}"
+                         class="animation-fade animation-delay-2"
+                         alt="{{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}"
+                    />
+                    <div class="text">
+                        <h2 class="animation-fade animation-delay-5" style="margin:1em 0 0.5em 0">
+                            {{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}
+                        </h2>
+                        <h2 class="animation-fade animation-delay-5">
+                            <small style="color:#777">{{ leader.regalia }}</small>
+                        </h2>
+                        <p class="animation-fade animation-delay-7" style="text-indent: 0">
+                            {{ leader.description }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+
+		    <div class="grid3-2 animation-fade animation-delay-4">
+		        <div class="other">
+                    {% for lecturer in lecturers %}
+			        	<div class="column none">
+			        		{% if lecturer.img %}
+			                    <img src="{{ static(lecturer.img.url) }}" alt="{{ lecturer.lastname }}">
+			                {% else %}
+			                    <img src="{{ static('images/user.png') }}" alt="{{ lecturer.lastname }}">
+			                {% endif %}
+
+			                <h2>{{ lecturer.lastname }} {{ lecturer.firstname }} {{ lecturer.middlename }}</h2>
+			                <h2 class="animation-fade animation-delay-7">
+                                <small style="color:#777">{{ lecturer.regalia }}</small>
+                            </h2>
+                            {% if lecturer.description %}
+			                    <p>{{ lecturer.description }}</p>
+                            {% endif %}
+			            </div>
+			        {% endfor %}
+		        </div>
+			</div>
+		</div>
+	</div>
+{% endblock content %}

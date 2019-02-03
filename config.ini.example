@@ -1,5 +1,10 @@
-[smiap]
-secret key = 
+[app]
+secret-key =
+debug = no
+static-root =
+
+[brand]
+name =
 
 [database]
 database = 

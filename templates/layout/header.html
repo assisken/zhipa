@@ -25,7 +25,7 @@
 	<div class="mainmenu">
 		<nav class="menustring center">
 		    {% for item in NAV_ITEMS %}
-		    	{% if item['link'].startwith() %}
+		    	{% if item['id'] in ACTIVE_ITEMS %}
 		    		{% set activeitem = "menustring_activeitem" %}
 		    	{% endif %}
 

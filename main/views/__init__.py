@@ -1,4 +1,5 @@
 from .history import History
+from .staff import StaffView
 from django.views.generic import TemplateView
 
 

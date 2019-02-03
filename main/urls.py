@@ -10,8 +10,8 @@ urlpatterns = [
     path('about', TemplateView.as_view(template_name='about/intro.html'), name='about'),
     path('about/intro', TemplateView.as_view(template_name='about/intro.html'), name='intro'),
     path('about/history', History.as_view(), name='history'),
-    path('about/history/<int:number>', History.as_view(), name='history'),
-    path('about/staff', TemplateView.as_view(template_name='about/staff.html'), name='staff'),
+    path('about/history/page<int:number>', History.as_view(), name='history'),
+    path('about/staff', StaffView.as_view(), name='staff'),
     path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
 ]
 

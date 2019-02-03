@@ -1,17 +1,16 @@
 <nav class="subnav-horizontal center middle">
     {% for item in NAV_ITEMS %}
-        {{ URL_NAME }} {{ URL_NAME == item['id'] }} {{ item['id'] }}<br>
-        {% if item['id'] == URL_NAME %}
+        {% if item['id'] in ACTIVE_ITEMS %}
     		{% set delay = 1 %}
             {% for subitem in item['subitems'] %}
-    			{% if subitem['id'] == URL_NAME%}
+    			{% if subitem['id'] in ACTIVE_ITEMS %}
     				{% set activeitem = "selected" %}
     				{% set delay = "" %}
     			{% else %}
     				{% set activeitem = "animation-delay-" %}
     				{% set delay =+ 1 %}
     			{% endif %}
-    			    <a href="{{ subitem['link'] }}" class="animation-slide-bottom {$activeitem}{$delay}">{{ subitem['title'] }}</a>
+    			    <a href="{{ subitem['link'] }}" class="animation-slide-bottom {{ activeitem }}{{ delay }}">{{ subitem['title'] }}</a>
                 {% endfor %}
             {% endif %}
     {% endfor %}

@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    История кафедры :: О кафедре :: {{ APP_NAME }}
+{% endblock title %}
+
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="about animation-fade">
+        {% block history_content %}{% endblock %}
+        <div class="pagination center font-large padding-large">
+            <a
+                    href="{{ url('history', kwargs={'number': 1}) }}"
+                    class="{{ 'disable' if current <= 1 else '' }}"
+            >«</a>
+            {% for num in available %}
+                <a
+                        href="{{ url('history', kwargs={'number': num}) }}"
+                        class="{{ 'selected' if num == current else '' }}"
+                >{{ num }}</a>
+            {% endfor %}
+            <a
+                    href="{{ url('history', kwargs={'number': available|length}) }}"
+                    class="{{ 'disable' if current >= available|length else '' }}"
+            >»</a>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block history_nav %}
+
+{% endblock history_nav %}
