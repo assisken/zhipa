@@ -9,3 +9,5 @@ static/
 
 config.ini
 *.sqlite3
+
+data.json
