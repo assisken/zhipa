@@ -1,0 +1,32 @@
+[
+  {
+    "fields": {
+      "description": null,
+      "firstname": "Петя",
+      "hide": "0",
+      "img": null,
+      "lastname": "Петров",
+      "leader": "1",
+      "lecturer": "1",
+      "middlename": "Петрович",
+      "regalia": "д.ф.н."
+    },
+      "model": "main.staff",
+      "pk": "1"
+  },
+  {
+    "fields": {
+      "description": null,
+      "firstname": "Артём",
+      "hide": "0",
+      "img": null,
+      "lastname": "Всё тот же",
+      "leader": "0",
+      "lecturer": "1",
+      "middlename": "Артёмович",
+      "regalia": ""
+    },
+      "model": "main.staff",
+      "pk": "2"
+  }
+]
