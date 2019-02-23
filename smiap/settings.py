@@ -183,7 +183,7 @@ INTERNAL_IPS = [
 ]
 
 FIXTURE_DIRS = (
-    os.path.join(BASE_DIR, 'main/fixtures'),
+    # os.path.join(BASE_DIR, 'main', 'fixtures'),
 )
 
 HTML_MINIFY = False if DEBUG else True
