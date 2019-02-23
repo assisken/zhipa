@@ -6,7 +6,7 @@
   "autoDocstring.newlineBeforeSummary": false,
   "autoDocstring.guessTypes": true,
   "editor.tabSize": 4,
-  "python.pythonPath": "venv/bin/python",
+  "python.pythonPath": ".env/bin/python",
   "python.linting.enabled": true,
   "python.linting.lintOnSave": true,
   "python.linting.mypyEnabled": true,
