@@ -31,4 +31,4 @@ class TestWebSite(LiveServerTestCase):
 
         for url in self.urls:
             response = self.client.get(self.live_server_url + url)
-            self.assertEqual(response.status_code, 200, f'Current page: {url}')
+            self.assertNotEqual(response.status_code, 404, f'Current page: {url}')
