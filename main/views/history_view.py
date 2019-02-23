@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 
 
-class History(View):
+class HistoryView(View):
     def get(self, request, number=1):
         available = [1, 2, 3, 4]
 

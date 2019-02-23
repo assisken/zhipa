@@ -6,12 +6,12 @@ from main.schedule.parser import ScheduleParser
 from smiap.settings import LOG
 
 
-class ScheduleIndex(TemplateView):
+class TimetableView(TemplateView):
     groups = ['М3О-133Б-18', 'М3О-233Б-17']
     template_name = "materials/timetable/index.html"
 
-    def get(self, request):
-        week = request.GET.get('week', None)
+    def get(self, request, **kwargs):
+        week = request.GET.get('week', )
         schedule = ScheduleParser(self.groups[0], week=week)
         LOG.debug(schedule.result)
 

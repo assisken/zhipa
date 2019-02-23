@@ -13,7 +13,7 @@ def app_processor(request):
             {"id": "contacts", "title": "Контакты", "link": "/about/contacts"}
         ]},
 
-        {"id": "materials", "title": "Материалы", "link": "/materials", "subitems": [
+        {"id": "materials", "title": "Материалы", "link": "/materials/news", "subitems": [
             {"id": "news", "title": "Новости", "link": "/materials/news"},
             {"id": "publications", "title": "Публикации", "link": "/materials/publications"},
             {"id": "tutorials", "title": "Учебные пособия", "link": "/materials/tutorials"},

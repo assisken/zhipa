@@ -1,18 +1,23 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from main.views import *
-from main.views.schedule import ScheduleIndex
+from main.views.timetable_view import TimetableView
 
 urlpatterns = [
-    path('', News.as_view(), name='home'),
-    path('materials/timetable/', ScheduleIndex.as_view(), name='schedule'),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
 
     path('about', TemplateView.as_view(template_name='about/intro.html'), name='about'),
     path('about/intro', TemplateView.as_view(template_name='about/intro.html'), name='intro'),
-    path('about/history', History.as_view(), name='history'),
-    path('about/history/page<int:number>', History.as_view(), name='history'),
+    path('about/history', HistoryView.as_view(), name='history'),
+    path('about/history/page<int:number>', HistoryView.as_view(), name='history'),
     path('about/staff', StaffView.as_view(), name='staff'),
     path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
+
+    path('materials/', NewsView.as_view()),
+    path('materials/news', NewsView.as_view(), name='news'),
+    path('materials/news/page<int:number>', NewsView.as_view(), name='news'),
+    # path('materials/timetable/', TimetableView.as_view(), name='timetable'),
 ]
 
 #  "/about",
