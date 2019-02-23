@@ -4,13 +4,15 @@ from collections import namedtuple
 
 from smiap.settings import BASE_DIR
 
-FILE_PATH = '/home/aken/Downloads/staff.json'
+STAFF_PATH = '/home/aken/Downloads/staff.json'
+NEWS_PATH = '/home/aken/Downloads/news.json'
 
 Staff = namedtuple('Staff', 'pk lastname firstname middlename img regalia description leader lecturer hide')
+News = namedtuple('News', 'pk title date url img description text hidden')
 
 
-def iter_json():
-    with open(FILE_PATH, 'r') as file:
+def iter_staff():
+    with open(STAFF_PATH, 'r') as file:
         all_staff = json.loads(file.read())
     for staff in all_staff:
         yield Staff(
@@ -27,25 +29,58 @@ def iter_json():
         )
 
 
+def iter_news():
+    with open(NEWS_PATH, 'r') as file:
+        all_news = json.loads(file.read())
+    for news in all_news:
+        yield News(
+            pk=news['id'],
+            title=news['title'],
+            date=news['date'],
+            url=news['url'],
+            img=news['img'],
+            description=news['description'],
+            text=news['text'],
+            hidden=news['hidden']
+        )
+
+
 def gen_normal_staff(staff: Staff):
     return {
-               'model': 'main.staff',
-               'pk': staff.pk,
-               'fields': {
-                   'lastname': staff.lastname,
-                   'firstname': staff.firstname,
-                   'middlename': staff.middlename,
-                   'img': staff.img,
-                   'regalia': staff.regalia,
-                   'description': staff.description,
-                   'leader': staff.leader,
-                   'lecturer': staff.lecturer,
-                   'hide': staff.hide
-               }
-           }
+        'model': 'main.staff',
+        'pk': staff.pk,
+        'fields': {
+            'lastname': staff.lastname,
+            'firstname': staff.firstname,
+            'middlename': staff.middlename,
+            'img': staff.img,
+            'regalia': staff.regalia,
+            'description': staff.description,
+            'leader': staff.leader,
+            'lecturer': staff.lecturer,
+            'hide': staff.hide
+        }
+    }
+
+
+def gen_normal_news(news: News):
+    return {
+        'model': 'main.news',
+        'pk': news.pk,
+        'fields': {
+            'title': news.title,
+            'date': news.date,
+            'url': news.url,
+            'img': news.img,
+            'description': news.description,
+            'text': news.text,
+            'hidden': news.hidden
+        }
+    }
 
 
 if __name__ == '__main__':
-    staffs = [gen_normal_staff(staff) for staff in iter_json()]
-    with open(os.path.join(BASE_DIR, 'main', 'fixtures', 'staff.json'), 'w') as file:
-        file.write(json.dumps(staffs, sort_keys=True, indent=4))
+    # staffs = [gen_normal_staff(staff) for staff in iter_staff()]
+    news = [gen_normal_news(news) for news in iter_news()]
+    with open(os.path.join(BASE_DIR, 'news.json'), 'w') as file:
+        file.write(json.dumps(news, sort_keys=True, indent=4))
