@@ -10,10 +10,17 @@
 		    <h1 class="center padding-large">Сотрудники кафедры № 316</h1>
             {% for leader in leaders %}
                 <div class="leader">
-                    <img src="{{ static(leader.img.url) }}"
-                         class="animation-fade animation-delay-2"
-                         alt="{{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}"
-                    />
+                    {% if leader.img %}
+                        <img src="{{ static(leader.img.url) }}"
+                            class="animation-fade animation-delay-2"
+                            alt="{{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}"
+                        />
+                    {% else %}
+                        <img src="{{ static('images/user.png') }}"
+                            class="animation-fade animation-delay-2"
+                            alt="{{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}"
+                        />
+                    {% endif %}
                     <div class="text">
                         <h2 class="animation-fade animation-delay-5" style="margin:1em 0 0.5em 0">
                             {{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}
