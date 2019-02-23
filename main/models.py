@@ -3,6 +3,7 @@ import os
 from django.db import models
 from django.db.models import F
 
+
 def get_image_path():
     return os.path.join('images', 'lecturers')
 
