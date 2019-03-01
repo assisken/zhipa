@@ -5,13 +5,13 @@ from main.models import Staff
 
 
 class UnitTests(TestCase):
-    fixtures = ['staff.json']
+    fixtures = ['staff.json', 'news.json']
 
     def setUp(self):
         pass
 
     def test_staff_is_shown(self):
-        """На сайте должны отображаться все нескрытые сотрудники"""
+        """Петя должен видеть всех нескрытые сотрудники"""
 
         url = reverse('staff')
         response = self.client.get(url)
@@ -22,3 +22,16 @@ class UnitTests(TestCase):
         staff = Staff.objects.filter(hide=False)
         for s in staff:
             self.assertIn(str(s), response.content.decode('utf-8'))
+
+    def test_news_is_shown(self):
+        """Петя должен видеть неспрятанные новости"""
+
+        visible = ['На ярмарке продалась шиншила', 'Опознан шиншило-генератор!']
+        hidden = ['Самая секретная новость на свете!', 'О, нет!']
+        url = reverse('news-list-begin')
+        response = self.client.get(url)
+
+        for news in visible:
+            self.assertContains(response, news, msg_prefix='Новость не отображатся. ', html=True)
+        for news in hidden:
+            self.assertNotContains(response, news, msg_prefix='Новость не спрятана. ', html=True)
