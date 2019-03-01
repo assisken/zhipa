@@ -1,0 +1,51 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="news">
+        <div class="width-80 top">
+            <div style="margin: 10px;">
+                <div class="eventbox flatbox">
+                    <span class="category"><a href="{{ url('news-list-begin') }}">Новости</a></span>
+                    <span class="news-date">
+                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%Y') }}</a>/
+                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%m') }}</a>/
+                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%d') }}</a>
+                    </span>
+                    <article style="margin-top: 10px">
+                        <h1 class="bottom-line">{{ news.title }}</h1>
+                        {% if news.text %}
+                            {{ news.text|safe }}
+                        {% else %}
+                            <p>{{ news.description }}</p>
+                        {% endif %}
+
+                        <div class="share">
+                            <script type="text/javascript">document.write(VK.Share.button(
+                                {
+                                    title: '{{ news.title }}',
+                                    noparse: false,
+                                    {% if news.img %}image: 'http://smiap.ru{{ static(news.img.url) }}',{% endif %}
+                                }
+                                ));
+                            </script>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="width-20 top">
+                <aside class="news-aside" style="margin: 5px;">
+                    {% if last_news %}
+                        <h2 class="bottom-line">Последние новости</h2>
+                        {% for n in last_news %}
+                        <div class="compact">
+                            <span class="news-date">{{ n.date.strftime('%-d %B %Y') }}</span>
+                            <a href="{{ n.get_url() }}"><h3>{{ n.title }}</h3></a>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </aside>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ static('scripts/lightbox.min.js') }}"></script>
+{% endblock content %}

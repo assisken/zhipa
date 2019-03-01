@@ -6,6 +6,9 @@ from main.views.timetable_view import TimetableView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('abiturients', TemplateView.as_view(template_name='layout/base.html'), name='abiturients'),
+    path('conferences', TemplateView.as_view(template_name='layout/base.html'), name='programs'),
+    path('programs', TemplateView.as_view(template_name='layout/base.html'), name='programs'),
 
     path('about', TemplateView.as_view(template_name='about/intro.html'), name='about'),
     path('about/intro', TemplateView.as_view(template_name='about/intro.html'), name='intro'),
@@ -14,10 +17,16 @@ urlpatterns = [
     path('about/staff', StaffView.as_view(), name='staff'),
     path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
 
-    path('materials/', NewsView.as_view()),
-    path('materials/news', NewsView.as_view(), name='news'),
-    path('materials/news/page<int:number>', NewsView.as_view(), name='news'),
-    # path('materials/timetable/', TimetableView.as_view(), name='timetable'),
+    path('materials/', NewsListView.as_view()),
+    path('materials/news', NewsListView.as_view(), name='news-list-begin'),
+    path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
+    path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
+    path('materials/tutorials', TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
+    path('materials/timetable/', TimetableView.as_view(), name='timetable'),
+    path('materials/publications',
+         TemplateView.as_view(template_name='materials/publications.html'), name='publications'),
+    path('materials/timetable/extramural',
+         TemplateView.as_view(template_name='layout/base.html'), name='timetable-extramural'),
 ]
 
 #  "/about",

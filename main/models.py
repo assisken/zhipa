@@ -2,6 +2,7 @@ import os
 
 from django.db import models
 from django.db.models import F
+from django.urls import reverse
 
 
 def get_image_path():
@@ -45,3 +46,6 @@ class News(models.Model):
     class Meta:
         verbose_name_plural = 'News'
         ordering = ['-pk']
+
+    def get_url(self):
+        return reverse('news', kwargs={'pk': self.pk})

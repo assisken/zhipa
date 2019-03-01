@@ -14,28 +14,20 @@
   				{% for news in news_list %}
                     <div class="eventbox flatbox" id="{{ news.pk }}">
                         <span class="news-date">{{ news.date.strftime('%-d %B %Y') }}</span>
-                        {% if news.url %}
-                            <a href="" class="news-title_link">
-                                <h2 class="bottom-line">{{ news.title }}</h2>
-                            </a>
-                        {% else %}
-                            <a href="" class="news-title_link">
-                                <h2 class="bottom-line">{{ news.title }}</h2>
-                            </a>
-                        {%  endif %}
+                        <a href="{{ news.get_url() }}" class="news-title_link">
+                            <h2 class="bottom-line">{{ news.title }}</h2>
+                        </a>
                         {% if news.img %}
                             <div class="with_image">
-  			                	<img src="{{ static(news.img.url) }}" alt="" class="animation-fade animation-delay-2">
-  	                                <p>{{ news.description }}</p>
+                                <a href="{{ news.get_url() }}">
+  			                	    <img src="{{ static(news.img.url) }}" alt="" class="animation-fade animation-delay-2">
+                                </a>
+                                <p>{{ news.description }}</p>
   	                        </div>
                         {% else %}
                             <p>{{ news.description }}</p>
                         {% endif %}
-                        {% if news.url %}
-                            <p class="right"><a href="" class="button_primary">Подробнее</a></p>
-                        {% else %}
-                            <p class="right"><a href="" class="button_primary">Подробнее</a></p>
-                        {% endif %}
+                        <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
                     </div>
   				{% else %}
   					<h1 class="bottom-line" style="margin: 20px 10px">Новости не найдены</h1>
@@ -59,15 +51,15 @@
   		<div class="pagination center font-large padding-large">
             {% if is_paginated %}
                 {% if page_obj.has_previous() %}
-                    <a href="{{ url('news', kwargs={'number': page_obj.previous_page_number()}) }}">&laquo;</a>
+                    <a href="{{ url('news-list', kwargs={'number': page_obj.previous_page_number()}) }}">&laquo;</a>
                 {% else %}
                     <a href="#" class="disable">&laquo;</a>
                 {% endif %}
                 {% for page_num in range(page_obj.paginator.num_pages) %}
-                    <a href="{{ url('news', kwargs={'number': page_num + 1}) }}" class="{{ 'selected' if page_num + 1== page_obj.number else '' }}">{{ page_num + 1 }}</a>
+                    <a href="{{ url('news-list', kwargs={'number': page_num + 1}) }}" class="{{ 'selected' if page_num + 1== page_obj.number else '' }}">{{ page_num + 1 }}</a>
                 {% endfor %}
                 {% if page_obj.has_next() %}
-                    <a href="{{ url('news', kwargs={'number': page_obj.next_page_number()}) }}">&raquo;</a>
+                    <a href="{{ url('news-list', kwargs={'number': page_obj.next_page_number()}) }}">&raquo;</a>
                 {% else %}
                     <a href="#" class="disable">&raquo;</a>
                 {% endif %}
