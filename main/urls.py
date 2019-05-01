@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import path, register_converter
 from django.views.generic import TemplateView
 
-from main.views import *
-from main.views.timetable_view import TimetableView
+from . import converters
+from .views import *
+from .views.timetable_view import TimetableView
+
+register_converter(converters.FourDigitYearConverter, 'yyyy')
+register_converter(converters.TwoDigitConverter, 'mm')
+register_converter(converters.TwoDigitConverter, 'dd')
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
@@ -18,15 +23,19 @@ urlpatterns = [
     path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
 
     path('materials/', NewsListView.as_view()),
-    path('materials/news', NewsListView.as_view(), name='news-list-begin'),
-    path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
-    path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
     path('materials/tutorials', TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
     path('materials/timetable/', TimetableView.as_view(), name='timetable'),
     path('materials/publications',
          TemplateView.as_view(template_name='materials/publications.html'), name='publications'),
     path('materials/timetable/extramural',
          TemplateView.as_view(template_name='layout/base.html'), name='timetable-extramural'),
+
+    path('materials/news', NewsListView.as_view(), name='news-list-begin'),
+    path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
+    path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
+    path('materials/<slug:year>', NewsDateListView.as_view(), name='news-date'),
+    path('materials/<yyyy:year>/<mm:month>', NewsDateListView.as_view(), name='news-date'),
+    path('materials/<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),
 ]
 
 #  "/about",

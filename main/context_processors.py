@@ -20,7 +20,7 @@ def app_processor(request):
             {"id": "timetable", "title": "Расписания занятий", "link": "/materials/timetable"},
             {"id": "extramural", "title": "Расписания занятий заочной формы",
              "link": "/materials/timetable/extramural"},
-            {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
+            # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
         ]},
 
         {"id": "programs", "title": "Программы", "link": "/programs", "subitems": []},

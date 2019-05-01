@@ -1,15 +1,21 @@
 {% extends 'layout/base.html' %}
 
+{% block title %}
+    {{ news.title }} :: Новости :: Материалы :: {{ APP_TITLE }}
+{% endblock title %}
+
 {% block content %}
+    {% include 'layout/extra_nav.html' %}
+
     <div class="news">
         <div class="width-80 top">
             <div style="margin: 10px;">
                 <div class="eventbox flatbox">
                     <span class="category"><a href="{{ url('news-list-begin') }}">Новости</a></span>
                     <span class="news-date">
-                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%Y') }}</a>/
-                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%m') }}</a>/
-                        <a href="{{ url('news-list-begin', kwargs={}) }}">{{ news.date.strftime('%d') }}</a>
+                        <a href="{{ url('news-date', kwargs={'year': news.date.strftime('%Y') }) }}">{{ news.date.strftime('%Y') }}</a>/
+                        <a href="{{ url('news-date', kwargs={'year': news.date.strftime('%Y'), 'month': news.date.strftime('%m') }) }}">{{ news.date.strftime('%m') }}</a>/
+                        <a href="{{ url('news-date', kwargs={'year': news.date.strftime('%Y'), 'month': news.date.strftime('%m'), 'day': news.date.strftime('%d') }) }}">{{ news.date.strftime('%d') }}</a>
                     </span>
                     <article style="margin-top: 10px">
                         <h1 class="bottom-line">{{ news.title }}</h1>
@@ -39,7 +45,7 @@
                         <h2 class="bottom-line">Последние новости</h2>
                         {% for n in last_news %}
                         <div class="compact">
-                            <span class="news-date">{{ n.date.strftime('%-d %B %Y') }}</span>
+                            <span class="news-date">{{ n.date.strftime('%-d %B %Y') | title }}</span>
                             <a href="{{ n.get_url() }}"><h3>{{ n.title }}</h3></a>
                         </div>
                         {% endfor %}

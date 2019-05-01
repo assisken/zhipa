@@ -10,7 +10,7 @@ from smiap.settings import CONFIG, BASE_DIR
 class TestWebSite(LiveServerTestCase):
     def setUp(self):
         options = ChromeOptions()
-        options.set_headless(True)
+        options.headless = True
         self.browser = Chrome(options=options)
 
         with open(os.path.join(BASE_DIR, 'main', 'tests', 'files', 'sitemap.json'), 'r') as file:

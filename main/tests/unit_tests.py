@@ -35,3 +35,9 @@ class UnitTests(TestCase):
             self.assertContains(response, news, msg_prefix='Новость не отображатся. ', html=True)
         for news in hidden:
             self.assertNotContains(response, news, msg_prefix='Новость не спрятана. ', html=True)
+
+    def test_news_url_does_work(self):
+        """Новости с URL-ом должны иметь свой url"""
+
+        url = 'test_url'
+

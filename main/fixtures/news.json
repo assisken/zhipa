@@ -7,7 +7,7 @@
       "img": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "На ярмарке продалась шиншила",
-      "url": "test"
+      "url": "test_url"
     },
     "model": "main.news",
     "pk": "1"
@@ -20,7 +20,7 @@
       "img": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "О, нет!",
-      "url": "test"
+      "url": ""
     },
     "model": "main.news",
     "pk": "2"
@@ -33,7 +33,7 @@
       "img": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Опознан шиншило-генератор!",
-      "url": "test"
+      "url": ""
     },
     "model": "main.news",
     "pk": "3"
@@ -46,7 +46,7 @@
       "img": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Самая секретная новость на свете!",
-      "url": "test"
+      "url": ""
     },
     "model": "main.news",
     "pk": "4"
