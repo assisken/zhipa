@@ -11,31 +11,42 @@ register_converter(converters.TwoDigitConverter, 'dd')
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
-    path('abiturients', TemplateView.as_view(template_name='layout/base.html'), name='abiturients'),
-    path('conferences', TemplateView.as_view(template_name='layout/base.html'), name='programs'),
-    path('programs', TemplateView.as_view(template_name='layout/base.html'), name='programs'),
+    path('abiturients', TemplateView.as_view(
+        template_name='layout/base.html'), name='abiturients'),
+    path('conferences', TemplateView.as_view(
+        template_name='layout/base.html'), name='programs'),
+    path('programs', TemplateView.as_view(
+        template_name='layout/base.html'), name='programs'),
 
-    path('about', TemplateView.as_view(template_name='about/intro.html'), name='about'),
-    path('about/intro', TemplateView.as_view(template_name='about/intro.html'), name='intro'),
+    path('about', TemplateView.as_view(
+        template_name='about/intro.html'), name='about'),
+    path('about/intro',
+         TemplateView.as_view(template_name='about/intro.html'), name='intro'),
     path('about/history', HistoryView.as_view(), name='history'),
-    path('about/history/page<int:number>', HistoryView.as_view(), name='history'),
+    path('about/history/page<int:number>',
+         HistoryView.as_view(), name='history'),
     path('about/staff', StaffView.as_view(), name='staff'),
-    path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
+    path('about/contacts',
+         TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
 
     path('materials/', NewsListView.as_view()),
-    path('materials/tutorials', TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
-    path('materials/timetable/', TimetableView.as_view(), name='timetable'),
+    path('materials/tutorials',
+         TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
+    path('materials/timetable', TimetableView.as_view(), name='timetable'),
     path('materials/publications',
          TemplateView.as_view(template_name='materials/publications.html'), name='publications'),
     path('materials/timetable/extramural',
          TemplateView.as_view(template_name='layout/base.html'), name='timetable-extramural'),
 
     path('materials/news', NewsListView.as_view(), name='news-list-begin'),
-    path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
+    path('materials/news/page<int:number>',
+         NewsListView.as_view(), name='news-list'),
     path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
     path('materials/<slug:year>', NewsDateListView.as_view(), name='news-date'),
-    path('materials/<yyyy:year>/<mm:month>', NewsDateListView.as_view(), name='news-date'),
-    path('materials/<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),
+    path('materials/<yyyy:year>/<mm:month>',
+         NewsDateListView.as_view(), name='news-date'),
+    path('materials/<yyyy:year>/<mm:month>/<dd:day>',
+         NewsDateListView.as_view(), name='news-date'),
 ]
 
 #  "/about",
