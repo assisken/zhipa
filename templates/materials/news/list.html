@@ -10,7 +10,7 @@
     <div class="news">
   		<div class="width-70 top">
   		    <div style="margin: 0 5px 20px 10px;">
-                <h1 class="bottom-line" style="margin: 20px 10px">Новости {{ news_date }}</h1>
+                <h1 class="bottom-line" style="margin: 20px 10px">Новости</h1>
   				{% for news in news_list %}
                     <div class="eventbox flatbox" id="{{ news.pk }}">
                         <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
