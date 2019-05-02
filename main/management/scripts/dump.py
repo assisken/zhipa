@@ -1,3 +1,5 @@
+#!/bin/env python
+
 import json
 import os
 from collections import namedtuple
@@ -7,7 +9,8 @@ from smiap.settings import BASE_DIR
 STAFF_PATH = '/home/aken/Downloads/staff.json'
 NEWS_PATH = '/home/aken/Downloads/news.json'
 
-Staff = namedtuple('Staff', 'pk lastname firstname middlename img regalia description leader lecturer hide')
+Staff = namedtuple(
+    'Staff', 'pk lastname firstname middlename img regalia description leader lecturer hide')
 News = namedtuple('News', 'pk title date url img description text hidden')
 
 
@@ -79,8 +82,6 @@ def gen_normal_news(news: News):
     }
 
 
-if __name__ == '__main__':
-    # staffs = [gen_normal_staff(staff) for staff in iter_staff()]
-    news = [gen_normal_news(news) for news in iter_news()]
+def write_to_file(data):
     with open(os.path.join(BASE_DIR, 'news.json'), 'w') as file:
-        file.write(json.dumps(news, sort_keys=True, indent=4))
+        file.write(json.dumps(data, sort_keys=True, indent=4))
