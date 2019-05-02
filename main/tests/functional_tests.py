@@ -9,6 +9,7 @@ from smiap.settings import CONFIG, BASE_DIR
 
 class TestWebSite(LiveServerTestCase):
     def setUp(self):
+        super().setUp()
         options = ChromeOptions()
         options.headless = True
         self.browser = Chrome(options=options)
@@ -17,6 +18,7 @@ class TestWebSite(LiveServerTestCase):
             self.urls = json.loads(file.read())
 
     def tearDown(self):
+        super().tearDown()
         self.browser.quit()
 
     def test_title(self):
@@ -31,4 +33,5 @@ class TestWebSite(LiveServerTestCase):
 
         for url in self.urls:
             response = self.client.get(self.live_server_url + url)
-            self.assertNotEqual(response.status_code, 404, f'Current page: {url}')
+            self.assertNotEqual(response.status_code, 404,
+                                f'Current page: {url}')

@@ -1,7 +1,9 @@
 from calendar import month_abbr
 from datetime import datetime
 
-from django.views.generic import ListView, DetailView
+from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView, ListView, View
 
 from main.models import News
 
@@ -55,5 +57,28 @@ class NewsDateListView(ListView):
             context['news_date'] = f'за {date.strftime("%B %Y")} года'
         else:
             context['news_date'] = f'за {date.strftime("%Y")} год'
+
+        return context
+
+
+class NewsDateDetailView(DetailView):
+    model = News
+    context_object_name = 'news'
+    template_name = 'materials/news/index.html'
+
+    def get_object(self, queryset: QuerySet = None):
+        kwargs = dict()
+        kwargs['date__year'] = self.kwargs['year']
+        kwargs['date__month'] = self.kwargs['month']
+        kwargs['date__day'] = self.kwargs['day']
+        kwargs['url'] = self.kwargs['url']
+        return get_object_or_404(self.model, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = self.kwargs['year']
+        month = self.kwargs['month']
+        day = self.kwargs['day']
+        url = self.kwargs['url']
 
         return context

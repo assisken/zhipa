@@ -10,15 +10,20 @@
   "python.linting.enabled": true,
   "python.linting.lintOnSave": true,
   "python.linting.mypyEnabled": true,
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+    "--disable=missing-docstring",
+    "--disable=too-many-ancestors"
+  ],
   "files.associations": {
     // "**/templates/*.html": "jinja-html",
     "**/templates/**/*.html": "jinja-html",
     "**/templates/*": "django-txt",
-    "**/requirements{/**,*}.{txt,in}": "pip-requirements",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
   },
   "emmet.includeLanguages": {
     "django-html": "html",
-    "jinja-html": "html",
+    "jinja-html": "html"
   },
   "[python]": {
     "editor.formatOnSave": true

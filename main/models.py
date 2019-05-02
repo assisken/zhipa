@@ -13,7 +13,8 @@ class Staff(models.Model):
     lastname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
     middlename = models.CharField(max_length=30)
-    img = models.ImageField(max_length=60, null=True, default=None, upload_to=get_image_path(), blank=True)
+    img = models.ImageField(max_length=60, null=True,
+                            default=None, upload_to=get_image_path(), blank=True)
     regalia = models.CharField(max_length=60)
     description = models.TextField(null=True, default=None, blank=True)
     leader = models.BooleanField(default=False)
@@ -48,4 +49,12 @@ class News(models.Model):
         ordering = ['-pk']
 
     def get_url(self):
+        if self.url:
+            kwargs = {
+                'year': self.date.year,
+                'month': self.date.month,
+                'day': self.date.day,
+                'url': self.url
+            }
+            return reverse('news-date-url', kwargs=kwargs)
         return reverse('news', kwargs={'pk': self.pk})
