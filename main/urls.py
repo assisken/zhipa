@@ -12,11 +12,11 @@ register_converter(converters.TwoDigitConverter, 'dd')
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('abiturients', TemplateView.as_view(
-        template_name='layout/base.html'), name='abiturients'),
+        template_name='abiturients/index.html'), name='abiturients'),
     path('conferences', TemplateView.as_view(
-        template_name='layout/base.html'), name='programs'),
+        template_name='conferences/index.html'), name='programs'),
     path('programs', TemplateView.as_view(
-        template_name='layout/base.html'), name='programs'),
+        template_name='programs/index.html'), name='programs'),
 
     path('about', TemplateView.as_view(
         template_name='about/intro.html'), name='about'),

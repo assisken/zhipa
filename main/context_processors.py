@@ -1,12 +1,10 @@
-from django.urls import resolve
-
 from smiap.settings import CONFIG
 
 
 def app_processor(request):
     nav_items = [
         {"id": "home", "title": "Главная", "link": "/", "subitems": []},
-        {"id": "about", "title": "О кафедре", "link": "/about", "subitems": [
+        {"id": "about", "title": "О кафедре", "link": "/about/intro", "subitems": [
             {"id": "intro", "title": "Введение", "link": "/about/intro"},
             {"id": "history", "title": "История кафедры", "link": "/about/history"},
             {"id": "staff", "title": "Сотрудники кафедры", "link": "/about/staff"},
@@ -25,7 +23,7 @@ def app_processor(request):
 
         {"id": "programs", "title": "Программы", "link": "/programs", "subitems": []},
         {"id": "conferences", "title": "Конференции", "link": "/conferences", "subitems": [
-            {"id": "gagarin", "title": "Гагаринские чтения", "link": "gagarin"}
+            # {"id": "gagarin", "title": "Гагаринские чтения", "link": "gagarin"}
         ]},
 
         {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []}
