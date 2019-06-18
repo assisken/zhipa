@@ -34,8 +34,9 @@ class NewsDateListView(ListView):
     template_name = 'materials/news/list.html'
 
     def get_queryset(self):
-        kwargs = dict()
-        kwargs['date__year'] = self.kwargs['year']
+        kwargs = {
+            'date__year': self.kwargs['year']
+        }
         month = self.kwargs.get('month', None)
         day = self.kwargs.get('day', None)
         if month:
@@ -66,12 +67,13 @@ class NewsDateDetailView(DetailView):
     context_object_name = 'news'
     template_name = 'materials/news/index.html'
 
-    def get_object(self, queryset: QuerySet = None):
-        kwargs = dict()
-        kwargs['date__year'] = self.kwargs['year']
-        kwargs['date__month'] = self.kwargs['month']
-        kwargs['date__day'] = self.kwargs['day']
-        kwargs['url'] = self.kwargs['url']
+    def get_object(self, queryset: QuerySet=None):
+        kwargs = {
+            'date__year': self.kwargs['year'],
+            'date__month': self.kwargs['month'],
+            'date__day': self.kwargs['day'],
+            'url': self.kwargs['url'],
+        }
         return get_object_or_404(self.model, **kwargs)
 
     def get_context_data(self, **kwargs):

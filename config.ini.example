@@ -2,6 +2,8 @@
 secret-key =
 debug = no
 static-root =
+lms-pass =
+department =
 
 [brand]
 name =

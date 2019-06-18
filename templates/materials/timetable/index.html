@@ -1,30 +1,104 @@
 {% extends "layout/base.html" %}
 
-{% block content %}
-    <h1>Неделя: {{ week }}</h1>
-    <h3>Группы</h3>
-    {% for group in groups %}
-        <p>{{ group }}</p>
-    {% endfor %}
+{% block head %}
+    	<link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
+{% endblock head %}
 
-    <h3>Расписание</h3>
-    {% for table in schedule %}
-        <div class="container">
-            <div class="row" style="border-top: solid 1px #000">
-                <div class="col">
-                    <div class="row">{{ table.day }}</div>
-                    <div class="row">{{ table.date }}</div>
-                </div>
-                <div class="col">
-                    {% for item in table.items %}
-                        <div class="row" style="border-top: solid 1px #000">{{ item.time }}</div>
-                        <div class="row">{{ item.item_type }}</div>
-                        <div class="row">{{ item.name }}</div>
-                        <div class="row">{{ item.place }}</div>
-                        <div class="row">{{ item.teachers }}</div>
-                    {% endfor %}
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="width-100 animation-fade">
+        <aside class="width-20 top subnav-vertical animation-fade animation-delay-3">
+            <div id="week-bar" class="app" style="margin-top: 30px;">
+                <div class="studyweeks materialbox" style="background: #3EC7F3; padding-bottom: 10px;">
+
+                    <span class="word start" style="font-size: 1.5em; padding: 10px 0 0;">{{ date_block.text }}</span>
+                    <span class="number" style="font-size: 6em">{{ date_block.num }}</span>
+                    <span class="word">{{ date_block.desc }}</span>
                 </div>
             </div>
+        </aside>
+        <div class="width-75 timetables animation-fade animation-delay-4">
+            <h1 class="margin-large">Расписания занятий</h1>
+            <div class="stageblock spanel flatbox padding-large">
+                <form class="inline">
+                    <select id="groups" name="group" onchange="this.form.submit()">
+                        <option value="" selected disabled>Группа</option>
+                        {% for group in groups %}
+                            <option value="{{ group.name }}">{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select id="weeks" name="week" onchange="this.form.submit()">
+                        <option value="" selected disabled>Неделя</option>
+                        {% for week in range(weeks) %}
+                            <option value="{{ week + 1 }}">{{ week + 1 }}</option>
+                        {% endfor %}
+
+                    </select>
+                </form>
+                <h2>{{ course }} Курс &emsp; {{ group.name }} &emsp; {{ week }} неделя</h2>
+            </div>
+            <div>
+                <table border="1" class="timetable table-responsive">
+                    <tr>
+                        <th rowspan="2" width="60">День</th>
+                        <th rowspan="2">Время</th>
+                        <th colspan="2">{{ group.name }}</th>
+                    </tr>
+                    <tr class="subhead">
+                        <th style="background: #a4e2ff">Название предмета</th>
+                        <th style="background: #a4e2ff">Ауд.</th>
+                    </tr>
+                    {% for day in schedule %}
+                        <tr>
+                            <td rowspan="{{ day[2] | length + 1 }}">{{ day[0] }}<br>{{ day[1] }}</td>
+                            {% for item in day[2] %}
+                                <tr>
+                                    <td>{{ item[0] }}</td>
+                                    <td>{{ item[2] }} — {{ item[1] }}<br>{{ item[4] | join(', ') }}</td>
+                                    <td>{{ item[3]['place'] }}<br>{{ item[3]['auditory'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
-    {% endfor %}
+    </div>
+
+    <script type="text/javascript">
+	$(function() {
+	    var groups = $('#groups');
+	    var weeks = $('#weeks');
+	    weeks.prop('value', "{{ week }}").selectric('refresh');
+        groups.prop('value', "{{ group.name }}").selectric('refresh');
+
+        groups.selectric({
+        	optionsItemBuilder: function(itemData) {
+        		if (itemData.value === "{{ group }}"){
+        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
+        		}
+        		else{
+        			return itemData.text;
+        		}
+		    }
+        });
+
+        weeks.selectric({
+        	optionsItemBuilder: function(itemData) {
+        		if (itemData.value === "{{ week }}"){
+        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
+        		}
+        		else{
+        			return itemData.text;
+        		}
+		    }
+        });
+	});
+    </script>
+    <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
 {% endblock content %}
