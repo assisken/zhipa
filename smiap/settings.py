@@ -34,6 +34,8 @@ SECRET_KEY = CONFIG.get('app', 'secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = CONFIG.getboolean('app', 'debug')
+DB_HOST = 'localhost' if DEBUG else os.getenv('DB_HOST')
+DB_PASSWORD = '' if DEBUG else os.getenv('DB_PASS')
 
 ALLOWED_HOSTS: List[str] = [
     # '*',
@@ -110,11 +112,14 @@ WSGI_APPLICATION = 'smiap.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'smiap_website',
+        'USER': 'smiap',
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': '',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

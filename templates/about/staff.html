@@ -55,6 +55,11 @@
 			                    <p>{{ lecturer.description }}</p>
                             {% endif %}
 			            </div>
+                    {% else %}
+                        <div class="column none">
+                            <p>Сотрудники не найдены</p>
+			            </div>
+
 			        {% endfor %}
 		        </div>
 			</div>
