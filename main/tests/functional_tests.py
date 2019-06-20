@@ -8,6 +8,8 @@ from smiap.settings import CONFIG, BASE_DIR
 
 
 class TestWebSite(LiveServerTestCase):
+    fixtures = ['groups.json']
+
     def setUp(self):
         super().setUp()
         options = ChromeOptions()

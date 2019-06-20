@@ -7,9 +7,6 @@ from main.models import Staff
 class UnitTests(TestCase):
     fixtures = ['staff.json', 'news.json']
 
-    def setUp(self):
-        pass
-
     def test_staff_is_shown(self):
         """Петя должен видеть всех нескрытые сотрудники"""
 

@@ -1,9 +1,11 @@
 from django.test import TestCase
 from freezegun import freeze_time
+
+from main.models import Group
 from main.views.timetable_view import date_block
 
 
-class MyTestCase(TestCase):
+class ScheduleTest(TestCase):
     @freeze_time('2012-09-03')
     def test_autumn_start(self):
         res = date_block()

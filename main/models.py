@@ -71,11 +71,3 @@ class Group(models.Model):
 
     def weeks(self):
         return max(map(int, self.schedule.keys()))
-
-    def course(self):
-        year = int(self.name.split('-')[-1])  # Get year from name of group
-        now = datetime.now()
-        course = now.year % 100 - year
-        if now.month >= 9:                    # Study time starts from September. So course must be increased
-            course += 1
-        return course

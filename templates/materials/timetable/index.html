@@ -25,7 +25,7 @@
                     <select id="groups" name="group" onchange="this.form.submit()">
                         <option value="" selected disabled>Группа</option>
                         {% for group in groups %}
-                            <option value="{{ group.name }}">{{ group.name }}</option>
+                            <option value="{{ group }}">{{ group }}</option>
                         {% endfor %}
                     </select>
                     <select id="weeks" name="week" onchange="this.form.submit()">
@@ -36,14 +36,14 @@
 
                     </select>
                 </form>
-                <h2>{{ course }} Курс &emsp; {{ group.name }} &emsp; {{ week }} неделя</h2>
+                <h2>{{ course }} Курс &emsp; {{ group_name }} &emsp; {{ week }} неделя</h2>
             </div>
             <div>
                 <table border="1" class="timetable table-responsive">
                     <tr>
                         <th rowspan="2" width="60">День</th>
                         <th rowspan="2">Время</th>
-                        <th colspan="2">{{ group.name }}</th>
+                        <th colspan="2">{{ group_name }}</th>
                     </tr>
                     <tr class="subhead">
                         <th style="background: #a4e2ff">Название предмета</th>
@@ -75,7 +75,7 @@
 	    var groups = $('#groups');
 	    var weeks = $('#weeks');
 	    weeks.prop('value', "{{ week }}").selectric('refresh');
-        groups.prop('value', "{{ group.name }}").selectric('refresh');
+        groups.prop('value', "{{ group_name }}").selectric('refresh');
 
         groups.selectric({
         	optionsItemBuilder: function(itemData) {
