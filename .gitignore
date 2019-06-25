@@ -123,4 +123,4 @@ static/
 config.ini
 *.sqlite3
 
-*.json
+/*.json

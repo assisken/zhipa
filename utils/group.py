@@ -1,10 +1,16 @@
-from datetime import datetime
+import re
+
+from main.types import Degree
 
 
-def course(group_name: str) -> int:
-    year = int(group_name.split('-')[-1])  # Get year from name of group
-    now = datetime.now()
-    course = now.year % 100 - year
-    if now.month >= 9:  # Study time starts from September. So course must be increased
-        course += 1
-    return course
+def degree(group_name: str) -> Degree:
+    match = re.search(r'-\S+(Б|Бк|М|Мк|А)-', group_name)
+    res = match.group(1)
+    if res == 'Б' or res == 'Бк':
+        return Degree.BACHELOR
+    elif res == 'М' or res == 'Мк':
+        return Degree.MASTER
+    elif res == 'А':
+        return Degree.GRADUATE
+    else:
+        raise ValueError('Group does not match')

@@ -1,10 +1,14 @@
 import os
+import re
 from datetime import datetime
+from math import ceil
 
 from django.db import models
 from django.db.models import F
 from django.contrib.postgres import fields
 from django.urls import reverse
+
+from main.types import Degree
 
 
 def get_image_path():
@@ -63,11 +67,26 @@ class News(models.Model):
 
 
 class Group(models.Model):
+    FULL_TIME = 'очная'
+    PART_TIME = 'очно-заочная'
+    EXTRAMURAL = 'заочная'
+
+    STUDY_FORMS = [
+        (FULL_TIME, 'очная'),
+        (PART_TIME, 'очно-заочная'),
+        (EXTRAMURAL, 'заочная')
+    ]
+
     name = models.CharField(max_length=25, unique=True, null=False, blank=False)
+    semester = models.PositiveSmallIntegerField(null=False, blank=False)
+    study_form = models.CharField(max_length=12, choices=None, null=False, blank=False)
     schedule = fields.JSONField(null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def weeks(self):
+    def weeks(self) -> int:
         return max(map(int, self.schedule.keys()))
+
+    def course(self) -> int:
+        return ceil(self.semester / 2)

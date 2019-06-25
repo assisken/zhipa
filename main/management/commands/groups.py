@@ -28,10 +28,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['lms']:
             resp = get(f'http://lms.mai.ru/blocks/iis/316.php?pwd={LMS_PASSWORD}&department=316')
-            _json = json.loads(resp.content.decode('utf8'))
-            groups = list(_json['data'])
-            for group in groups:
-                Group.objects.create(name=group)
+            data = json.loads(resp.content.decode('utf8'))['data']
+
+            for group, value in data.items():
+                Group.objects.create(name=group,
+                                     semester=int(value['semester']),
+                                     study_form=value['study_form'])
         elif options['schedule']:
             groups = Group.objects.all()
             for group in groups:

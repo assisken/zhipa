@@ -1,0 +1,26 @@
+[
+  {
+    "fields": {
+      "name": "3-ПО3-135Б-99",
+      "semester": 1,
+      "study_form": "expensive",
+      "schedule": {
+        "1": []
+      }
+    },
+      "model": "main.group",
+      "pk": "1"
+  },
+  {
+    "fields": {
+      "name": "3-ПО7-213Б-51",
+      "semester": 2,
+      "study_form": "poor",
+      "schedule": {
+        "1": []
+      }
+    },
+      "model": "main.group",
+      "pk": "2"
+  }
+]

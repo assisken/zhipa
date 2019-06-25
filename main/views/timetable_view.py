@@ -1,12 +1,10 @@
-from datetime import datetime, timedelta
-from typing import Dict, Union
+from pprint import pprint
 
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from main.models import Group
 from utils.date import TeachTime, TeachState
-from utils.group import course
 
 
 class TimetableView(TemplateView):
@@ -18,7 +16,8 @@ class TimetableView(TemplateView):
         group_name = request.GET.get('group', groups.first().name)
         week = request.GET.get('week', teach_time.week if teach_time.week <= teach_time.weeks_in_semester else 1)
 
-        schedule = Group.objects.get(name=group_name).schedule[str(week)]
+        group = Group.objects.get(name=group_name)
+        schedule = group.schedule[str(week)]
 
         if len(groups) > 0:
             schedule = sorted(schedule, key=lambda x: x[0])
@@ -33,7 +32,7 @@ class TimetableView(TemplateView):
             'week': week,
             'schedule': schedule,
             'date_block': date_block(teach_time),
-            'course': course(group_name) if group_name else 0
+            'course': group.course() if group_name else 0
         })
 
 
