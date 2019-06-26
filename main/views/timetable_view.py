@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
@@ -36,7 +34,7 @@ class TimetableView(TemplateView):
         })
 
 
-def date_block(teach_time: TeachTime = TeachTime()):
+def date_block(teach_time: TeachTime):
     teach_state = teach_time.teach_state
     if teach_state.it_is(TeachState.SEMESTER):
         return {
