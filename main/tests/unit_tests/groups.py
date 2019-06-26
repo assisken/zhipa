@@ -1,7 +1,5 @@
-from enum import Enum
-
-import requests
 import json
+from typing import Any
 from unittest.mock import patch, Mock
 
 from django.test import TestCase
@@ -35,7 +33,9 @@ def mocked_group_response(*args, **kwargs):
 
 class GroupTest(TestCase):
     @patch('requests.get', side_effect=mocked_group_response)
-    def test_group_fetch(self, _):
-        fetch_groups('http://example.com', '', '')
+    def test_group_fetch(self, mock_request: Any):
+        url = 'http://example.com/'
+        fetch_groups(url, '', '')
+        mock_request.assert_called_with(url)
         for group in Group.objects.only('name'):
             self.assertIn(group.name, RESPONSE['data'].keys())
