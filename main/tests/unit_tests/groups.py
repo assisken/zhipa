@@ -1,8 +1,10 @@
+from enum import Enum
+
+import requests
 import json
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from django.test import TestCase
-from requests import Response
 
 from main.management.scripts.groups import fetch_groups
 from main.models import Group
@@ -24,24 +26,16 @@ RESPONSE = {
 }
 
 
-class MockedResponce(Response):
-    def __init__(self, content: str, code: int):
-        super().__init__()
-        self.status_code = code
-        self._content = content.encode('utf8')
-
-    @property
-    def content(self):
-        return self._content
-
-
 def mocked_group_response(*args, **kwargs):
-    return MockedResponce(json.dumps(RESPONSE), 200)
+    resp = Mock()
+    resp.status_code = 200
+    resp.content = json.dumps(RESPONSE).encode('utf8')
+    return resp
 
 
 class GroupTest(TestCase):
     @patch('requests.get', side_effect=mocked_group_response)
-    def test_group_fetch(self, mock_get):
+    def test_group_fetch(self, _):
         fetch_groups('http://example.com', '', '')
         for group in Group.objects.only('name'):
             self.assertIn(group.name, RESPONSE['data'].keys())
