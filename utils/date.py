@@ -23,6 +23,7 @@ class TeachTime:
     weeks_in_semester = 17
 
     def __init__(self, now=date.today()):
+        self.now = now
         if now.month >= self.month_start:
             self.__autumn_start1 = self.__avoid_sunday(date(year=now.year, month=9, day=1))
             self.__spring_start = self.__avoid_sunday(date(year=now.year + 1, month=2, day=9))
@@ -62,7 +63,7 @@ class TeachTime:
 
     @property
     def week(self) -> int:
-        return date.today().isocalendar()[1] - self.start.isocalendar()[1] + 1
+        return self.now.isocalendar()[1] - self.start.isocalendar()[1] + 1
 
     def __teach_time(self, now: date) -> TeachState:
         if self.__autumn_start1 <= now < self.__autumn_end:

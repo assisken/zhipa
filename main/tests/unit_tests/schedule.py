@@ -8,9 +8,8 @@ from utils.date import TeachTime
 
 
 class ScheduleTest(TestCase):
-    @freeze_time('2012-09-03')
     def test_autumn_start(self):
-        res = date_block(TeachTime(date.today()))
+        res = date_block(TeachTime(date(2012, 9, 3)))
         expected = {
             'text': 'Учёба продолжается',
             'num': 2,
@@ -18,9 +17,8 @@ class ScheduleTest(TestCase):
         }
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
-    @freeze_time('2016-12-31')
     def test_autumn_end(self):
-        res = date_block(TeachTime(date.today()))
+        res = date_block(TeachTime(date(2016, 12, 31)))
         expected = {
             'text': 'Начало учёбы',
             'num': 9,
@@ -28,9 +26,8 @@ class ScheduleTest(TestCase):
         }
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
-    @freeze_time('2016-01-01')
     def test_autumn_end2(self):
-        res = date_block(TeachTime(date.today()))
+        res = date_block(TeachTime(date(2016, 1, 1)))
         expected = {
             'text': 'Начало учёбы',
             'num': 9,
@@ -48,9 +45,8 @@ class ScheduleTest(TestCase):
         }
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
-    @freeze_time('2027-07-01')
     def test_spring_end(self):
-        res = date_block(TeachTime(date.today()))
+        res = date_block(TeachTime(date(2027, 7, 1)))
         expected = {
             'text': 'Начало учёбы',
             'num': 1,
