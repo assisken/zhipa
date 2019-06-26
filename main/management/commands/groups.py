@@ -5,9 +5,10 @@ from django.core.management import BaseCommand, CommandParser
 import json
 from requests import get, HTTPError
 
+from main.management.scripts.groups import fetch_groups
 from main.management.scripts.schedule import parse_schedule_for
 from main.models import Group
-from smiap.settings import LMS_PASSWORD
+from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
 
 
 class Command(BaseCommand):
@@ -27,13 +28,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['lms']:
-            resp = get(f'http://lms.mai.ru/blocks/iis/316.php?pwd={LMS_PASSWORD}&department=316')
-            data = json.loads(resp.content.decode('utf8'))['data']
+            fetch_groups(LMS_URL, LMS_PASSWORD, DEPARTMENT)
 
-            for group, value in data.items():
-                Group.objects.create(name=group,
-                                     semester=int(value['semester']),
-                                     study_form=value['study_form'])
         elif options['schedule']:
             groups = Group.objects.all()
             for group in groups:

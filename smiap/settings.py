@@ -37,6 +37,7 @@ DEBUG = CONFIG.getboolean('app', 'debug')
 DB_HOST = 'localhost' if DEBUG else os.getenv('DB_HOST')
 DB_PASSWORD = '' if DEBUG else os.getenv('DB_PASS')
 
+LMS_URL = CONFIG.get('app', 'lms-url')
 LMS_PASSWORD = CONFIG.get('app', 'lms-pass')
 DEPARTMENT = CONFIG.get('app', 'department')
 
