@@ -5,11 +5,43 @@
       "semester": 1,
       "study_form": "expensive",
       "schedule": {
-        "1": []
+        "1": [
+          [
+            "61.61",
+            "Mon",
+            [
+              [
+                "25:25 – 26:26",
+                "LP",
+                "Math and Social Culture",
+                {
+                  "place": "Anywhere",
+                  "auditory": "Here"
+                },
+                [
+                  "Murlishko"
+                ]
+              ],
+              [
+                "27:27 – 28:28",
+                "LM",
+                "Sinister Glowing of Funeral Torch",
+                {
+                  "place": "Anywhere",
+                  "auditory": "Here"
+                },
+                [
+                  "Vlad Smert"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "2": []
       }
     },
-      "model": "main.group",
-      "pk": "1"
+    "model": "main.group",
+    "pk": "1"
   },
   {
     "fields": {
@@ -17,10 +49,42 @@
       "semester": 2,
       "study_form": "poor",
       "schedule": {
-        "1": []
+        "1": [
+          [
+            "16.61",
+            "Tue",
+            [
+              [
+                "15:25 – 26:26",
+                "AP",
+                "Math and Social Culture",
+                {
+                  "place": "Anywhere",
+                  "auditory": "Here"
+                },
+                [
+                  "Murlishko"
+                ]
+              ],
+              [
+                "27:27 – 28:28",
+                "LM",
+                "Sinister Glowing of Funeral Torch",
+                {
+                  "place": "Anywhere",
+                  "auditory": "Here"
+                },
+                [
+                  "Vlad Smert"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "2": []
       }
     },
-      "model": "main.group",
-      "pk": "2"
+    "model": "main.group",
+    "pk": "2"
   }
 ]
