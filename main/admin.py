@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db.models import QuerySet
 
 from main.models import Staff, News, Group
+from main.types import Degree
 from utils.group import degree
 
 
@@ -23,8 +24,8 @@ class GroupCourseFilter(admin.SimpleListFilter):
     parameter_name = 'courses'
 
     def lookups(self, request, model_admin):
-        courses = {i.course() for i in Group.objects.all()}
-        return ((c, f'{c} курс') for c in courses)
+        courses = Group.objects.distinct('course').only('course')
+        return ((c.course, f'{c.course} курс') for c in courses)
 
     def queryset(self, request, queryset: QuerySet):
         if self.value():
@@ -36,15 +37,12 @@ class GroupCourseFilter(admin.SimpleListFilter):
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ('name', 'study_form', 'get_degree', 'semester', 'get_course')
+    ordering = ('degree', 'course', '-study_form', 'name')
+    list_display = ('name', 'study_form', 'get_degree', 'semester', 'course')
     list_filter = ('study_form', GroupCourseFilter)
 
-    def get_course(self, obj: Group):
-        return obj.course()
-
     def get_degree(self, obj: Group):
-        return degree(obj.name).name.casefold().capitalize()
+        return Degree(obj.degree).name.casefold().capitalize()
 
-    get_course.short_description = 'Course'
     get_degree.short_description = 'Degree'
-    get_course.admin_order_field = 'semester'
+    get_degree.admin_order_field = 'degree'

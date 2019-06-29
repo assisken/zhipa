@@ -9,6 +9,7 @@ from django.contrib.postgres import fields
 from django.urls import reverse
 
 from main.types import Degree
+from utils import group
 
 
 def get_image_path():
@@ -78,6 +79,8 @@ class Group(models.Model):
     ]
 
     name = models.CharField(max_length=25, unique=True, null=False, blank=False)
+    course = models.PositiveSmallIntegerField(null=False, editable=False)
+    degree = models.PositiveSmallIntegerField(null=False, editable=False)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     study_form = models.CharField(max_length=12, choices=None, null=False, blank=False)
     schedule = fields.JSONField(null=True, blank=True)
@@ -85,8 +88,10 @@ class Group(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.course = ceil(self.semester / 2)
+        self.degree = group.degree(self.name).value
+        super().save(*args, **kwargs)
+
     def weeks(self) -> int:
         return max(map(int, self.schedule.keys()))
-
-    def course(self) -> int:
-        return ceil(self.semester / 2)

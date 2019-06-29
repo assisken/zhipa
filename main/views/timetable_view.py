@@ -10,9 +10,14 @@ class TimetableView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         teach_time = TeachTime()
-        groups = Group.objects.only('name')
+
+        form = request.GET.get('form', Group.FULL_TIME)
+        groups = Group.objects.only('name').filter(study_form=form).order_by('degree', 'course', 'name')
         group_name = request.GET.get('group', groups.first().name)
         week = request.GET.get('week', teach_time.week if teach_time.week <= teach_time.weeks_in_semester else 1)
+
+        if group_name not in groups:
+            group_name = groups.first().name
 
         group = Group.objects.get(name=group_name)
         schedule = group.schedule[str(week)]
@@ -28,9 +33,10 @@ class TimetableView(TemplateView):
             'group_name': group_name,
             'weeks': weeks,
             'week': week,
+            'form': form,
             'schedule': schedule,
             'date_block': date_block(teach_time),
-            'course': group.course() if group_name else 0
+            'course': group.course if group_name else 0
         })
 
 

@@ -22,6 +22,11 @@
             <h1 class="margin-large">Расписания занятий</h1>
             <div class="stageblock spanel flatbox padding-large">
                 <form class="inline">
+                    <select id="forms" name="form" onchange="this.form.submit()">
+                        <option value="" selected disabled>Форма обучения</option>
+                        <option value="очная">очная</option>
+                        <option value="заочная">заочная</option>
+                    </select>
                     <select id="groups" name="group" onchange="this.form.submit()">
                         <option value="" selected disabled>Группа</option>
                         {% for group in groups %}
@@ -59,7 +64,6 @@
                                     <td>{{ item[3]['place'] }}<br>{{ item[3]['auditory'] }}</td>
                                 </tr>
                             {% endfor %}
-                        </tr>
                     {% else %}
                         <tr>
                             <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
@@ -72,10 +76,23 @@
 
     <script type="text/javascript">
 	$(function() {
+	    var forms = $('#forms');
 	    var groups = $('#groups');
 	    var weeks = $('#weeks');
+	    forms.prop('value', "{{ form }}").selectric('refresh');
 	    weeks.prop('value', "{{ week }}").selectric('refresh');
         groups.prop('value', "{{ group_name }}").selectric('refresh');
+
+        forms.selectric({
+        	optionsItemBuilder: function(itemData) {
+        		if (itemData.value === "{{ form }}"){
+        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
+        		}
+        		else{
+        			return itemData.text;
+        		}
+		    }
+        });
 
         groups.selectric({
         	optionsItemBuilder: function(itemData) {
