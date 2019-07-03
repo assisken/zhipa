@@ -16,9 +16,6 @@ class TimetableView(TemplateView):
         group_name = request.GET.get('group', groups.first().name)
         week = request.GET.get('week', teach_time.week if teach_time.week <= teach_time.weeks_in_semester else 1)
 
-        if group_name not in groups:
-            group_name = groups.first().name
-
         group = Group.objects.get(name=group_name)
         schedule = group.schedule[str(week)]
 
