@@ -34,8 +34,10 @@ SECRET_KEY = CONFIG.get('app', 'secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = CONFIG.getboolean('app', 'debug')
-DB_HOST = 'localhost' if DEBUG else os.getenv('DB_HOST')
-DB_PASSWORD = '' if DEBUG else os.getenv('DB_PASS')
+DB_NAME = CONFIG.get('database', 'database')
+DB_USER = CONFIG.get('database', 'user')
+DB_HOST = CONFIG.get('database', 'host')
+DB_PASSWORD = CONFIG.get('database', 'password')
 
 LMS_URL = CONFIG.get('app', 'lms-url')
 LMS_PASSWORD = CONFIG.get('app', 'lms-pass')
@@ -117,8 +119,8 @@ WSGI_APPLICATION = 'smiap.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'smiap_website',
-        'USER': 'smiap',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
         'PORT': '',
