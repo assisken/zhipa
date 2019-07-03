@@ -3,14 +3,13 @@ from django.views.generic import TemplateView
 
 from . import converters
 from .views import *
-from .views.timetable_view import TimetableView
 
 register_converter(converters.FourDigitYearConverter, 'yyyy')
 register_converter(converters.TwoDigitConverter, 'mm')
 register_converter(converters.TwoDigitConverter, 'dd')
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('', IndexView.as_view(), name='home'),
     path('abiturients', TemplateView.as_view(
         template_name='abiturients/index.html'), name='abiturients'),
     path('conferences', TemplateView.as_view(

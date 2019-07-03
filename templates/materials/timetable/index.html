@@ -30,7 +30,7 @@
                     <select id="groups" name="group" onchange="this.form.submit()">
                         <option value="" selected disabled>Группа</option>
                         {% for group in groups %}
-                            <option value="{{ group }}">{{ group }}</option>
+                            <option value="{{ group }}">{{ group.name }}</option>
                         {% endfor %}
                     </select>
                     <select id="weeks" name="week" onchange="this.form.submit()">
