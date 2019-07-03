@@ -34,6 +34,9 @@ class ScheduleTest(TestCase):
             resp = self.client.get(url)
             week = group.schedule[week_with_schedule]
 
+            self.assertContains(resp, '&emsp; {} &emsp;'.format(group.name),
+                                msg_prefix='Не отображается имя группы, либо не та страница')
+
             for day in week:
                 date: str = day[0]
                 day_name: str = day[1]
