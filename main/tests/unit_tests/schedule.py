@@ -3,7 +3,6 @@ from typing import List, Dict, Any
 
 from django.test import TestCase
 from django.urls import reverse
-from freezegun import freeze_time
 
 from main.models import Group
 from main.views.timetable_view import date_block
