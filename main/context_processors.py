@@ -16,8 +16,6 @@ def app_processor(request):
             {"id": "publications", "title": "Публикации", "link": "/materials/publications"},
             {"id": "tutorials", "title": "Учебные пособия", "link": "/materials/tutorials"},
             {"id": "timetable", "title": "Расписания занятий", "link": "/materials/timetable"},
-            {"id": "extramural", "title": "Расписания занятий заочной формы",
-             "link": "/materials/timetable/extramural"},
             # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
         ]},
 
