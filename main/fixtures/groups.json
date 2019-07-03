@@ -2,8 +2,10 @@
   {
     "fields": {
       "name": "3-ПО3-135Б-99",
+      "course": 1,
+      "degree": 1,
       "semester": 1,
-      "study_form": "expensive",
+      "study_form": "очная",
       "schedule": {
         "1": [
           [
@@ -46,8 +48,10 @@
   {
     "fields": {
       "name": "3-ПО7-213Б-51",
+      "course": 1,
+      "degree": 1,
       "semester": 2,
-      "study_form": "poor",
+      "study_form": "очная",
       "schedule": {
         "1": [
           [
