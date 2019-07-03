@@ -116,7 +116,8 @@ dmypy.json
 
 # User specific
 .idea/
-static/
+static/images
+static/media
 
 .vscode/launch.json
 
