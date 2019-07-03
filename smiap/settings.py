@@ -43,8 +43,7 @@ LMS_URL = CONFIG.get('app', 'lms-url')
 LMS_PASSWORD = CONFIG.get('app', 'lms-pass')
 DEPARTMENT = CONFIG.get('app', 'department')
 
-ALLOWED_HOSTS: List[str] = [
-    # '*',
+ALLOWED_HOSTS: List[str] = ['*'] if not DEBUG else [
     'localhost',
     '127.0.0.1',
     '10.8.0.0/24',
