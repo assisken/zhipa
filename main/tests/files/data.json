@@ -1,0 +1,68 @@
+[
+  {
+    "name": "news",
+    "data": [
+      {
+        "id": "18",
+        "title": "Заголовок",
+        "date": "2015-11-21 00:00:00",
+        "url": "",
+        "img": "img\/news\/no\/cover.jpg",
+        "description": ":DDDD",
+        "text": "benis",
+        "hidden": "0"
+      },
+      {
+        "id": "44",
+        "title": "Заголовок2",
+        "date": "2019-05-29 12:32:12",
+        "url": "test",
+        "img": "img\/news\/null\/cover.jpg",
+        "description": "Clearly not",
+        "text": "spsh",
+        "hidden": "1"
+      }
+    ]
+  },
+  {
+    "name": "staff",
+    "data": [
+      {
+        "id": "1",
+        "lastname": "Пупкин",
+        "firstname": "Вася",
+        "patronymic": "Петрович",
+        "img": "img\/people\/pupkin.jpg",
+        "regalia": "Самый старший",
+        "description": "Просто описание...",
+        "leader": "1",
+        "lecturer": "1",
+        "hide": "0"
+      },
+      {
+        "id": "8",
+        "lastname": "Стешняшко",
+        "firstname": "Константин",
+        "patronymic": "Ильич",
+        "img": null,
+        "regalia": "Старший",
+        "description": "Работает стоя",
+        "leader": "0",
+        "lecturer": "1",
+        "hide": "0"
+      },
+      {
+        "id": "36",
+        "lastname": "Петров",
+        "firstname": "Антон",
+        "patronymic": "Борисович",
+        "img": "img\/people\/petrov.jpg",
+        "regalia": "Младший",
+        "description": null,
+        "leader": "0",
+        "lecturer": "0",
+        "hide": "1"
+      }
+    ]
+  }
+]

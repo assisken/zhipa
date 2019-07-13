@@ -44,7 +44,7 @@ class Staff(models.Model):
 
 class News(models.Model):
     title = models.CharField(max_length=200)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField()
     url = models.CharField(max_length=60, blank=True, default='')
     img = models.ImageField(max_length=120, blank=True, default='')
     description = models.TextField()
