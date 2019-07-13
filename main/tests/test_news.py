@@ -5,20 +5,7 @@ from main.models import Staff
 
 
 class UnitTests(TestCase):
-    fixtures = ['staff.json', 'news.json']
-
-    def test_staff_is_shown(self):
-        """Петя должен видеть всех нескрытые сотрудники"""
-
-        url = reverse('staff')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        # Doesn't work with Jinja2 :(
-        # self.assertTemplateUsed(response=response, template_name='about/staff.html')
-
-        staff = Staff.objects.filter(hide=False)
-        for s in staff:
-            self.assertIn(str(s), response.content.decode('utf-8'))
+    fixtures = ['news.json']
 
     def test_news_is_shown(self):
         """Петя должен видеть неспрятанные новости"""
