@@ -22,10 +22,10 @@
                                 <a href="{{ news.get_url() }}">
   			                	    <img src="{{ static(news.img.url) }}" alt="" class="animation-fade animation-delay-2">
                                 </a>
-                                <p>{{ news.description }}</p>
+                                <p>{{ news.description|safe }}</p>
   	                        </div>
                         {% else %}
-                            <p>{{ news.description }}</p>
+                            <p>{{ news.description|safe }}</p>
                         {% endif %}
                         <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
                     </div>

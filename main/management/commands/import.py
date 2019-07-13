@@ -47,7 +47,11 @@ def insert_news(data: List[Dict]):
     for news in data:
         image = news['img']
         if image:
-            image = image.replace('img', 'images')
+            image = image.replace('img/', 'images/')
+
+        text = news['text']
+        if text:
+            text = text.replace('img/', 'images/')
 
         News.objects.create(
             pk=news['id'],
@@ -56,7 +60,7 @@ def insert_news(data: List[Dict]):
             url=news['url'],
             img=image,
             description=news['description'],
-            text=news['text'],
+            text=text,
             hidden=news['hidden'],
         )
 
@@ -65,7 +69,7 @@ def insert_staff(data: List[Dict]):
     for staff in data:
         image = staff['img']
         if image:
-            image = image.replace('img', 'images')
+            image = image.replace('img/', 'images/')
 
         Staff.objects.create(
             pk=staff['id'],

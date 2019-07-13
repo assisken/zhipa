@@ -58,9 +58,9 @@ class News(models.Model):
     def get_url(self):
         if self.url:
             kwargs = {
-                'year': self.date.year,
-                'month': self.date.month,
-                'day': self.date.day,
+                'year': str(self.date.year).zfill(4),
+                'month': str(self.date.month).zfill(2),
+                'day': str(self.date.day).zfill(2),
                 'url': self.url
             }
             return reverse('news-date-url', kwargs=kwargs)

@@ -22,7 +22,7 @@
                         {% if news.text %}
                             {{ news.text|safe }}
                         {% else %}
-                            <p>{{ news.description }}</p>
+                            <p>{{ news.description|safe }}</p>
                         {% endif %}
 
                         <div class="share">
