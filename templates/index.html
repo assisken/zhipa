@@ -28,6 +28,8 @@
                                 {{ news.date.strftime('%-d %B %Y') | title }} -
                                 <a href="{{ news.get_url() }}">{{ news.title }}</a>
                             </li>
+                        {% else %}
+                            Последних публикаций нет...
                         {% endfor %}
                     </ul>
                     <div class="buttons">
