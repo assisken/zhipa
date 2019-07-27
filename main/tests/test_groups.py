@@ -1,4 +1,7 @@
 import json
+import sys
+
+from io import StringIO
 from typing import Any
 from unittest.mock import patch, Mock
 
@@ -31,11 +34,31 @@ def mocked_group_response(*args, **kwargs):
     return resp
 
 
+def mocked_404_respond(*args, **kwargs):
+    resp = Mock()
+    resp.status_code = 404
+    return resp
+
+
 class GroupTest(TestCase):
+    def setUp(self) -> None:
+        self.url = 'http://example.com/'
+
     @patch('requests.get', side_effect=mocked_group_response)
     def test_group_fetch(self, mock_request: Any):
-        url = 'http://example.com/'
-        fetch_groups(url, '', '')
-        mock_request.assert_called_with(url)
+        fetch_groups(self.url, '', '')
+        mock_request.assert_called_with(self.url)
         for group in Group.objects.only('name'):
             self.assertIn(group.name, RESPONSE['data'].keys())
+
+    @patch('requests.get')
+    def test_handle_lms_respond_404(self, mock_request: Any):
+        capture = StringIO()
+        sys.stdout = capture
+
+        with self.assertRaises(SystemExit):
+            fetch_groups(self.url, '', '')
+        self.assertTrue(capture.getvalue())
+
+        # Set default stdout
+        sys.stdout = sys.__stdout__

@@ -37,6 +37,7 @@ DEBUG = CONFIG.getboolean('app', 'debug')
 DB_NAME = CONFIG.get('database', 'database')
 DB_USER = CONFIG.get('database', 'user')
 DB_HOST = CONFIG.get('database', 'host')
+DB_PORT = CONFIG.get('database', 'port')
 DB_PASSWORD = CONFIG.get('database', 'password')
 
 LMS_URL = CONFIG.get('app', 'lms-url')
@@ -122,7 +123,10 @@ DATABASES = {
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
-        'PORT': '',
+        'PORT': DB_PORT,
+        'TEST': {
+            'NAME': 'test_smiap',
+        },
     }
 }
 # Password validation
