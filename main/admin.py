@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
 
-from main.models import Staff, News, Group
+from main.models import Staff, News, Group, User
 from main.types import Degree
 from utils.group import degree
 
@@ -46,3 +47,8 @@ class GroupAdmin(admin.ModelAdmin):
 
     get_degree.short_description = 'Degree'
     get_degree.admin_order_field = 'degree'
+
+
+@admin.register(User)
+class SmiapUserAdmin(UserAdmin):
+    pass

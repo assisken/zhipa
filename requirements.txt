@@ -1,4 +1,4 @@
-astroid==2.2.5
+astroid==2.2.5cWxmKYxdezOekQeJSCtWMfQsrwRpT3pbRI0Y6XpDqMPPz24JE2qgFwWBCqsWM0AR
 autopep8==1.4.4
 beautifulsoup4==4.7.1
 certifi==2019.3.9

@@ -204,3 +204,4 @@ FIXTURE_DIRS = (
 )
 
 HTML_MINIFY = False if DEBUG else True
+AUTH_USER_MODEL = 'main.User'

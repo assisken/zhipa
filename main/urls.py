@@ -1,4 +1,4 @@
-from django.urls import path, register_converter
+from django.urls import path, register_converter, include
 from django.views.generic import TemplateView
 
 from . import converters
@@ -47,8 +47,9 @@ urlpatterns = [
     path('materials/<yyyy:year>/<mm:month>/<dd:day>',
          NewsDateListView.as_view(), name='news-date'),
     path('materials/news/<yyyy:year>/<mm:month>/<dd:day>/<slug:url>',
-         NewsDateDetailView.as_view(), name='news-date-url')
+         NewsDateDetailView.as_view(), name='news-date-url'),
 
+    path('auth/login', SmiapLoginView.as_view(), name='login'),
 ]
 
 #  "/about",

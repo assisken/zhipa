@@ -24,7 +24,8 @@ def app_processor(request):
             # {"id": "gagarin", "title": "Гагаринские чтения", "link": "gagarin"}
         ]},
 
-        {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []}
+        {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []},
+        {"id": "login", "title": "Войти", "link": "/auth/login", "subitems": []}
     ]
 
     if request.path == '/':

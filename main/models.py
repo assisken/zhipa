@@ -3,6 +3,7 @@ import re
 from datetime import datetime
 from math import ceil
 
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import F
 from django.contrib.postgres import fields
@@ -95,3 +96,7 @@ class Group(models.Model):
 
     def weeks(self) -> int:
         return max(map(int, self.schedule.keys()))
+
+
+class User(AbstractUser):
+    pass
