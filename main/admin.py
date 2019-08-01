@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
 
-from main.models import Staff, News, Group, User
+from main.models import Staff, News, Group, User, Profile, Student
 from main.types import Degree
 from utils.group import degree
 
@@ -51,4 +51,14 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class SmiapUserAdmin(UserAdmin):
+    pass
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
     pass
