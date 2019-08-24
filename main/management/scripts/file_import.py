@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict, List
 
+from django.db import IntegrityError
 from django.utils.timezone import make_aware
 from pytz import timezone
 
@@ -11,12 +12,15 @@ from smiap.settings import TIME_ZONE
 def handle_data(data: List[Dict]):
     for item in data:
         name = item.get('name', None)
-        if not name:
+        try:
+            if not name:
+                continue
+            elif name == 'news':
+                insert_news(item['data'])
+            elif name == 'staff':
+                insert_staff(item['data'])
+        except IntegrityError:
             continue
-        elif name == 'news':
-            insert_news(item['data'])
-        elif name == 'staff':
-            insert_staff(item['data'])
 
 
 def insert_news(data: List[Dict]):

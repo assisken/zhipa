@@ -4,6 +4,7 @@ import requests
 from django.db import IntegrityError
 
 from main.models import Group
+from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
 
 def fetch_groups(url_pattern: str, password: str, department: str) -> None:
@@ -11,12 +12,11 @@ def fetch_groups(url_pattern: str, password: str, department: str) -> None:
     resp = requests.get(url)
 
     if resp.status_code not in (200, 500):
-        print('Seems like lms does not response with 200 code.')
-        print('Please, update website url or check that website does respond on url:')
-        print(url)
-        exit(1)
+        raise LmsDoesNotRespondError(url)
 
     data = json.loads(resp.content.decode('utf8'))['data']
+    if not data:
+        raise LmsRespondsAnEmptyListError(url)
 
     for group, value in data.items():
         try:

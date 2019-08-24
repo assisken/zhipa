@@ -2,6 +2,7 @@ import json
 import os
 
 from django.core.management import BaseCommand, CommandParser
+from termcolor import cprint
 
 from main.management.scripts.file_import import handle_data
 from smiap.settings import BASE_DIR
@@ -14,11 +15,14 @@ class Command(BaseCommand):
         parser.add_argument(
             '--file',
             action='store',
-            help='Specify file name. Default is `data.json`'
+            help='Specify file name. Default is `data.json`',
+            default='data.json'
         )
 
     def handle(self, *args, **options):
-        file = options.get('file') or 'data.json'
+        cprint('Importing data file...', attrs=['bold', 'underline'])
+
+        file = options.get('file')
         path = os.path.join(BASE_DIR, 'import', file)
 
         try:

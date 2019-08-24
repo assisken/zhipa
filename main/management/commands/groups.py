@@ -1,14 +1,11 @@
-from time import sleep
-
 from django.core.management import BaseCommand, CommandParser
-
-import json
-from requests import get, HTTPError
+from termcolor import cprint
 
 from main.management.scripts.groups import fetch_groups
 from main.management.scripts.schedule import parse_schedule_for
 from main.models import Group
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
+from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
 
 class Command(BaseCommand):
@@ -28,12 +25,29 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['lms']:
-            fetch_groups(LMS_URL, LMS_PASSWORD, DEPARTMENT)
+            cprint('Adding student groups...', attrs=['bold', 'underline'])
+            try:
+                fetch_groups(LMS_URL, LMS_PASSWORD, DEPARTMENT)
+            except LmsDoesNotRespondError as e:
+                cprint('Seems like lms does not response with 200 code.', attrs=['bold', 'underline'])
+                print('Please, update website url or check that website does respond on url:')
+                print(e.args[0])
+            except LmsRespondsAnEmptyListError as e:
+                cprint('Lms responds an empty list, null or false that does not correct.', 'red', attrs=['bold'])
+                print('Please, check url and call with developers or administration.')
+                print(e.args[0])
+            else:
+                print('Done!')
 
         elif options['schedule']:
+            cprint('Parsing schedule for student groups...', attrs=['bold', 'underline'])
             groups = Group.objects.all()
+            if groups.count() == 0:
+                cprint('There is no any student group.', 'red', attrs=['bold'])
+                print('Please, check that they got from lms.')
+                return
             for group in groups:
                 print('Parsing group {}...'.format(group.name))
                 group.schedule = parse_schedule_for(group.name)
                 group.save()
-        print('Done!')
+            print('Done!')
