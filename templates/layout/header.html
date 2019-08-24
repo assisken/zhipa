@@ -26,17 +26,23 @@
 		<nav class="menustring center">
 		    {% for item in NAV_ITEMS %}
 		    	{% if item['id'] in ACTIVE_ITEMS %}
-		    		{% set activeitem = "menustring_activeitem" %}
+		    		{% set activeitem = " menustring_activeitem" %}
+                {% else %}
+                    {% set activeitem = "" %}
 		    	{% endif %}
 
 		    	{% if item['subitems'] == [] and (item['submenu'] == True) %}
-		    		{% set parent = "menustring_parent" %}
+		    		{% set parent = " menustring_parent" %}
 		    	{% else %}
 		    		{% set parent = "" %}
 		    	{% endif %}
 
-		    	<div class="menustring_item {{ activeitem }} {{ parent }}">
-                    <a href="{{ item['link'] }}" class="menustring_item_a">{{ item['title'] }}</a>
+                <div class="menustring_item{{ activeitem }}{{ parent }}">
+                    {% if item['link'] %}
+                        <a href="{{ item['link'] }}" class="menustring_item_a">{{ item['title'] }}</a>
+                    {% else %}
+                        <span class="">{{ item['title'] }}</span>
+                    {% endif %}
 
 		    	    {% if item['subitems'] %}
     	    			<div class="menustring_subitem">

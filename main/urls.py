@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, register_converter, include
 from django.views.generic import TemplateView
 
@@ -50,6 +51,7 @@ urlpatterns = [
          NewsDateDetailView.as_view(), name='news-date-url'),
 
     path('auth/login', SmiapLoginView.as_view(), name='login'),
+    path('auth/logout', SmiapLogoutView.as_view(), name='logout'),
 ]
 
 #  "/about",

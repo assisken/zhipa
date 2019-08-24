@@ -25,8 +25,16 @@ def app_processor(request):
         ]},
 
         {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []},
-        {"id": "login", "title": "Войти", "link": "/auth/login", "subitems": []}
     ]
+
+    if request.user and request.user.is_authenticated:
+        last_item = {"id": "username", "title": request.user.username, "link": None, "subitems": [
+            {"id": "logout", "title": "Выйти", "link": "/auth/logout?next={}".format(request.path), "subitems": []}
+        ]}
+    else:
+        last_item = {"id": "login", "title": "Войти",
+                     "link": "/auth/login?next={}".format(request.path), "subitems": []}
+    nav_items.append(last_item)
 
     if request.path == '/':
         active_items = 'home'

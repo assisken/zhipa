@@ -77,6 +77,11 @@ MIDDLEWARE = (
     'htmlmin.middleware.MarkRequestMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = [
+    'main.authentication_backend.MyBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 ROOT_URLCONF = 'smiap.urls'
 
 TEMPLATES = [
