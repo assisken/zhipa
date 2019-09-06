@@ -1,22 +1,31 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
 
-    {% if next %}
-        {% if user and user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
-        {% endif %}
-    {% endif %}
+    <div class="about animation-fade">
+        <h1 class="padding-large center">Вход на сайт</h1>
+		<div class="panel left">
+            {% if form.errors %}
+                <p class="middle font-large justify">
+                    Либо нет такого пользователя, либо пароль неверный. Пожалуйста, введите их корректно.
+                </p>
+            {% endif %}
+            {% if next %}
+                {% if user and user.is_authenticated %}
+                    <p class="middle font-large justify">
+                        У вас недостаточные права. Для продолжения войдите в аккаунт, у которого эти права есть
+                    </p>
+                {% else %}
+                    <p class="middle font-large justify">Для продолжения необходимо войти.</p>
+                {% endif %}
+            {% endif %}
+
+        </div>
+	</div>
 
     <form method="post" action="{{ url('login') }}">
         {{ csrf_input }}
-        {{ form.username.label_tag() }}
+        <label class="middle font-large justify">Имя пользователя:</label>
         {{ form.username }}
         {{ form.password.label_tag() }}
         {{ form.password }}
