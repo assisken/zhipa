@@ -14,3 +14,12 @@ def degree(group_name: str) -> Degree:
         return Degree.GRADUATE
     else:
         raise ValueError('Group does not match')
+
+
+def study_form(group_name: str) -> str:
+    match = re.search(r'^\S+([ОЗ])-', group_name)
+    res = match.group(1)
+    if res == 'О':
+        return 'очная'
+    elif res == 'З':
+        return 'заочная'

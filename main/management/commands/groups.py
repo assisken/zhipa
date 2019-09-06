@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand, CommandParser
 from termcolor import cprint
 
-from main.management.scripts.groups import fetch_groups
+from main.management.scripts.groups import fetch_groups, fetch_groups_from_csv
 from main.management.scripts.schedule import parse_schedule_for
 from main.models import Group
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
@@ -21,6 +21,12 @@ class Command(BaseCommand):
             '--schedule',
             action='store_true',
             help='Get schedule from mai'
+        )
+        parser.add_argument(
+            '--file',
+            action='store',
+            help='Specify file name. Default is `groups.csv`',
+            default='groups.csv'
         )
 
     def handle(self, *args, **options):
@@ -51,3 +57,7 @@ class Command(BaseCommand):
                 group.schedule = parse_schedule_for(group.name)
                 group.save()
             print('Done!')
+
+        elif options['file']:
+            cprint('Adding student groups from csv file...', attrs=['bold', 'underline'])
+            fetch_groups_from_csv(options.get('file'))

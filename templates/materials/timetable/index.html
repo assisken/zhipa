@@ -24,8 +24,9 @@
                 <form class="inline">
                     <select id="forms" name="form" onchange="this.form.submit()">
                         <option value="" selected disabled>Форма обучения</option>
-                        <option value="очная">очная</option>
-                        <option value="заочная">заочная</option>
+                        {% for form in study_forms %}
+                            <option value="{{ form[0] }}" selected>{{ form[0] }}</option>
+                        {% endfor %}
                     </select>
                     <select id="groups" name="group" onchange="this.form.submit()">
                         <option value="" selected disabled>Группа</option>

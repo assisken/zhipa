@@ -68,7 +68,10 @@ class Group(models.Model):
 
     def save(self, *args, **kwargs):
         self.course = ceil(self.semester / 2)
-        self.degree = group.degree(self.name).value
+        if not self.degree:
+            self.degree = group.degree(self.name).value
+        if not self.study_form:
+            self.study_form = group.study_form(self.name)
         super().save(*args, **kwargs)
 
     def weeks(self) -> int:

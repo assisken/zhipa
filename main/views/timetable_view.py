@@ -33,7 +33,8 @@ class TimetableView(TemplateView):
             'form': form,
             'schedule': schedule,
             'date_block': date_block(teach_time),
-            'course': group.course if group_name else 0
+            'course': group.course if group_name else 0,
+            'study_forms': Group.objects.order_by().values_list('study_form').distinct()
         })
 
 
