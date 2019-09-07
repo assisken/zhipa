@@ -58,7 +58,6 @@ class Group(models.Model):
     degree = models.PositiveSmallIntegerField(null=False, editable=False)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     study_form = models.CharField(max_length=12, choices=None, null=False, blank=False)
-    schedule = fields.JSONField(null=True, blank=True)
 
     class Meta:
         required_db_vendor = 'postgresql'
@@ -117,3 +116,43 @@ class Staff(Profile):
 
 class Student(Profile):
     group_name = models.CharField(max_length=50)
+
+
+class Teacher(models.Model):
+    lastname = models.CharField(max_length=30)
+    firstname = models.CharField(max_length=30)
+    middlename = models.CharField(max_length=30)
+
+    def __str__(self):
+        return '{} {}.{}.'.format(self.lastname, self.firstname[0], self.middlename[0])
+
+
+class Place(models.Model):
+    building = models.TextField()
+    number = models.TextField(null=True)
+
+    def __str__(self):
+        if self.number:
+            return '{} {}'.format(self.building, self.number)
+        else:
+            return self.building
+
+
+class Day(models.Model):
+    date = models.TextField()
+    day = models.CharField(max_length=2)
+    week = models.IntegerField()
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{} ({})'.format(self.date, self.day)
+
+
+class Item(models.Model):
+    starts_at = models.TimeField()
+    ends_at = models.TimeField()
+    type = models.CharField(max_length=3)
+    name = models.TextField()
+    places = models.ManyToManyField(Place)
+    teachers = models.ManyToManyField(Teacher)
+    day = models.ForeignKey(Day, on_delete=models.CASCADE)

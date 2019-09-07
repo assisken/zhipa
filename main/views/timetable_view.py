@@ -1,7 +1,9 @@
+from collections import defaultdict
+
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group
+from main.models import Group, Day, Item
 from utils.date import TeachTime, TeachState
 
 
@@ -14,13 +16,17 @@ class TimetableView(TemplateView):
         form = request.GET.get('form', Group.FULL_TIME)
         groups = Group.objects.only('name').filter(study_form=form).order_by('degree', 'course', 'name')
         group_name = request.GET.get('group', groups.first().name)
-        week = request.GET.get('week', teach_time.week if teach_time.week <= teach_time.weeks_in_semester else 1)
+        week = request.GET.get('week',
+                               teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
 
         group = Group.objects.get(name=group_name)
-        schedule = group.schedule[str(week)]
+        days = Day.objects.filter(group=group, week=week)
+        items = Item.objects.filter(day__in=days).order_by('day__date', 'starts_at')
+        schedule = defaultdict(list)
+        for item in items:
+            schedule[item.day].append(item)
 
         if len(groups) > 0:
-            schedule = sorted(schedule, key=lambda x: x[0])
             weeks = teach_time.weeks_in_semester
         else:
             weeks = 0
@@ -34,7 +40,7 @@ class TimetableView(TemplateView):
             'schedule': schedule,
             'date_block': date_block(teach_time),
             'course': group.course if group_name else 0,
-            'study_forms': Group.objects.order_by().values_list('study_form').distinct()
+            'study_forms': Group.objects.order_by('-study_form').values_list('study_form').distinct()
         })
 
 

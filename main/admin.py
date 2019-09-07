@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
 
-from main.models import Staff, News, Group, User, Profile, Student
+from main.models import *
 from main.types import Degree
 from utils.group import degree
 
@@ -61,4 +61,24 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Day)
+class DayAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'week', 'group')
+
+
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
+
+
+@admin.register(Place)
+class PlaceAdmin(admin.ModelAdmin):
     pass

@@ -243,6 +243,10 @@ footer p {
     left: 15%
 }
 
+.timetable .odd {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
 .timetables .stageblock {
     border-radius: 3px;
     padding: 10px 10px 0

@@ -2,7 +2,7 @@ from django.core.management import BaseCommand, CommandParser
 from termcolor import cprint
 
 from main.management.scripts.groups import fetch_groups, fetch_groups_from_csv
-from main.management.scripts.schedule import parse_schedule_for
+from main.management.scripts.schedule import create_schedule_for
 from main.models import Group
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
 from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
@@ -54,8 +54,7 @@ class Command(BaseCommand):
                 return
             for group in groups:
                 print('Parsing group {}...'.format(group.name))
-                group.schedule = parse_schedule_for(group.name)
-                group.save()
+                create_schedule_for(group.name)
             print('Done!')
 
         elif options['file']:

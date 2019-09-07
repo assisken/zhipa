@@ -1,69 +1,73 @@
-from collections import namedtuple
 from time import sleep
-from typing import Dict, List
+from typing import List, Tuple, Optional, Generator
 from urllib.parse import quote
 
 from lxml import html
 from lxml.html import HtmlElement
-from requests import get, exceptions
+from requests import get
 
-Day = namedtuple('Day', 'date day items')
-Item = namedtuple('Item', 'time item_type name place teachers')
+from main.models import Day, Item, Teacher, Group, Place
 
 
-def parse_schedule_for(group: str) -> Dict[int, List[Day]]:
+def create_schedule_for(group_name: str):
     url = 'https://mai.ru/education/schedule/detail.php?group={group}&week={week}'
-    schedule = {}
-    for week in range(1, 18):
-        resp = get(url.format(group=quote(group), week=week))
+    for week in range(1, 19):
+        resp = get(url.format(group=quote(group_name), week=week))
         if resp.status_code != 200:
             print('Error. Received not 200 code.')
-            schedule[week] = []
             continue
 
         body = resp.content.decode('utf8')
-        schedule[week] = parse_table(body)
+
+        for date, day, items in parse_day(body):
+            day, _ = Day.objects.get_or_create(date=date, day=day, week=week, group=Group.objects.get(name=group_name))
+
+            for time, item_type, place_list, name, teachers in parse_items(items):
+                start, end = time.split(' – ')
+                item, _ = Item.objects.get_or_create(starts_at=start, ends_at=end, type=item_type,
+                                                     name=name, day=day)
+
+                for place in place_list:
+                    building, number = normalize_place(place)
+                    p, _ = Place.objects.get_or_create(building=building, number=number)
+                    item.places.add(p.id)
+                for teacher in teachers:
+                    if not teacher:
+                        continue
+                    lastname, firstname, middlename = teacher.split(' ')
+                    t, _ = Teacher.objects.get_or_create(lastname=lastname, firstname=firstname, middlename=middlename)
+                    item.teachers.add(t.id)
         sleep(1)
-    return schedule
 
 
-def parse_table(body: str) -> List[Day]:
+def parse_day(body: str) -> Generator[Tuple[str, str, HtmlElement], None, None]:
     tree = html.fromstring(body)
-    days = []
     for element in tree.xpath('//div[@class="sc-container"]'):
         date = element.xpath('.//div[contains(@class, "sc-day-header")]/text()')[0]
         day = element.xpath('.//span[@class="sc-day"]/text()')[0]
         items = element.xpath('.//div[contains(@class, "sc-table-detail")]')[0]
 
-        days.append(Day(date=date, day=day, items=parse_items(items)))
-    return days
+        yield date, day, items
 
 
-def parse_items(element: HtmlElement) -> List[Item]:
-    res: List[Item] = []
+def parse_items(element: HtmlElement) -> Generator[Tuple[str, str, str, str, List[str]], None, None]:
     for item in element.xpath('.//div[@class="sc-table-row"]'):
         time = item.xpath('.//div[contains(@class, "sc-item-time")]/text()')[0]
         item_type = item.xpath('.//div[contains(@class, "sc-item-type")]/text()')[0]
-        place_list = item.xpath('.//div[contains(@class, "sc-item-location")]/text()')[0]
+        place_list = item.xpath('.//div[contains(@class, "sc-item-location")]/text()')
         name = item.xpath('.//*[@class="sc-title"]/text()')[0]
         try:
             teachers = item.xpath('.//span[@class="sc-lecturer"]/text()')[0].split(', ')
         except IndexError:
             teachers = []
-        item = Item(time=time,
-                    item_type=item_type,
-                    name=name,
-                    place=normalize_place(place_list),
-                    teachers=teachers)
-        res.append(item)
-    return res
+
+        yield time, item_type, place_list, name, teachers
 
 
-def normalize_place(place_list: str) -> Dict[str, str]:
+def normalize_place(place_list: str) -> Tuple[str, Optional[str]]:
     place_list = place_list.replace('--', '')
     place = place_list.split(' ')
     try:
-        out = {'place': place[0], 'auditory': place[1]}
+        return place[0], place[1]
     except IndexError:
-        out = {'place': place[0], 'auditory': ''}
-    return out
+        return place[0], None

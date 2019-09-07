@@ -55,14 +55,17 @@
                         <th style="background: #a4e2ff">Название предмета</th>
                         <th style="background: #a4e2ff">Ауд.</th>
                     </tr>
-                    {% for day in schedule %}
-                        <tr>
-                            <td rowspan="{{ day[2] | length + 1 }}">{{ day[0] }}<br>{{ day[1] }}</td>
-                            {% for item in day[2] %}
+                    {% for day in schedule.keys() %}
+                        <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
+                            <td rowspan="{{ schedule[day] | length + 1 }}">{{ day.date }}<br>{{ day.day }}</td>
+                            {% for item in schedule[day] %}
                                 <tr>
-                                    <td>{{ item[0] }}</td>
-                                    <td>{{ item[2] }} — {{ item[1] }}<br>{{ item[4] | join(', ') }}</td>
-                                    <td>{{ item[3]['place'] }}<br>{{ item[3]['auditory'] }}</td>
+                                    <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
+                                        по {{ item.ends_at.strftime('%H:%M') }}</td>
+                                    <td>{{ item.name }} {{ item.type }}<br>
+                                        {{ item.teachers.all() | join(", ") }}
+                                    </td>
+                                    <td>{{ item.places.all() | join('<br>') | safe }}</td>
                                 </tr>
                             {% endfor %}
                     {% else %}
