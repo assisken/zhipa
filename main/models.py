@@ -122,6 +122,14 @@ class Teacher(models.Model):
     lastname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
     middlename = models.CharField(max_length=30)
+    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            self.staff = Staff.objects.get(lastname=self.lastname, firstname=self.firstname, middlename=self.middlename)
+        except Staff.DoesNotExist:
+            self.staff = None
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return '{} {}.{}.'.format(self.lastname, self.firstname[0], self.middlename[0])

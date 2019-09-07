@@ -126,3 +126,4 @@ config.ini
 
 /*.json
 /import
+*.xlsx*

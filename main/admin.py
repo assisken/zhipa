@@ -66,7 +66,7 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'staff')
 
 
 @admin.register(Day)

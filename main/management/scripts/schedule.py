@@ -66,7 +66,7 @@ def parse_items(element: HtmlElement) -> Generator[Tuple[str, str, str, str, Lis
 
 def normalize_place(place_list: str) -> Tuple[str, Optional[str]]:
     place_list = place_list.replace('--', '')
-    place = place_list.split(' ')
+    place = place_list.split(' ', maxsplit=1)
     try:
         return place[0], place[1]
     except IndexError:
