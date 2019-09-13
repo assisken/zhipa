@@ -58,6 +58,7 @@ class Group(models.Model):
     degree = models.PositiveSmallIntegerField(null=False, editable=False)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
     study_form = models.CharField(max_length=12, choices=None, null=False, blank=False)
+    schedule_version = models.TextField(null=True, blank=True)
 
     class Meta:
         required_db_vendor = 'postgresql'

@@ -28,6 +28,12 @@ class Command(BaseCommand):
             help='Specify file name. Default is `groups.csv`',
             default='groups.csv'
         )
+        parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Disables skip for schedule parsing',
+            default=False
+        )
 
     def handle(self, *args, **options):
         if options['lms']:
@@ -54,7 +60,7 @@ class Command(BaseCommand):
                 return
             for group in groups:
                 print('Parsing group {}...'.format(group.name))
-                create_schedule_for(group.name)
+                create_schedule_for(group.name, options['force'])
             print('Done!')
 
         elif options['file']:

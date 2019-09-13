@@ -9,8 +9,17 @@ from requests import get
 from main.models import Day, Item, Teacher, Group, Place
 
 
-def create_schedule_for(group_name: str):
+def create_schedule_for(group_name: str, force: bool):
     url = 'https://mai.ru/education/schedule/detail.php?group={group}&week={week}'
+
+    group = Group.objects.get(name=group_name)
+    version = get_version(url.format(group=quote(group_name), week=1))
+    if not force and group.schedule_version == version:
+        return
+
+    group.schedule_version = version
+    group.save()
+
     for week in range(1, 19):
         resp = get(url.format(group=quote(group_name), week=week))
         if resp.status_code != 200:
@@ -20,7 +29,7 @@ def create_schedule_for(group_name: str):
         body = resp.content.decode('utf8')
 
         for date, day, items in parse_day(body):
-            day, _ = Day.objects.get_or_create(date=date, day=day, week=week, group=Group.objects.get(name=group_name))
+            day, _ = Day.objects.get_or_create(date=date, day=day, week=week, group=group)
 
             for time, item_type, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
@@ -38,6 +47,18 @@ def create_schedule_for(group_name: str):
                     t, _ = Teacher.objects.get_or_create(lastname=lastname, firstname=firstname, middlename=middlename)
                     item.teachers.add(t.id)
         sleep(1)
+
+
+def get_version(url: str) -> Optional[str]:
+    resp = get(url)
+
+    if resp.status_code != 200:
+        print('Error. Received not 200 code.')
+        return None
+
+    tree = html.fromstring(resp.content)
+    sleep(1)
+    return tree.xpath('//*[@id="schedule-content"]/div[2]/text()')[0]
 
 
 def parse_day(body: str) -> Generator[Tuple[str, str, HtmlElement], None, None]:

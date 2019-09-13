@@ -39,8 +39,8 @@ class GroupCourseFilter(admin.SimpleListFilter):
 class GroupAdmin(admin.ModelAdmin):
     list_per_page = 20
     ordering = ('degree', 'course', '-study_form', 'name')
-    list_display = ('name', 'study_form', 'get_degree', 'semester', 'course')
-    list_filter = ('study_form', GroupCourseFilter)
+    list_display = ('name', 'study_form', 'get_degree', 'semester', 'course', 'schedule_version')
+    list_filter = ('study_form', GroupCourseFilter, 'schedule_version')
 
     def get_degree(self, obj: Group):
         return Degree(obj.degree).name.casefold().capitalize()
