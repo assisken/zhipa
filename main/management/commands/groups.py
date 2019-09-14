@@ -10,6 +10,7 @@ from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
 class Command(BaseCommand):
     help = 'Manipulates with database groups'
+    requires_migrations_checks = True
 
     def add_arguments(self, parser: CommandParser):
         parser.add_argument(

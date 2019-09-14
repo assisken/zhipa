@@ -1,10 +1,23 @@
 version: '3'
 services:
+  postgres:
+    image: postgres:12
+#    ports:
+#      - "5432:5432"
+    volumes:
+      - ./preinit/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
   app:
     build: .
     ports:
       - "8000:8000"
     volumes:
       - ".:/app"
-#    depends_on:
-#      - mongodb
+    links:
+      - postgres
+    depends_on:
+      - postgres
+  migrations:
+    build: .
+    command: python manage.py init
+    depends_on:
+      - app
