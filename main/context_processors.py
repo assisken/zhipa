@@ -15,7 +15,8 @@ def app_processor(request):
             {"id": "news", "title": "Новости", "link": "/materials/news"},
             {"id": "publications", "title": "Публикации", "link": "/materials/publications"},
             {"id": "tutorials", "title": "Учебные пособия", "link": "/materials/tutorials"},
-            {"id": "timetable", "title": "Расписания занятий", "link": "/materials/timetable"},
+            {"id": "groups", "title": "Расписания занятий", "link": "/materials/timetable/groups"},
+            {"id": "teacher", "title": "Расписания преподавателей", "link": "/materials/timetable/teacher"},
             # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
         ]},
 
@@ -34,7 +35,7 @@ def app_processor(request):
     else:
         last_item = {"id": "login", "title": "Войти",
                      "link": "/auth/login?next={}".format(request.path), "subitems": []}
-    nav_items.append(last_item)
+    # nav_items.append(last_item)
 
     if request.path == '/':
         active_items = 'home'

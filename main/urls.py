@@ -1,6 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import path, register_converter, include
-from django.views.generic import TemplateView
+from django.urls import path, register_converter, include, reverse
+from django.views.generic import TemplateView, RedirectView
 
 from . import converters
 from .views import *
@@ -32,11 +32,15 @@ urlpatterns = [
     path('materials/', NewsListView.as_view()),
     path('materials/tutorials',
          TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
-    path('materials/timetable', TimetableView.as_view(), name='timetable'),
     path('materials/publications',
          TemplateView.as_view(template_name='materials/publications.html'), name='publications'),
-    path('materials/timetable/extramural',
-         TemplateView.as_view(template_name='layout/base.html'), name='timetable-extramural'),
+
+    # Timetable
+    path('materials/timetable/groups', GroupTimetableView.as_view(), name='timetable'),
+    path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
+
+    path('materials/timetable', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
+    path('materials/timetable/extramural', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
 
     path('materials/news', NewsListView.as_view(), name='news-list-begin'),
     path('materials/news/page<int:number>',

@@ -151,7 +151,6 @@ class Day(models.Model):
     date = models.TextField()
     day = models.CharField(max_length=2)
     week = models.IntegerField()
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} ({})'.format(self.date, self.day)
@@ -165,3 +164,4 @@ class Item(models.Model):
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
+    groups = models.ManyToManyField(Group)

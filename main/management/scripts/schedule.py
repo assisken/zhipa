@@ -29,12 +29,13 @@ def create_schedule_for(group_name: str, force: bool):
         body = resp.content.decode('utf8')
 
         for date, day, items in parse_day(body):
-            day, _ = Day.objects.get_or_create(date=date, day=day, week=week, group=group)
+            day, _ = Day.objects.get_or_create(date=date, day=day, week=week)
 
             for time, item_type, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
                 item, _ = Item.objects.get_or_create(starts_at=start, ends_at=end, type=item_type,
                                                      name=name, day=day)
+                item.groups.add(group.id)
 
                 for place in place_list:
                     building, number = normalize_place(place)

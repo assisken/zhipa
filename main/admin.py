@@ -71,7 +71,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 @admin.register(Day)
 class DayAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'week', 'group')
+    list_display = ('__str__', 'week')
 
 
 @admin.register(Item)

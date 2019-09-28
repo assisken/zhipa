@@ -1,13 +1,16 @@
+import re
 from collections import defaultdict
+from time import sleep
 
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group, Day, Item
+from main.models import Group, Day, Item, Teacher
 from utils.date import TeachTime, TeachState
 
 
-class TimetableView(TemplateView):
+class GroupTimetableView(TemplateView):
     template_name = "materials/timetable/index.html"
 
     def get(self, request, *args, **kwargs):
@@ -20,8 +23,9 @@ class TimetableView(TemplateView):
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
 
         group = Group.objects.get(name=group_name)
-        days = Day.objects.filter(group=group, week=week)
-        items = Item.objects.filter(day__in=days).order_by('day__date', 'starts_at')
+        items = Item.objects.prefetch_related('day', 'places', 'teachers')\
+                            .filter(day__week=week, groups__exact=group)\
+                            .order_by('day__date', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)
@@ -41,6 +45,42 @@ class TimetableView(TemplateView):
             'date_block': date_block(teach_time),
             'course': group.course if group_name else 0,
             'study_forms': Group.objects.order_by('-study_form').values_list('study_form').distinct()
+        })
+
+
+class TeacherTimetableView(TemplateView):
+    template_name = 'materials/timetable/teachers.html'
+
+    def get(self, request, *args, **kwargs):
+        teach_time = TeachTime()
+
+        teachers = Teacher.objects.filter(staff__isnull=False).order_by('lastname', 'firstname', 'middlename')
+        teacher_name = request.GET.get('teacher', str(teachers[0]))
+        lastname, firstname, middlename, _ = re.split('[ .]', teacher_name, maxsplit=3)
+        teacher = Teacher.objects.get(lastname=lastname,
+                                      firstname__startswith=firstname,
+                                      middlename__startswith=middlename)
+        week = request.GET.get('week',
+                               teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
+        items = Item.objects.prefetch_related('day', 'groups', 'teachers', 'places')\
+                            .filter(day__week=week, teachers__exact=teacher)\
+                            .order_by('day__date', 'starts_at')
+        schedule = defaultdict(list)
+        for item in items:
+            schedule[item.day].append(item)
+
+        if len(teachers) > 0:
+            weeks = teach_time.weeks_in_semester
+        else:
+            weeks = 0
+
+        return render(request, self.template_name, {
+            'teachers': teachers,
+            'teacher': teacher,
+            'weeks': weeks,
+            'week': week,
+            'schedule': schedule,
+            'date_block': date_block(teach_time)
         })
 
 
