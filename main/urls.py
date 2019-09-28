@@ -32,8 +32,7 @@ urlpatterns = [
     path('materials/', NewsListView.as_view()),
     path('materials/tutorials',
          TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
-    path('materials/publications',
-         TemplateView.as_view(template_name='materials/publications.html'), name='publications'),
+    path('materials/publications', PublicationView.as_view(), name='publications'),
 
     # Timetable
     path('materials/timetable/groups', GroupTimetableView.as_view(), name='timetable'),

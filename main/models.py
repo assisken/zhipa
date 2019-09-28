@@ -57,7 +57,7 @@ class Group(models.Model):
     course = models.PositiveSmallIntegerField(null=False, editable=False)
     degree = models.PositiveSmallIntegerField(null=False, editable=False)
     semester = models.PositiveSmallIntegerField(null=False, blank=False)
-    study_form = models.CharField(max_length=12, choices=None, null=False, blank=False)
+    study_form = models.CharField(max_length=12, choices=STUDY_FORMS, null=False, blank=False)
     schedule_version = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -157,11 +157,32 @@ class Day(models.Model):
 
 
 class Item(models.Model):
+    LECTION = 'ЛК'
+    PRACTICE = 'ПЗ'
+    LABWORK = 'ЛР'
+    CONTROL = 'КСР'
+
+    ITEM_TYPES = [
+        (LECTION, 'ЛК'),
+        (PRACTICE, 'ПЗ'),
+        (LABWORK, 'ЛР'),
+        (CONTROL, 'КСР')
+    ]
+
     starts_at = models.TimeField()
     ends_at = models.TimeField()
-    type = models.CharField(max_length=3)
+    type = models.CharField(max_length=3, choices=ITEM_TYPES)
     name = models.TextField()
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Group)
+
+
+class Publication(models.Model):
+    name = models.TextField(blank=False, null=False)
+    place = models.TextField(blank=False, null=False, editable=False)
+    authors = models.TextField(blank=False, null=False, editable=False)
+
+    def __str__(self):
+        return self.name

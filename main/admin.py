@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
+from django import forms
 
 from main.models import *
 from main.types import Degree
-from utils.group import degree
 
 
 @admin.register(Staff)
@@ -69,9 +69,15 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'staff')
 
 
+class ItemInline(admin.TabularInline):
+    model = Item
+    extra = 1
+
+
 @admin.register(Day)
 class DayAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'week')
+    inlines = (ItemInline,)
 
 
 @admin.register(Item)
@@ -82,3 +88,18 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Publication)
+class PublicationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'place', 'authors')
+
+    def save_model(self, request, obj, form, change):
+        data = obj.name
+
+        for item in data.split('\n'):
+            if ' 	' in item:
+                name, place, authors = item.split(' 	', maxsplit=2)
+            else:
+                name, place, authors = item.split('||', maxsplit=2)
+            Publication.objects.create(name=name, place=place, authors=authors)
