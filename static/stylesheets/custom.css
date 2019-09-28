@@ -402,8 +402,8 @@ footer p {
     box-shadow: 0 1px 2px 0 #d0d0d0
 }
 
-.present .column:nth-of-type(-n + 3) {
-	height: 250px;
+.present .column:nth-child(2), .present .column:nth-child(3) {
+	height: 280px;
 }
 
 
@@ -523,19 +523,22 @@ footer p {
     padding: 0
 }
 
-.app .smallteaser img {
-    display: inline-block;
-    width: 30%;
-    margin: 10px 20px
-}
+@media screen and (max-width: 800px) {
+    .app .teaser .teaser-img {
+        display: none;
+    }
 
-.app .smallteaser p {
-    display: inline-block;
-    text-align: left;
-    font-size: 12pt;
-    color: #000;
-    overflow-y: auto;
-    height: 140px
+    .app .teaser p {
+        display: inline-block;
+        text-align: left;
+        font-size: 12pt;
+        color: #000;
+        overflow-y: auto;
+        height: 60px
+    }
+    .present .column:nth-child(2) {
+        height: 200px;
+    }
 }
 
 .flatbox_light {
@@ -737,6 +740,7 @@ div.clear {
     }
 
     .app .smallteaser p {
+        margin: .8rem auto;
         width: 70%;
         vertical-align: middle;
         overflow: hidden;
