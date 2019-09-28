@@ -34,32 +34,31 @@ def gen_groups_table():
         sh.cell(1, col, value=group_name)
 
         for week in range(17, 0, -1):
-            for _day in Day.objects.filter(group=group, week=week).order_by('date'):
-                items: Tuple[Item] = Item.objects.filter(day=_day)
-                for item in items:
-                    item_type = item.type
-                    name = item.name
-                    if not name:
-                        continue
-                    place = '\n'.join(str(place) for place in item.places.all())
-                    teachers = ', '.join(str(teacher) for teacher in item.teachers.all())
+            for item in Item.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
+                day = item.day
+                item_type = item.type
+                name = item.name
+                if not name:
+                    continue
+                place = '\n'.join(str(place) for place in item.places.all())
+                teachers = ', '.join(str(teacher) for teacher in item.teachers.all())
 
-                    if len(name) > 57:
-                        _name = re.split(r'[ \-,.]', name)
-                        _name = map(lambda x: x[0].upper() if len(x) > 2 else x[0], _name)
-                        name = ''.join(_name)
+                if len(name) > 57:
+                    _name = re.split(r'[ \-,.]', name)
+                    _name = map(lambda x: x[0].upper() if len(x) > 2 else x[0], _name)
+                    name = ''.join(_name)
 
-                    value = f'{name} {item_type}'
-                    if teachers:
-                        value += f'\n{teachers}'
+                value = f'{name} {item_type}'
+                if teachers:
+                    value += f'\n{teachers}'
 
-                    fill_items(sh, col,
-                               content=value,
-                               place=place,
-                               day=_day.day,
-                               time_start=item.starts_at,
-                               time_end=item.ends_at,
-                               week=week)
+                fill_items(sh, col,
+                           content=value,
+                           place=place,
+                           day=day.day,
+                           time_start=item.starts_at,
+                           time_end=item.ends_at,
+                           week=week)
     wb.save('groups.xlsx')
 
 
@@ -76,8 +75,8 @@ def gen_teachers_table():
         for week in range(17, 0, -1):
             for item in Item.objects.filter(teachers__exact=teacher, day__week=week):
                 item: Item
-                _day = item.day
-                group = _day.group
+                day = item.day
+                groups = ', '.join(group.name for group in item.groups.only('name'))
                 item_type = item.type
                 name = item.name
                 if not name:
@@ -90,9 +89,9 @@ def gen_teachers_table():
                     name = ''.join(_name)
 
                 fill_items(sh, col,
-                           content=f'{name} {item_type}\n{group.name}',
+                           content=f'{name} {item_type}\n{groups}',
                            place=place,
-                           day=_day.day,
+                           day=day.day,
                            time_start=item.starts_at,
                            time_end=item.ends_at,
                            week=week)
