@@ -358,7 +358,6 @@ nav {
 .menustring_subitem {
   position: absolute;
   margin: 0;
-  width: 200px;
   padding-top: 15px;
   visibility: hidden;
   line-height: 35px;
