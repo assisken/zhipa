@@ -181,8 +181,11 @@ class Item(models.Model):
 
 class Publication(models.Model):
     name = models.TextField(blank=False, null=False)
-    place = models.TextField(blank=False, null=False, editable=False)
-    authors = models.TextField(blank=False, null=False, editable=False)
+    place = models.TextField(blank=False, null=False)
+    authors = models.TextField(blank=False, null=False)
+
+    class Meta:
+        ordering = ('pk',)
 
     def __str__(self):
         return self.name

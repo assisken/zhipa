@@ -20,7 +20,7 @@ class TeachState(Flag):
 
 class TeachTime:
     month_start = 9
-    weeks_in_semester = 17
+    weeks_in_semester = 18
 
     def __init__(self, now=date.today()):
         self.now = now

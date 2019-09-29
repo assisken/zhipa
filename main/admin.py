@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
-from django import forms
+from django.urls import path
 
 from main.models import *
 from main.types import Degree
+from main.views.admin.couple_publications import SeveralPublicationsView
 
 
 @admin.register(Staff)
@@ -64,9 +65,27 @@ class StudentAdmin(admin.ModelAdmin):
     pass
 
 
+class TeacherIsStuffFilter(admin.SimpleListFilter):
+    title = 'Teacher is staff'
+    parameter_name = 'is_staff'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('Y', 'Yes'),
+            ('N', 'No')
+        )
+
+    def queryset(self, request, queryset: QuerySet):
+        if self.value():
+            value = self.value() == 'Y'
+            return queryset.filter(staff__isnull=not value)
+
+
+
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'staff')
+    list_filter = (TeacherIsStuffFilter,)
 
 
 class ItemInline(admin.TabularInline):
@@ -78,11 +97,13 @@ class ItemInline(admin.TabularInline):
 class DayAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'week')
     inlines = (ItemInline,)
+    list_filter = ('week',)
 
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
+    list_display = ('name', 'type', 'day', 'starts_at', 'ends_at')
+    list_filter = ('type', 'starts_at', 'ends_at')
 
 
 @admin.register(Place)
@@ -92,14 +113,13 @@ class PlaceAdmin(admin.ModelAdmin):
 
 @admin.register(Publication)
 class PublicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'place', 'authors')
+    change_list_template = 'admin/publications/list.html'
+    list_display = ('pk', 'name', 'place', 'authors')
+    list_display_links = ('name',)
 
-    def save_model(self, request, obj, form, change):
-        data = obj.name
-
-        for item in data.split('\n'):
-            if ' 	' in item:
-                name, place, authors = item.split(' 	', maxsplit=2)
-            else:
-                name, place, authors = item.split('||', maxsplit=2)
-            Publication.objects.create(name=name, place=place, authors=authors)
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('add-couple/', SeveralPublicationsView.as_view())
+        ]
+        return my_urls + urls
