@@ -6,9 +6,8 @@ from django.views import View
 from main.models import Staff
 
 
-class StaffView(LoginRequiredMixin, View):
+class StaffView(View):
     template_name = 'about/staff.html'
-    login_url = reverse_lazy('login')
 
     def get(self, request):
         staffs = Staff.objects.filter(hide=False)
