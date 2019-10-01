@@ -25,7 +25,7 @@ class GroupTimetableView(TemplateView):
         group = Group.objects.get(name=group_name)
         items = Item.objects.prefetch_related('day', 'places', 'teachers')\
                             .filter(day__week=week, groups__exact=group)\
-                            .order_by('day__date', 'starts_at')
+                            .order_by('day__month', 'day__day', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)
@@ -64,7 +64,7 @@ class TeacherTimetableView(TemplateView):
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
         items = Item.objects.prefetch_related('day', 'groups', 'teachers', 'places')\
                             .filter(day__week=week, teachers__exact=teacher)\
-                            .order_by('day__date', 'starts_at')
+                            .order_by('day__month', 'day__day', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)

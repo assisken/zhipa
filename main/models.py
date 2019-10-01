@@ -148,8 +148,9 @@ class Place(models.Model):
 
 
 class Day(models.Model):
-    date = models.TextField()
-    day = models.CharField(max_length=2)
+    day = models.PositiveSmallIntegerField()
+    month = models.PositiveSmallIntegerField()
+    week_day = models.CharField(max_length=2)
     week = models.IntegerField()
 
     def __str__(self):

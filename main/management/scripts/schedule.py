@@ -28,8 +28,8 @@ def create_schedule_for(group_name: str, force: bool):
 
         body = resp.content.decode('utf8')
 
-        for date, day, items in parse_day(body):
-            day, _ = Day.objects.get_or_create(date=date, day=day, week=week)
+        for day, month, week_day, items in parse_day(body):
+            day, _ = Day.objects.get_or_create(day=day, month=month, week_day=week_day, week=week)
 
             for time, item_type, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
@@ -66,10 +66,11 @@ def parse_day(body: str) -> Generator[Tuple[str, str, HtmlElement], None, None]:
     tree = html.fromstring(body)
     for element in tree.xpath('//div[@class="sc-container"]'):
         date = element.xpath('.//div[contains(@class, "sc-day-header")]/text()')[0]
-        day = element.xpath('.//span[@class="sc-day"]/text()')[0]
+        day, month = date.split('.', maxsplit=1)
+        week_day = element.xpath('.//span[@class="sc-day"]/text()')[0]
         items = element.xpath('.//div[contains(@class, "sc-table-detail")]')[0]
 
-        yield date, day, items
+        yield day, month, week_day, items
 
 
 def parse_items(element: HtmlElement) -> Generator[Tuple[str, str, str, str, List[str]], None, None]:
