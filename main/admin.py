@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
+from django.forms import Form
 from django.urls import path
 
 from main.models import *
@@ -16,9 +17,16 @@ class StaffAdmin(admin.ModelAdmin):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'title', 'hidden')
+    list_display = ('pk', 'title', 'hidden', 'author')
     list_display_links = ('title',)
     list_filter = ('hidden',)
+    exclude = ('author',)
+
+    def save_model(self, request, obj, form: Form, change):
+        if form.is_valid():
+            user = request.user
+            obj.author = user
+        super().save_model(request, obj, form, change)
 
 
 class GroupCourseFilter(admin.SimpleListFilter):

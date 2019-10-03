@@ -38,7 +38,6 @@ def insert_news(data: List[Dict]):
             date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
         News.objects.create(
-            pk=news['id'],
             title=news['title'],
             date=make_aware(date, timezone=timezone(TIME_ZONE)),
             url=news['url'],
@@ -56,7 +55,6 @@ def insert_staff(data: List[Dict]):
             image = image.replace('img/', 'images/')
 
         Staff.objects.create(
-            pk=staff['id'],
             lastname=staff['lastname'],
             firstname=staff['firstname'],
             middlename=staff['patronymic'],
