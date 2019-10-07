@@ -15,8 +15,7 @@ def app_processor(request):
             {"id": "news", "title": "Новости", "link": "/materials/news"},
             {"id": "publications", "title": "Публикации", "link": "/materials/publications"},
             {"id": "tutorials", "title": "Учебные пособия", "link": "/materials/tutorials"},
-            {"id": "groups", "title": "Расписания занятий", "link": "/materials/timetable/groups"},
-            {"id": "teacher", "title": "Расписания преподавателей", "link": "/materials/timetable/teacher"},
+            {"id": "timetable", "title": "Расписания занятий", "link": "/materials/timetable"},
             # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
         ]},
 

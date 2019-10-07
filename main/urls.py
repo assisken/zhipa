@@ -35,8 +35,7 @@ urlpatterns = [
     path('materials/publications', PublicationView.as_view(), name='publications'),
 
     # Timetable
-    path('materials/timetable/groups', GroupTimetableView.as_view(), name='timetable'),
-    path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
+    path('materials/timetable', GroupTimetableView.as_view(), name='timetable'),
 
     path('materials/timetable', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
     path('materials/timetable/extramural', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
@@ -55,6 +54,9 @@ urlpatterns = [
 
     path('auth/login', SmiapLoginView.as_view(), name='login'),
     path('auth/logout', SmiapLogoutView.as_view(), name='logout'),
+
+    # Deprecated: https://trello.com/c/I7ygJ9Nk
+    path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
 ]
 
 #  "/about",
