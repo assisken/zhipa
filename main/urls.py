@@ -11,15 +11,15 @@ register_converter(converters.TwoDigitConverter, 'dd')
 
 urlpatterns = [
     path('', IndexView.as_view(), name='home'),
-    path('abiturients', TemplateView.as_view(
-        template_name='abiturients/index.html'), name='abiturients'),
-    path('conferences', TemplateView.as_view(
-        template_name='conferences/index.html'), name='programs'),
-    path('programs', TemplateView.as_view(
-        template_name='programs/index.html'), name='programs'),
+    path('abiturients/info', TemplateView.as_view(
+        template_name='abiturients/info.html'), name='abiturients'),
+    path('abiturients/programs', TemplateView.as_view(
+        template_name='abiturients/programs.html'), name='programs'),
 
     path('about', TemplateView.as_view(
         template_name='about/intro.html'), name='about'),
+    path('about/conferences', TemplateView.as_view(
+        template_name='about/conferences.html'), name='programs'),
     path('about/intro',
          TemplateView.as_view(template_name='about/intro.html'), name='intro'),
     path('about/history', HistoryView.as_view(), name='history'),
@@ -35,7 +35,7 @@ urlpatterns = [
     path('materials/publications', PublicationView.as_view(), name='publications'),
 
     # Timetable
-    path('materials/timetable', GroupTimetableView.as_view(), name='timetable'),
+    path('students/timetable', GroupTimetableView.as_view(), name='timetable'),
 
     path('materials/timetable', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
     path('materials/timetable/extramural', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
