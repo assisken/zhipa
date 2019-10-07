@@ -22,7 +22,7 @@ class GroupTimetableView(TemplateView):
         group = Group.objects.get(name=group_name)
         items = Item.objects.prefetch_related('day', 'places', 'teachers')\
                             .filter(day__week=week, groups__exact=group)\
-                            .order_by('day__date', 'starts_at')
+                            .order_by('day__month', 'day__day', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)

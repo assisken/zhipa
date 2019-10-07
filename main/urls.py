@@ -56,7 +56,7 @@ urlpatterns = [
     path('auth/logout', SmiapLogoutView.as_view(), name='logout'),
 
     # Deprecated: https://trello.com/c/I7ygJ9Nk
-    path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
+    # path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
 ]
 
 #  "/about",

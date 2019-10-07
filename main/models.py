@@ -17,6 +17,10 @@ def get_image_path():
     return os.path.join('images', 'lecturers')
 
 
+class User(AbstractUser):
+    pass
+
+
 class News(models.Model):
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
@@ -25,10 +29,14 @@ class News(models.Model):
     description = models.TextField()
     text = models.TextField()
     hidden = models.BooleanField(default=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
 
     class Meta:
         verbose_name_plural = 'News'
         ordering = ['-pk']
+
+    def __str__(self):
+        return self.title
 
     def get_url(self):
         if self.url:
@@ -76,10 +84,6 @@ class Group(models.Model):
 
     def weeks(self) -> int:
         return max(map(int, self.schedule.keys()))
-
-
-class User(AbstractUser):
-    pass
 
 
 class Profile(models.Model):
@@ -148,8 +152,9 @@ class Place(models.Model):
 
 
 class Day(models.Model):
-    date = models.TextField()
-    day = models.CharField(max_length=2)
+    day = models.PositiveSmallIntegerField()
+    month = models.PositiveSmallIntegerField()
+    week_day = models.CharField(max_length=2)
     week = models.IntegerField()
 
     def __str__(self):
