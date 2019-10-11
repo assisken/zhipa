@@ -43,12 +43,14 @@ class SeveralPublicationsView(TemplateView):
                 'has_view_permission': True,
                 'has_editable_inline_admin_formsets': True,
             })
-        for publication in form.cleaned_data['couple_items'].split('\n'):
-            if ' 	' in publication:
-                name, place, authors = publication.split(' 	')
-            else:
-                name, place, authors = publication.split('||')
+        data = form.cleaned_data['couple_items'].split('\n')
+
+        for publication in data:
+            publication = publication.replace(' 	', '||')
+            name, place, authors = publication.split('||')
             Publication.objects.get_or_create(name=name, place=place, authors=authors)
 
-        add_message(request, messages.INFO, 'Items successfully added!')
+        count = len(data)
+        items = 'publications' if count > 1 else 'publication'
+        add_message(request, messages.INFO, f'{count} {items} successfully added!')
         return HttpResponseRedirect('../')
