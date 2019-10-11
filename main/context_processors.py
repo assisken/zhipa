@@ -8,6 +8,7 @@ def app_processor(request):
             {"id": "intro", "title": "Введение", "link": "/about/intro"},
             {"id": "history", "title": "История кафедры", "link": "/about/history"},
             {"id": "staff", "title": "Сотрудники кафедры", "link": "/about/staff"},
+            {"id": "conferences", "title": "Участие в конференциях", "link": "/about/conferences"},
             {"id": "contacts", "title": "Контакты", "link": "/about/contacts"}
         ]},
 
@@ -15,16 +16,17 @@ def app_processor(request):
             {"id": "news", "title": "Новости", "link": "/materials/news"},
             {"id": "publications", "title": "Публикации", "link": "/materials/publications"},
             {"id": "tutorials", "title": "Учебные пособия", "link": "/materials/tutorials"},
-            {"id": "timetable", "title": "Расписания занятий", "link": "/materials/timetable"},
             # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
         ]},
 
-        {"id": "programs", "title": "Программы", "link": "/programs", "subitems": []},
-        {"id": "conferences", "title": "Конференции", "link": "/conferences", "subitems": [
-            # {"id": "gagarin", "title": "Гагаринские чтения", "link": "gagarin"}
+        {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients/info", "subitems": [
+            {"id": "info", "title": "Информация для абитуриентов", "link": "/abiturients/info"},
+            {"id": "programs", "title": "Программа обучения", "link": "/abiturients/programs"}
         ]},
 
-        {"id": "abiturients", "title": "Абитуриентам", "link": "/abiturients", "subitems": []},
+        {"id": "students", "title": "Студентам", "link": "/students/timetable", "subitems": [
+            {"id": "timetable", "title": "Расписания занятий", "link": "/students/timetable"}
+        ]}
     ]
 
     if request.user and request.user.is_authenticated:
