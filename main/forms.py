@@ -8,8 +8,7 @@ def check_items(value: str):
         item = item.replace(' 	', '||')
         if item.count('||') != 2:
             count = item.count("||") + 1
-            raise ValidationError(
-                f'Required 3 or more items, got {count} on line {line + 1}')
+            raise ValidationError(f'Required 3 or more items, got {count} on line {line + 1}')
 
 
 class SeveralPublicationsForm(forms.Form):

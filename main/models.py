@@ -157,7 +157,7 @@ class Day(models.Model):
     week = models.IntegerField()
 
     def __str__(self):
-        return '{} ({})'.format(self.date, self.day)
+        return '{} ({:02d}.{:02d})'.format(self.week_day, self.day, self.month)
 
 
 class Item(models.Model):

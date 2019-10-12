@@ -89,7 +89,6 @@ class TeacherIsStuffFilter(admin.SimpleListFilter):
             return queryset.filter(staff__isnull=not value)
 
 
-
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'staff')
