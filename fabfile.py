@@ -11,6 +11,10 @@ service = os.getenv('SERVICE_NAME')
 python = os.getenv('PYTHON')
 
 config = Config({
+    'sudo': {
+        'password': password,
+        'prompt': '[sudo] '
+    },
     'reject-unknown-hosts': True,
     'shell': '/bin/bash -lic'
 })
@@ -19,7 +23,7 @@ config = Config({
 @task
 def deploy(ctx):
     with Connection(host=host, port=int(port), user=user,
-                    connect_kwargs={'key_filename': 'deploy_key'}, config=config) as con:
+                    connect_kwargs={'password': password, 'key_filename': 'deploy_key'}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
             con.run('git checkout master')
             con.run('git pull origin master')
@@ -28,4 +32,3 @@ def deploy(ctx):
                 con.run(f'{python} manage.py collectstatic --noinput')
         con.sudo(f'systemctl stop {service}')
         con.sudo(f'systemctl start {service}')
-
