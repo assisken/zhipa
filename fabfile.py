@@ -26,6 +26,6 @@ def deploy(ctx):
             with con.prefix(f'source {os.path.join("$HOME", project_dir, ".env", "bin", "activate")}'):
                 con.run(f'{python} manage.py migrate --noinput')
                 con.run(f'{python} manage.py collectstatic --noinput')
-            con.sudo(f'systemctl stop {service}')
-            con.sudo(f'systemctl start {service}')
+        con.sudo(f'systemctl stop {service}')
+        con.sudo(f'systemctl start {service}')
 
