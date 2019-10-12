@@ -172,10 +172,11 @@ locale.setlocale(locale.LC_ALL, LOCALE)
 
 STATIC_URL = '/res/'
 STATIC_ROOT = CONFIG.get('app', 'static-root')
-MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'uploads')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+    MEDIA_ROOT,
 )
 
 DEBUG_TOOLBAR_PANELS = [

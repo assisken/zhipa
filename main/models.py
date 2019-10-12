@@ -1,34 +1,32 @@
 import os
-import re
-from datetime import datetime
 from math import ceil
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import F
-from django.contrib.postgres import fields
 from django.urls import reverse
 
-from main.types import Degree
 from utils import group
-
-
-def get_image_path():
-    return os.path.join('images', 'lecturers')
 
 
 class User(AbstractUser):
     pass
 
 
+def get_news_image_path(instance: 'News', filename: str):
+    return os.path.join('news', instance.date.strftime('%Y%m%d'), filename)
+
+
 class News(models.Model):
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
     url = models.CharField(max_length=60, blank=True, default='')
-    img = models.ImageField(max_length=120, blank=True, default='')
+    img = models.ImageField(max_length=120, blank=True, default='',
+                            upload_to=get_news_image_path)
     description = models.TextField()
     text = models.TextField()
     hidden = models.BooleanField(default=True)
+
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
 
     class Meta:
@@ -68,9 +66,6 @@ class Group(models.Model):
     study_form = models.CharField(max_length=12, choices=STUDY_FORMS, null=False, blank=False)
     schedule_version = models.TextField(null=True, blank=True)
 
-    class Meta:
-        required_db_vendor = 'postgresql'
-
     def __str__(self) -> str:
         return self.name
 
@@ -86,12 +81,16 @@ class Group(models.Model):
         return max(map(int, self.schedule.keys()))
 
 
+def get_profile_image_path(instance: 'Profile', filename: str):
+    return os.path.join('profile', str(instance.pk), filename)
+
+
 class Profile(models.Model):
     lastname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
     middlename = models.CharField(max_length=30)
     img = models.ImageField(max_length=60, null=True,
-                            default=None, upload_to=get_image_path(), blank=True)
+                            default=None, upload_to=get_profile_image_path, blank=True)
 
     def __str__(self):
         return f'{self.lastname} {self.firstname} {self.middlename}'
