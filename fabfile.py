@@ -23,7 +23,7 @@ config = Config({
 @task
 def deploy(ctx):
     with Connection(host=host, port=int(port), user=user,
-                    connect_kwargs={'password': password, 'key_filename': 'deploy_key'}, config=config) as con:
+                    connect_kwargs={'password': password}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
             con.run('git checkout master')
             con.run('git pull origin master')
