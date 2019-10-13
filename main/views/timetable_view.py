@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group, Item
+from main.models import Group, Schedule
 from utils.date import TeachTime, TeachState
 
 
@@ -20,7 +20,7 @@ class GroupTimetableView(TemplateView):
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
 
         group = Group.objects.get(name=group_name)
-        items = Item.objects.prefetch_related('day', 'places', 'teachers')\
+        items = Schedule.objects.prefetch_related('day', 'places', 'teachers')\
                             .filter(day__week=week, groups__exact=group)\
                             .order_by('day__month', 'day__day', 'starts_at')
         schedule = defaultdict(list)

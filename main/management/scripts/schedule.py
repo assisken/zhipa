@@ -6,7 +6,7 @@ from lxml import html
 from lxml.html import HtmlElement
 from requests import get
 
-from main.models import Day, Item, Teacher, Group, Place
+from main.models import Day, Schedule, Teacher, Group, Place
 
 
 def create_schedule_for(group_name: str, force: bool):
@@ -33,8 +33,8 @@ def create_schedule_for(group_name: str, force: bool):
 
             for time, item_type, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
-                item, _ = Item.objects.get_or_create(starts_at=start, ends_at=end, type=item_type,
-                                                     name=name, day=day)
+                item, _ = Schedule.objects.get_or_create(starts_at=start, ends_at=end, type=item_type,
+                                                         name=name, day=day)
                 item.groups.add(group.id)
 
                 for place in place_list:

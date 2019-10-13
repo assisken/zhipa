@@ -157,10 +157,13 @@ class Day(models.Model):
     week = models.IntegerField()
 
     def __str__(self):
-        return '{} ({})'.format(self.date, self.day)
+        return '{} ({:02d}.{:02d})'.format(self.week_day, self.day, self.month)
+
+    class Meta:
+        ordering = ('month', 'day')
 
 
-class Item(models.Model):
+class Schedule(models.Model):
     LECTION = 'ЛК'
     PRACTICE = 'ПЗ'
     LABWORK = 'ЛР'
@@ -181,6 +184,21 @@ class Item(models.Model):
     teachers = models.ManyToManyField(Teacher)
     day = models.ForeignKey(Day, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Group)
+
+    class Meta:
+        verbose_name_plural = 'Schedule'
+
+
+class ExtramuralSchedule(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    days = models.TextField()
+    times = models.TextField()
+    item = models.TextField()
+    teachers = models.TextField()
+    places = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'Extramural Schedule'
 
 
 class Publication(models.Model):
