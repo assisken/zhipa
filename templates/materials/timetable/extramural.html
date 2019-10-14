@@ -1,0 +1,79 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+    	<link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="width-100 animation-fade">
+        <aside class="width-20 top subnav-vertical animation-fade animation-delay-3">
+            <div id="week-bar" class="app" style="margin-top: 30px;">
+                <div class="studyweeks materialbox" style="background: #3EC7F3; padding-bottom: 10px;">
+
+                    <span class="word start" style="font-size: 1.5em; padding: 10px 0 0;">{{ date_block.text }}</span>
+                    <span class="number" style="font-size: 6em">{{ date_block.num }}</span>
+                    <span class="word">{{ date_block.desc }}</span>
+                </div>
+            </div>
+        </aside>
+        <div class="width-75 timetables animation-fade animation-delay-4">
+            <h1 class="margin-large">Расписания занятий</h1>
+            <div class="stageblock spanel flatbox padding-large">
+                <form class="inline">
+                    <select id="groups" name="group" onchange="this.form.submit()">
+                        <option value="" selected disabled>Группа</option>
+                        {% for group in groups %}
+                            <option value="{{ group }}">{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                <h2>{{ course }} Курс &emsp; {{ group_name }}</h2>
+            </div>
+            <div>
+                <table border="1" class="timetable table-responsive">
+                    <tr>
+                        <th width="60">День</th>
+                        <th>Время</th>
+                        <th>Предмет</th>
+                        <th>Преподаватель</th>
+                        <th>Место</th>
+                    </tr>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.days | safe }}</td>
+                            <td>{{ item.times | safe }}</td>
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.teachers | safe }}</td>
+                            <td>{{ item.places | safe }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">На данный момент занятия по расписанию отсутствуют</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+	$(function() {
+	    var groups = $('#groups');
+        groups.prop('value', "{{ group_name }}").selectric('refresh');
+
+        groups.selectric({
+        	optionsItemBuilder: function(itemData) {
+        		if (itemData.value === "{{ group }}"){
+        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
+        		}
+        		else{
+        			return itemData.text;
+        		}
+		    }
+        });
+    });
+    </script>
+    <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
+{% endblock content %}

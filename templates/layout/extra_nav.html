@@ -3,7 +3,7 @@
         {% if item['id'] in ACTIVE_ITEMS %}
     		{% set delay = 1 %}
             {% for subitem in item['subitems'] %}
-    			{% if subitem['id'] in ACTIVE_ITEMS %}
+    			{% if ACTIVE_ITEMS[-1] == subitem['id'] %}
     				{% set activeitem = "selected" %}
     				{% set delay = "" %}
     			{% else %}

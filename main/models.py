@@ -190,7 +190,7 @@ class Schedule(models.Model):
 
 
 class ExtramuralSchedule(models.Model):
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    groups = models.ManyToManyField(Group)
     days = models.TextField()
     times = models.TextField()
     item = models.TextField()

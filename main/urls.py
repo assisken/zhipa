@@ -36,9 +36,10 @@ urlpatterns = [
 
     # Timetable
     path('students/timetable', GroupTimetableView.as_view(), name='timetable'),
+    path('students/timetable/extramural', ExtramuralTimetableView.as_view(), name='timetable-extramural'),
 
-    path('materials/timetable', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
-    path('materials/timetable/extramural', RedirectView.as_view(permanent=False, url='/materials/timetable/groups')),
+    path('materials/timetable', RedirectView.as_view(permanent=False, url='/students/timetable')),
+    path('materials/timetable/extramural', RedirectView.as_view(permanent=False, url='/students/timetable/extramural')),
 
     path('materials/news', NewsListView.as_view(), name='news-list-begin'),
     path('materials/news/page<int:number>',

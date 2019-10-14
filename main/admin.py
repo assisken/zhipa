@@ -110,7 +110,6 @@ class DayAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/schedule/list.html'
     ordering = ('day', 'starts_at', 'ends_at')
     list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
     list_filter = ('groups', 'type', 'starts_at', 'ends_at')
@@ -119,8 +118,9 @@ class ScheduleAdmin(admin.ModelAdmin):
 
 @admin.register(ExtramuralSchedule)
 class ExtramuralScheduleAdmin(admin.ModelAdmin):
-    list_display = ('days', 'times', 'item', 'teachers', 'group__name')
-    filter_horizontal = ('groups')
+    change_list_template = 'admin/schedule/list.html'
+    list_display = ('days', 'times', 'item', 'teachers')
+    filter_horizontal = ('groups',)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -128,7 +128,6 @@ class ExtramuralScheduleAdmin(admin.ModelAdmin):
             path('add-extramural/', AddExtramuralSchedule.as_view())
         ]
         return my_urls + urls
-
 
 
 @admin.register(Place)
