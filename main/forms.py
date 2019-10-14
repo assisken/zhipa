@@ -36,7 +36,7 @@ class ExtramuralScheduleForm(admin_forms.Form):
     error_css_class = 'errors'
     required_css_class = 'required'
     group = admin_forms.ModelMultipleChoiceField(
-        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL),
+        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL).order_by('semester', 'name'),
         required=True,
         widget=admin_widgets.FilteredSelectMultiple(
             verbose_name=Group._meta.verbose_name,
