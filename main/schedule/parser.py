@@ -51,7 +51,7 @@ class ScheduleParser():
             return ''
 
     def __parse_tables(self) -> List[Table]:
-        '''Parses tables of the schedule from `self.url`
+        '''Parses tables of the extramural_schedule from `self.url`
 
         Returns
         -------

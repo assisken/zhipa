@@ -1,37 +1,21 @@
 import re
-from datetime import datetime
-from typing import Tuple
+from typing import Iterable
 
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, Day, Schedule, Teacher
+from main.models import Group, Schedule, Teacher
 
 
-def gen_groups_table():
-    group_names = [
-        'М3О-133Б-19',
-        'М3О-233Б-18',
-        'М3О-333Б-17',
-        '3-Т3О-407Б-16',
-        '3-Т3О-408Б-16',
-        # '3-Т3О-409Б-16',
-        'М3О-114М-19',
-        'М3О-117М-19',
-        'М3О-118М-19',
-        # 'М3О-214М-18',
-        'М3О-217М-18',
-        # 'М3О-218М-18'
-    ]
-
+def gen_groups_table(groups: Iterable[Group]) -> str:
+    filename = 'groups'
     wb = load_workbook('template.xlsx')
     sh: Worksheet = wb['all']
 
-    for index, group_name in enumerate(group_names):
-        group = Group.objects.get(name=group_name)
+    for index, group in enumerate(groups):
         col = 2 * index + 4
 
-        sh.cell(1, col, value=group_name)
+        sh.cell(1, col, value=group.name)
 
         for week in range(17, 0, -1):
             for item in Schedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
@@ -55,15 +39,16 @@ def gen_groups_table():
                 fill_items(sh, col,
                            content=value,
                            place=place,
-                           day=day.day,
+                           day=day.week_day,
                            time_start=item.starts_at,
                            time_end=item.ends_at,
                            week=week)
-    wb.save('groups.xlsx')
+    wb.save(f'{filename}.xlsx')
+    return filename
 
 
-def gen_teachers_table():
-    teachers = Teacher.objects.filter(staff__hide=False).order_by('lastname', 'firstname', 'middlename')
+def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
+    filename = 'teachers.xlsx'
     wb = load_workbook('template1.xlsx')
     sh: Worksheet = wb['all']
 
@@ -96,7 +81,8 @@ def gen_teachers_table():
                            time_end=item.ends_at,
                            week=week)
 
-    wb.save('teachers.xlsx')
+    wb.save(filename)
+    return filename
 
 
 def fill_items(sheet: Worksheet, col: int, **kwargs) -> None:

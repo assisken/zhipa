@@ -12,12 +12,12 @@ from main.models import Schedule, ExtramuralSchedule
 
 
 class AddExtramuralSchedule(TemplateView):
-    template_name = 'admin/schedule/add_extramural.html'
+    template_name = 'admin/extramural_schedule/add_extramural.html'
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {
             'form': ExtramuralScheduleForm(),
-            'opts': Schedule._meta,
+            'opts': ExtramuralSchedule._meta,
             'change': False,
             'is_popup': False,
             'save_as': True,
@@ -35,7 +35,7 @@ class AddExtramuralSchedule(TemplateView):
             return render(request, self.template_name, {
                 'form': form,
                 'errors': form.errors,
-                'opts': Schedule._meta,
+                'opts': ExtramuralSchedule._meta,
                 'change': False,
                 'is_popup': False,
                 'save_as': True,

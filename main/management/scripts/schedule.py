@@ -59,7 +59,7 @@ def get_version(url: str) -> Optional[str]:
 
     tree = html.fromstring(resp.content)
     sleep(1)
-    return tree.xpath('//*[@id="schedule-content"]/div[2]/text()')[0]
+    return tree.xpath('//*[@id="extramural_schedule-content"]/div[2]/text()')[0]
 
 
 def parse_day(body: str) -> Generator[Tuple[str, str, HtmlElement], None, None]:

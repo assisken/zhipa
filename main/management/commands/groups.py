@@ -19,9 +19,9 @@ class Command(BaseCommand):
             help='Get groups from lms'
         )
         parser.add_argument(
-            '--schedule',
+            '--extramural_schedule',
             action='store_true',
-            help='Get schedule from mai'
+            help='Get extramural_schedule from mai'
         )
         parser.add_argument(
             '--file',
@@ -32,7 +32,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--force',
             action='store_true',
-            help='Disables skip for schedule parsing',
+            help='Disables skip for extramural_schedule parsing',
             default=False
         )
 
@@ -52,8 +52,8 @@ class Command(BaseCommand):
             else:
                 print('Done!')
 
-        elif options['schedule']:
-            cprint('Parsing schedule for student groups...', attrs=['bold', 'underline'])
+        elif options['extramural_schedule']:
+            cprint('Parsing extramural_schedule for student groups...', attrs=['bold', 'underline'])
             groups = Group.objects.all()
             if groups.count() == 0:
                 cprint('There is no any student group.', 'red', attrs=['bold'])

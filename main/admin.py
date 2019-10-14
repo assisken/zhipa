@@ -8,6 +8,7 @@ from main.models import *
 from main.types import Degree
 from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
 from main.views.admin.couple_publications import SeveralPublicationsView
+from main.views.admin.get_schedule import GetGroupScheduleView
 
 
 @admin.register(Staff)
@@ -110,15 +111,24 @@ class DayAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/schedule/list.html'
     ordering = ('day', 'starts_at', 'ends_at')
     list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
     list_filter = ('groups', 'type', 'starts_at', 'ends_at')
     filter_horizontal = ('groups', 'teachers', 'places')
 
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('get-group-schedule/', GetGroupScheduleView.as_view()),
+            # path('get-teacher-schedule/', AddExtramuralSchedule.as_view())
+        ]
+        return my_urls + urls
+
 
 @admin.register(ExtramuralSchedule)
 class ExtramuralScheduleAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/schedule/list.html'
+    change_list_template = 'admin/extramural_schedule/list.html'
     list_display = ('days', 'times', 'item', 'teachers')
     filter_horizontal = ('groups',)
 

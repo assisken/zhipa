@@ -3,7 +3,7 @@ from django.contrib.admin.forms import forms as admin_forms
 from django.contrib.admin import widgets as admin_widgets
 from django.core.exceptions import ValidationError
 
-from main.models import Group, Schedule
+from main.models import Group, Schedule, Teacher
 
 
 def check_items(value: str):
@@ -47,3 +47,26 @@ class ExtramuralScheduleForm(admin_forms.Form):
         widget=forms.Textarea(attrs={'class': 'vLargeTextField'}),
         validators=(check_schedule,)
     )
+
+
+class GetGroupScheduleForm(admin_forms.Form):
+    error_css_class = 'errors'
+    required_css_class = 'required'
+    groups = admin_forms.ModelMultipleChoiceField(
+        queryset=Group.objects.order_by('-study_form', 'degree', 'semester', 'name'),
+        required=True,
+    )
+
+
+class GetTeacherScheduleForm(admin_forms.Form):
+    error_css_class = 'errors'
+    required_css_class = 'required'
+    groups = admin_forms.ModelMultipleChoiceField(
+        queryset=Teacher.objects.all(),
+        required=True,
+        widget=admin_widgets.FilteredSelectMultiple(
+            verbose_name=Teacher._meta.verbose_name,
+            is_stacked=False
+        )
+    )
+

@@ -38,7 +38,7 @@ class GroupTimetableView(TemplateView):
             'weeks': weeks,
             'week': week,
             'form': form,
-            'schedule': schedule,
+            'extramural_schedule': schedule,
             'date_block': date_block(teach_time),
             'course': group.course if group_name else 0,
             'study_forms': Group.objects.order_by('-study_form').values_list('study_form').distinct()
