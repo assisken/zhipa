@@ -6,6 +6,7 @@ from django.urls import path
 
 from main.models import *
 from main.types import Degree
+from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
 from main.views.admin.couple_publications import SeveralPublicationsView
 
 
@@ -96,7 +97,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 class ItemInline(admin.TabularInline):
-    model = Item
+    model = Schedule
     extra = 1
 
 
@@ -107,10 +108,26 @@ class DayAdmin(admin.ModelAdmin):
     list_filter = ('week',)
 
 
-@admin.register(Item)
-class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type', 'day', 'starts_at', 'ends_at')
-    list_filter = ('type', 'starts_at', 'ends_at')
+@admin.register(Schedule)
+class ScheduleAdmin(admin.ModelAdmin):
+    ordering = ('day', 'starts_at', 'ends_at')
+    list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
+    list_filter = ('groups', 'type', 'starts_at', 'ends_at')
+    filter_horizontal = ('groups', 'teachers', 'places')
+
+
+@admin.register(ExtramuralSchedule)
+class ExtramuralScheduleAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/schedule/list.html'
+    list_display = ('days', 'times', 'item', 'teachers')
+    filter_horizontal = ('groups',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('add-extramural/', AddExtramuralSchedule.as_view())
+        ]
+        return my_urls + urls
 
 
 @admin.register(Place)

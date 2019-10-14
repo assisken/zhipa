@@ -25,7 +25,8 @@ def app_processor(request):
         ]},
 
         {"id": "students", "title": "Студентам", "link": "/students/timetable", "subitems": [
-            {"id": "timetable", "title": "Расписания занятий", "link": "/students/timetable"}
+            {"id": "timetable", "title": "Расписания занятий", "link": "/students/timetable"},
+            {"id": "extramural", "title": "Расписания заочных занятий", "link": "/students/timetable/extramural"}
         ]}
     ]
 

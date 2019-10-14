@@ -5,7 +5,7 @@ from typing import Tuple
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, Day, Item, Teacher
+from main.models import Group, Day, Schedule, Teacher
 
 
 def gen_groups_table():
@@ -34,7 +34,7 @@ def gen_groups_table():
         sh.cell(1, col, value=group_name)
 
         for week in range(17, 0, -1):
-            for item in Item.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
+            for item in Schedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
                 day = item.day
                 item_type = item.type
                 name = item.name
@@ -73,8 +73,8 @@ def gen_teachers_table():
         sh.cell(1, col, value=str(teacher))
 
         for week in range(17, 0, -1):
-            for item in Item.objects.filter(teachers__exact=teacher, day__week=week):
-                item: Item
+            for item in Schedule.objects.filter(teachers__exact=teacher, day__week=week):
+                item: Schedule
                 day = item.day
                 groups = ', '.join(group.name for group in item.groups.only('name'))
                 item_type = item.type

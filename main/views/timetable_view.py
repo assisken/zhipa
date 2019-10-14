@@ -1,9 +1,9 @@
 from collections import defaultdict
 
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
-from main.models import Group, Item
+from main.models import Group, Schedule, ExtramuralSchedule
 from utils.date import TeachTime, TeachState
 
 
@@ -20,9 +20,9 @@ class GroupTimetableView(TemplateView):
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
 
         group = Group.objects.get(name=group_name)
-        items = Item.objects.prefetch_related('day', 'places', 'teachers')\
-                            .filter(day__week=week, groups__exact=group)\
-                            .order_by('day__month', 'day__day', 'starts_at')
+        items = Schedule.objects.prefetch_related('day', 'places', 'teachers') \
+            .filter(day__week=week, groups__exact=group) \
+            .order_by('day__month', 'day__day', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)
@@ -65,3 +65,24 @@ def date_block(teach_time: TeachTime):
         'num': '404',
         'desc': 'Not Found'
     }
+
+
+class ExtramuralTimetableView(TemplateView):
+    template_name = 'materials/timetable/extramural.html'
+
+    def get(self, request, *args, **kwargs):
+        teach_time = TeachTime()
+
+        groups = Group.objects.only('name').filter(study_form=Group.EXTRAMURAL).order_by('degree', 'course', 'name')
+        group_name = request.GET.get('group', groups.first().name)
+
+        group = Group.objects.get(name=group_name)
+        items = ExtramuralSchedule.objects.filter(groups__exact=group)
+
+        return render(request, self.template_name, {
+            'groups': groups,
+            'group_name': group_name,
+            'items': items,
+            'date_block': date_block(teach_time),
+            'course': group.course if group_name else 0
+        })
