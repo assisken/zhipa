@@ -1,9 +1,12 @@
+import re
+
 from django import forms
-from django.contrib.admin.forms import forms as admin_forms
 from django.contrib.admin import widgets as admin_widgets
+from django.contrib.admin.forms import forms as admin_forms
 from django.core.exceptions import ValidationError
 
-from main.models import Group, Schedule, Teacher
+from main.models import Group, Teacher, News
+from utils.news_md_to_html import NewsLexer
 
 
 def check_items(value: str):
@@ -70,3 +73,21 @@ class GetTeacherScheduleForm(admin_forms.Form):
         )
     )
 
+
+class NewsForm(forms.ModelForm):
+    class Meta:
+        model = News
+        fields = '__all__'
+        exclude = ('author',)
+
+    def clean(self):
+        images = frozenset(v for k, v in self.data.items() if v and re.match(r'newscontentimage_set-\d+-name', k))
+        value: str = self.data['text']
+        for line in value.splitlines():
+            match = NewsLexer.several_images.match(line)
+            if not match:
+                continue
+            _, _, text_images = NewsLexer.get_items(match)
+            if not frozenset(text_images) <= images:
+                raise ValidationError({'text': 'Text contains image that does not exist'})
+            return super().clean()

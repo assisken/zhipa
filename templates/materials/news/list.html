@@ -17,10 +17,10 @@
                         <a href="{{ news.get_url() }}" class="news-title_link">
                             <h2 class="bottom-line">{{ news.title }}</h2>
                         </a>
-                        {% if news.img %}
+                        {% if news.cover %}
                             <div class="with_image">
                                 <a href="{{ news.get_url() }}">
-  			                	    <img src="{{ static(news.img.url) }}" alt="" class="animation-fade animation-delay-2">
+  			                	    <img src="{{ static(news.cover.url) }}" alt="" class="animation-fade animation-delay-2">
                                 </a>
                                 <p>{{ news.description|safe }}</p>
   	                        </div>

@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import F
 from django.urls import reverse
 
+from main.validators import validate_news_content_image_begin_name_with_a_letter
 from utils import group
 
 
@@ -13,18 +14,30 @@ class User(AbstractUser):
     pass
 
 
-def get_news_image_path(instance: 'News', filename: str):
-    return os.path.join('news', instance.date.strftime('%Y%m%d'), filename)
+def get_news_cover_path(instance: 'News', filename: str):
+    return os.path.join('news', instance.date.strftime('%Y%m%d'), 'cover.jpg')
+
+
+def get_news_content_image_path(instance: 'NewsContentImage', filename: str):
+    return os.path.join('news', instance.news.date.strftime('%Y%m%d'), filename)
 
 
 class News(models.Model):
+    HTML = 'html'
+    MARKDOWN = 'md'
+
+    RENDERS = [
+        (HTML, 'html'),
+        (MARKDOWN, 'markdown')
+    ]
+
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
     url = models.CharField(max_length=60, blank=True, default='')
-    img = models.ImageField(max_length=120, blank=True, default='',
-                            upload_to=get_news_image_path)
+    cover = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_cover_path)
     description = models.TextField()
     text = models.TextField()
+    render_in = models.CharField(max_length=8, choices=RENDERS, null=False, blank=False, default=HTML)
     hidden = models.BooleanField(default=True)
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
@@ -46,6 +59,13 @@ class News(models.Model):
             }
             return reverse('news-date-url', kwargs=kwargs)
         return reverse('news', kwargs={'pk': self.pk})
+
+
+class NewsContentImage(models.Model):
+    name = models.CharField(max_length=200, blank=False, null=False,
+                            validators=(validate_news_content_image_begin_name_with_a_letter,))
+    img = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_content_image_path)
+    news = models.ForeignKey(News, on_delete=models.SET_NULL, null=True, blank=False)
 
 
 class Group(models.Model):

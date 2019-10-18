@@ -4,6 +4,7 @@ from django.db.models import QuerySet
 from django.forms import Form
 from django.urls import path
 
+from main.forms import NewsForm
 from main.models import *
 from main.types import Degree
 from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
@@ -17,15 +18,21 @@ class StaffAdmin(admin.ModelAdmin):
     list_filter = ('leader', 'lecturer', 'hide')
 
 
+class InlineNewsContentImageAdmin(admin.TabularInline):
+    model = NewsContentImage
+    extra = 1
+
+
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'title', 'hidden', 'author')
     list_display_links = ('title',)
     list_filter = ('hidden',)
-    exclude = ('author',)
+    form = NewsForm
+    inlines = (InlineNewsContentImageAdmin,)
 
-    def save_model(self, request, obj, form: Form, change):
-        if form.is_valid():
+    def save_model(self, request, obj: News, form: Form, change):
+        if form.is_valid() and not obj.author:
             user = request.user
             obj.author = user
         super().save_model(request, obj, form, change)

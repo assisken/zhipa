@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='news',
             name='img',
-            field=models.ImageField(blank=True, default='', max_length=120, upload_to=main.models.get_news_image_path),
+            field=models.ImageField(blank=True, default='', max_length=120, upload_to=main.models.get_news_cover_path),
         ),
         migrations.AlterField(
             model_name='profile',

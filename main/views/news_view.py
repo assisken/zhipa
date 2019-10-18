@@ -1,11 +1,13 @@
 from calendar import month_abbr
 from datetime import datetime
 
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, View
 
-from main.models import News
+from main.models import News, NewsContentImage
+from utils.news_md_to_html import MD
 
 
 class NewsListView(ListView):
@@ -23,8 +25,18 @@ class NewsDetailView(DetailView):
     template_name = 'materials/news/index.html'
 
     def get_context_data(self, **kwargs):
+        self.object: News
         context = super().get_context_data(**kwargs)
         context['last_news'] = News.objects.filter(hidden=False)[:5]
+
+        content = MD(self.object.text) if self.object.render_in == self.object.MARKDOWN else self.object.text
+
+        attachments = NewsContentImage.objects.filter(news=self.object)
+        if len(attachments) > 0:
+            replacing_images = {a.name: staticfiles_storage.url(a.img.url) for a in attachments}
+            content = content.format(**replacing_images)
+        context['content'] = content
+
         return context
 
 

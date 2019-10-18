@@ -20,7 +20,7 @@
                     <article style="margin-top: 10px">
                         <h1 class="bottom-line">{{ news.title }}</h1>
                         {% if news.text %}
-                            {{ news.text|safe }}
+                            {{ content|safe }}
                         {% else %}
                             <p>{{ news.description|safe }}</p>
                         {% endif %}
@@ -30,7 +30,7 @@
                                 {
                                     title: '{{ news.title }}',
                                     noparse: false,
-                                    {% if news.img %}image: 'http://smiap.ru{{ static(news.img.url) }}',{% endif %}
+                                    {% if news.cover %}image: 'http://smiap.ru{{ static(news.cover.url) }}',{% endif %}
                                 }
                                 ));
                             </script>
