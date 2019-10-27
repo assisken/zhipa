@@ -27,6 +27,10 @@ class NewsLexer(mistune.InlineLexer):
 
 
 class NewsRenderer(mistune.Renderer):
+    def codespan(self, text: str):
+        lang, code = text.split('\n', maxsplit=1)
+        return self.block_code(code, lang)
+
     def block_code(self, code, lang=None):
         if not lang:
             lang = ''
