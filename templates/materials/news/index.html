@@ -1,8 +1,12 @@
 {% extends 'layout/base.html' %}
 
 {% block title %}
-    {{ news.title }} :: Новости :: Материалы :: {{ APP_TITLE }}
+    {{ news.title }} :: Новости :: {{ APP_TITLE }}
 {% endblock title %}
+
+{% block description %}
+    {{ news.description }}
+{% endblock description %}
 
 {% block content %}
     {% include 'layout/extra_nav.html' %}
