@@ -27,8 +27,9 @@ class NewsLexer(mistune.InlineLexer):
 
 
 class NewsRenderer(mistune.Renderer):
-    def block_quote(self, text: str):
-        content, author = text.rsplit('\n', maxsplit=1)
+    def block_quote(self, text):
+        text = re.sub('</?p>', '', text)
+        content, author, _ = text.rsplit('\n', maxsplit=2)
         return """
         <blockquote>
             <p><q>{text}</q></p>
