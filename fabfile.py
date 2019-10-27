@@ -28,6 +28,7 @@ def deploy(ctx):
             con.run('git checkout master')
             con.run('git pull origin master')
             with con.prefix(f'source {os.path.join("$HOME", project_dir, ".env", "bin", "activate")}'):
+                con.run('pip3.7 install -r requirements.txt')
                 con.run(f'{python} manage.py migrate --noinput')
                 con.run(f'{python} manage.py collectstatic --noinput')
         con.sudo(f'systemctl stop {service}')
