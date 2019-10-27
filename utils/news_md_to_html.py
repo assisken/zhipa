@@ -27,19 +27,14 @@ class NewsLexer(mistune.InlineLexer):
 
 
 class NewsRenderer(mistune.Renderer):
-    def codespan(self, text: str):
-        lang, code = text.split('\n', maxsplit=1)
-        return self.block_code(code, lang)
-
-    def block_code(self, code, lang=None):
-        if not lang:
-            lang = ''
+    def block_quote(self, text: str):
+        content, author = text.rsplit('\n', maxsplit=1)
         return """
         <blockquote>
             <p><q>{text}</q></p>
             <footer>{author}</footer>
         </blockquote>""".format(
-            text=code, author=lang
+            text=content, author=author
         ).strip()
 
     def several_images(self, grid, title, image_names):
