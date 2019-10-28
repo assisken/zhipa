@@ -5,4 +5,4 @@ deploy:
   script:
     - export
     - pip install -r requirements-deploy.txt
-    - fab -p deploy
+    - fab deploy
