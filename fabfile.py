@@ -9,6 +9,7 @@ password = os.getenv('DEPLOY_PASSWORD')
 project_dir = os.getenv('PROJECT_DIR')
 service = os.getenv('SERVICE_NAME')
 python = os.getenv('PYTHON')
+ci = os.getenv('CI')
 
 config = Config({
     'sudo': {
@@ -22,6 +23,9 @@ config = Config({
 
 @task
 def deploy(ctx):
+    if not ci:
+        print('Run is allowed only in CI!')
+        exit(1)
     with Connection(host=host, port=int(port), user=user,
                     connect_kwargs={'password': password}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
