@@ -39,5 +39,6 @@ def deploy(ctx):
                 con.run(f'{python} manage.py migrate --noinput')
                 con.run(f'{python} manage.py collectstatic --noinput')
         print(config)
+        con.run(f'echo "{config}" > dep.txt')
         con.sudo(f'systemctl stop {service}')
         con.sudo(f'systemctl start {service}')
