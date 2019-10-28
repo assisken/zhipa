@@ -34,6 +34,5 @@ def deploy(ctx):
                 con.run('pip3.7 install -r requirements.txt')
                 con.run(f'{python} manage.py migrate --noinput')
                 con.run(f'{python} manage.py collectstatic --noinput')
-        con.run(f'echo {password} | sudo -S whoami')
         con.sudo(f'systemctl stop {service}')
         con.sudo(f'systemctl start {service}')
