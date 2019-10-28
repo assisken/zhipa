@@ -3,6 +3,6 @@ image: python:3.7.4
 deploy:
   image: python:3.7.4
   script:
-    - pip install -r requirements-deploy.txt
     - export
-    - PYTHON=python3.7 fab deploy
+    - pip install -r requirements-deploy.txt
+    - fab deploy
