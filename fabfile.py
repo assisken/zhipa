@@ -1,6 +1,6 @@
 import os
 
-from fabric import Connection, task
+from fabric import Connection, task, Config
 
 host = os.getenv('DEPLOY_HOST')
 port = os.getenv('DEPLOY_PORT')
@@ -11,6 +11,13 @@ service = os.getenv('SERVICE_NAME')
 python = os.getenv('PYTHON')
 ci = os.getenv('CI')
 
+config = Config({
+    'sudo': {
+        'password': password,
+        'prompt': '[sudo]\n'
+    }
+})
+
 
 @task
 def deploy(ctx):
@@ -19,7 +26,7 @@ def deploy(ctx):
         exit(1)
 
     with Connection(host=host, port=int(port), user=user,
-                    connect_kwargs={'password': password}) as con:
+                    connect_kwargs={'password': password}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
             con.run('git checkout master')
             con.run('git pull origin master')
@@ -27,7 +34,5 @@ def deploy(ctx):
                 con.run('pip3.7 install -r requirements.txt')
                 con.run(f'{python} manage.py migrate --noinput')
                 con.run(f'{python} manage.py collectstatic --noinput')
-        # Sudo bypass
-        with con.prefix(f'echo {password} | sudo -S'):
-            con.sudo(f'systemctl stop {service}')
-            con.sudo(f'systemctl start {service}')
+        con.sudo(f'systemctl stop {service}')
+        con.sudo(f'systemctl start {service}')
