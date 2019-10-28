@@ -25,6 +25,7 @@ def deploy(ctx):
     with Connection(host=host, port=int(port), user=user,
                     connect_kwargs={'password': password}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
+            print(host, port, user)
             con.run('git checkout master')
             con.run('git pull origin master')
             with con.prefix(f'source {os.path.join("$HOME", project_dir, ".env", "bin", "activate")}'):
