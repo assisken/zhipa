@@ -59,6 +59,7 @@ class GetGroupScheduleForm(admin_forms.Form):
         queryset=Group.objects.order_by('-study_form', 'degree', 'semester', 'name'),
         required=True,
     )
+    from_week = admin_forms.IntegerField(min_value=1, max_value=17)
 
 
 class GetTeacherScheduleForm(admin_forms.Form):

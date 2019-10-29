@@ -45,7 +45,9 @@ class GetGroupScheduleView(TemplateView):
                 'has_editable_inline_admin_formsets': True,
             })
 
-        filename = gen_groups_table(form.cleaned_data['groups'])
+        groups = form.cleaned_data['groups']
+        from_week = form.cleaned_data['from_week']
+        filename = gen_groups_table(groups, from_week)
         try:
             with open(f'{filename}.xlsx', 'rb') as f:
                 file_data = f.read()
