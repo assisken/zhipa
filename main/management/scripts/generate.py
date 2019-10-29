@@ -94,7 +94,7 @@ def fill_items(sheet: Worksheet, col: int, **kwargs) -> None:
     time = '{} – {}'.format(time_start.strftime('%H:%M'), time_end.strftime('%H:%M'))
     week = kwargs.get('week')
 
-    week_offset = abs(week % 2 - 1)
+    week_offset = abs((week - 1) % 2)
 
     if day == 'Пн':
         day_offset = 0 * 14
