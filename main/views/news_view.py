@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, View
 
 from main.models import News, NewsContentImage
+from smiap.settings import DEFAULT_IMG
 from utils.news_md_to_html import MD
 
 
@@ -32,9 +33,10 @@ class NewsDetailView(DetailView):
         content = MD(self.object.text) if self.object.render_in == self.object.MARKDOWN else self.object.text
 
         attachments = NewsContentImage.objects.filter(news=self.object)
-        if len(attachments) > 0:
-            replacing_images = {a.name: staticfiles_storage.url(a.img.url) for a in attachments}
-            content = content.format(**replacing_images)
+        replacing_images = {}
+        for a in attachments:
+            replacing_images[a.name] = a.img.url if a.img else DEFAULT_IMG
+        content = content.format(**replacing_images)
         context['content'] = content
 
         return context

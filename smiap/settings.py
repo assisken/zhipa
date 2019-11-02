@@ -18,6 +18,8 @@ from configparser import ConfigParser
 from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.contrib.staticfiles.storage import staticfiles_storage
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CONFIG = ConfigParser()
@@ -173,6 +175,8 @@ locale.setlocale(locale.LC_ALL, LOCALE)
 STATIC_URL = '/res/'
 STATIC_ROOT = CONFIG.get('app', 'static-root')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'uploads')
+FILE_UPLOAD_PERMISSIONS = 0o644
+DEFAULT_IMG = staticfiles_storage.url('default.png')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

@@ -67,6 +67,12 @@ class NewsContentImage(models.Model):
     img = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_content_image_path)
     news = models.ForeignKey(News, on_delete=models.SET_NULL, null=True, blank=False)
 
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return f'{self.name} ({self.img.name})'
+
 
 class Group(models.Model):
     FULL_TIME = 'очная'
