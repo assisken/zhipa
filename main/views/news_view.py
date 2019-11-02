@@ -35,7 +35,7 @@ class NewsDetailView(DetailView):
         attachments = NewsContentImage.objects.filter(news=self.object)
         replacing_images = {}
         for a in attachments:
-            replacing_images[a.name] = a.img.url if a.img else DEFAULT_IMG
+            replacing_images[a.name] = staticfiles_storage.url(a.img.url) if a.img else DEFAULT_IMG
         content = content.format(**replacing_images)
         context['content'] = content
 
