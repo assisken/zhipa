@@ -6,6 +6,7 @@ host = os.getenv('DEPLOY_HOST')
 port = os.getenv('DEPLOY_PORT')
 user = os.getenv('DEPLOY_USER')
 password = os.getenv('DEPLOY_PASSWORD')
+key = os.getenv('DEPLOY_KEY')
 project_dir = os.getenv('PROJECT_DIR')
 service = os.getenv('SERVICE_NAME')
 python = os.getenv('PYTHON')
@@ -26,7 +27,7 @@ def deploy(ctx):
         exit(1)
 
     with Connection(host=host, port=int(port), user=user,
-                    connect_kwargs={'password': password}, config=config) as con:
+                    connect_kwargs={'key_filename': key}, config=config) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
             con.run('git checkout master')
             con.run('git pull origin master')
