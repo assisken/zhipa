@@ -26,8 +26,8 @@ def deploy(ctx):
         print('Run is allowed only in CI!')
         exit(1)
 
-    with Connection(host=host, port=int(port), user=user,
-                    connect_kwargs={'key_filename': key}, config=config) as con:
+    with Connection(host=host, port=int(port), user=user, config=config,
+                    connect_kwargs={'key_filename': key, 'look_for_keys': False}) as con:
         with con.cd(os.path.join('$HOME', project_dir)):
             con.run('git checkout master')
             con.run('git pull origin master')
