@@ -51,7 +51,9 @@
                     </tr>
                     {% for day in schedule.keys() %}
                         <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
-                            <td rowspan="{{ schedule[day] | length + 1 }}">{{ day.date }}<br>{{ day.day }}</td>
+                            <td rowspan="{{ schedule[day] | length + 1 }}">
+                                {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
+                            </td>
                             {% for item in schedule[day] %}
                                 <tr>
                                     <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
