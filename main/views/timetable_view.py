@@ -88,6 +88,7 @@ class ExtramuralTimetableView(TemplateView):
             'course': group.course if group_name else 0
         })
 
+
 class TeacherTimetableView(TemplateView):
     template_name = 'materials/timetable/teachers.html'
 
@@ -96,7 +97,7 @@ class TeacherTimetableView(TemplateView):
 
         teachers = Teacher.objects.filter(staff__isnull=False).order_by('lastname', 'firstname', 'middlename')
         teacher_name = request.GET.get('teacher', str(teachers[0]))
-        lastname, firstname, middlename, _ = re.split('[ .]', teacher_name, maxsplit=3)
+        lastname, firstname, middlename, *_ = re.split('[ .]', teacher_name, maxsplit=3)
         teacher = Teacher.objects.get(lastname=lastname,
                                       firstname__startswith=firstname,
                                       middlename__startswith=middlename)
