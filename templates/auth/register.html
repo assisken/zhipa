@@ -1,0 +1,39 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+
+    <div class="about">
+        <h2 class="center auth-heading animation-fade">Регистрация</h1>
+        <div class="">
+        </div>
+    </div>
+
+
+    <div class="auth-input-group animation-delay-2 animation-fade">
+        <form method="post" action="{{ url('login') }}">
+            {{ csrf_input }}
+            <label class="auth-label" for="id_email">E-mail:</label>
+            <input class="auth-input" type="email" name="email" required="" id="id_email" autocomplete="email">
+
+            <label class="auth-label" for="id_last-name">Фамилия:</label>
+            <input class="auth-input" type="text" name="last-name" required="" id="id_last-name" autocomplete="family-name">
+
+            <label class="auth-label" for="id_name">Имя:</label>
+            <input class="auth-input" type="text" name="name" required="" id="id_name" autocomplete="given-name">
+
+            <label class="auth-label" for="id_middle-name">Отчество:</label>
+            <input class="auth-input" type="text" name="middle-name" required="" id="id_middle-name" autocomplete="additional-name">
+
+            <label class="auth-label" for="id_password">Пароль:</label>
+            <input class="auth-input" type="password" name="password" required="" id="id_password" autocomplete="new-password">
+
+            <label class="auth-label" for="id_password-confirm">Подтвердите пароль:</label>
+            <input class="auth-input" type="password" name="password-confirm" required="" id="id_password-confirm" autocomplete="new-password">
+            
+            <input class="auth-button" type="submit" value="зарегистрироваться">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+
+
+{% endblock %}

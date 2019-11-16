@@ -3,6 +3,8 @@
 /* import compressed styles */
 @import "animations-min.css";
 @import "main.css";
-@import "mediascreens-min.css";
 @import "custom.css";
 @import "share.css";
+@import "auth.css";
+/* @import "mediascreens-min.css"; */
+@import "mediascreens.css";

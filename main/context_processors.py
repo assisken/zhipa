@@ -37,7 +37,7 @@ def app_processor(request):
     else:
         last_item = {"id": "login", "title": "Войти",
                      "link": "/auth/login?next={}".format(request.path), "subitems": []}
-    # nav_items.append(last_item)
+    nav_items.append(last_item)
 
     if request.path == '/':
         active_items = 'home'
