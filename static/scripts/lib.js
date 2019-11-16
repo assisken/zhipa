@@ -147,4 +147,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
             window.location.href = href;
         });
     }
+
+    var hamburger = document.querySelector(".hamburger");
+    var menuString = document.querySelector(".menustring");
+    hamburger.addEventListener("click", function() {
+        menuString.classList.toggle("menustring-open");
+    });
+
+    $(".menustring_item_a").click(function(e) {
+        var subitem = $(this).parent().children(".menustring_subitem");
+        if (document.body.clientWidth < 800 && $(this).parent().children(".menustring_subitem").length > 0) {
+            $(this).parent().children(".menustring_subitem").children(".menustring_linksbox").stop().slideToggle();
+            e.preventDefault();
+            return false;
+        }
+    });
 });

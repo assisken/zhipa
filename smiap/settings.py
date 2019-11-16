@@ -51,6 +51,7 @@ ALLOWED_HOSTS: List[str] = ['*'] if not DEBUG else [
     '127.0.0.1',
     '10.8.0.0/24',
     'duck.nepnep.ru',
+    'vl4dmati.mati.su'
 ]
 
 # Application definition

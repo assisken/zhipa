@@ -122,7 +122,9 @@ footer p {
 }
 
 .menustring {
-    max-width: 1024px
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .subnav-horizontal {
@@ -155,7 +157,6 @@ footer p {
 
 .about p {
     color: #444;
-    text-indent: 10pt;
     padding: 10px 20px;
     margin: 0
 }
@@ -616,8 +617,7 @@ div.clear {
     }
 
     .logo {
-        text-align: center;
-        padding-bottom: 30px
+        display: none;
     }
 
     .smiig_logo {
