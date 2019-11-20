@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'debug_toolbar',
+    'django_registration',
     'main.apps.SmiapConfig',
 ]
 
@@ -215,3 +216,17 @@ FIXTURE_DIRS = (
 
 HTML_MINIFY = False if DEBUG else True
 AUTH_USER_MODEL = 'main.User'
+
+# django-registration settings
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
+REGISTRATION_SALT = CONFIG.get('app', 'registration-salt')
+AUTH_USER_EMAIL_UNIQUE = True
+
+# mail settings
+EMAIL_HOST = CONFIG.get('email', 'host')
+EMAIL_PORT = CONFIG.getint('email', 'port')
+EMAIL_HOST_USER = CONFIG.get('email', 'user')
+EMAIL_HOST_PASSWORD = CONFIG.get('email', 'password')
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')
