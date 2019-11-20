@@ -69,7 +69,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(User)
 class SmiapUserAdmin(UserAdmin):
-    pass
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')
 
 
 @admin.register(Profile)
