@@ -84,3 +84,25 @@
     background-color: #fff;
     color: #09f;
 }
+
+.alert {
+    font-weight: lighter;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.alert-danger {
+    color: tomato;
+    background-color: rgba(255, 0, 0, 0.05);
+}
+
+.alert-success {
+    color: green;
+    background-color: rgba(0, 255, 0, 0.05);
+}
+
+.alert-warning {
+    color: grey;
+    background-color: rgba(255, 255, 0, 0.05);
+}
