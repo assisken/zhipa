@@ -1,8 +1,45 @@
+image: python:3.7.4
+
+variables:
+  # App settings
+  LMS_URL: example.com
+  LMS_PASSWORD: admin
+  DEPARTMENT: MASS APOCRIF
+  STATIC_ROOT: /app/static
+  DEBUG: 'no'
+  LOCALE: C.UTF-8
+  BRAND: Interception Intersception
+
+  # Database settings
+  POSTGRES_DB: test_smiap
+  POSTGRES_USER: postgres
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_PASSWORD: postgres
+
+  # System environment variables
+  LANG: $LOCALE
+  LANGUAGE: en_US:en
+#  LC_ALL: $LANG
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  services:
+    - postgres:9.6
+  script:
+    - pip install -qr requirements.txt
+    - pip install -qr requirements-test.txt
+    - python manage.py test --noinput -k
+
 deploy:
-  image: python:3.7.4
+  stage: deploy
+  when: on_success
   only:
     - master
   script:
-    - export
     - pip install -r requirements-deploy.txt
     - fab deploy

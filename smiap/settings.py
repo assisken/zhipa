@@ -14,6 +14,7 @@ import os
 import locale
 import logging
 import logging.config
+import random
 from configparser import ConfigParser
 from typing import List
 
@@ -22,9 +23,6 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-CONFIG = ConfigParser()
-CONFIG.read(os.path.join(BASE_DIR, 'config.ini'))
-
 logging.config.fileConfig(os.path.join(BASE_DIR, 'logging.ini'))
 LOG = logging.getLogger('SMiAP')
 
@@ -32,19 +30,27 @@ LOG = logging.getLogger('SMiAP')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = CONFIG.get('app', 'secret-key')
+SECRET_KEY = os.getenv('SECRET_KEY', ''.join(
+    [random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)]
+))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIG.getboolean('app', 'debug')
-DB_NAME = CONFIG.get('database', 'database')
-DB_USER = CONFIG.get('database', 'user')
-DB_HOST = CONFIG.get('database', 'host')
-DB_PORT = CONFIG.get('database', 'port')
-DB_PASSWORD = CONFIG.get('database', 'password')
+DEBUG = os.getenv('DEBUG', False)
+DB_NAME = os.getenv('POSTGRES_DB')
+DB_USER = os.getenv('POSTGRES_USER')
+DB_HOST = os.getenv('POSTGRES_HOST')
+DB_PORT = os.getenv('POSTGRES_PORT')
+DB_PASSWORD = os.getenv('POSTGRES_PASSWORD')
 
-LMS_URL = CONFIG.get('app', 'lms-url')
-LMS_PASSWORD = CONFIG.get('app', 'lms-pass')
-DEPARTMENT = CONFIG.get('app', 'department')
+# App specific settings
+BRAND = os.getenv('BRAND')
+LMS_URL = os.getenv('LMS_URL')
+LMS_PASSWORD = os.getenv('LMS_PASSWORD')
+DEPARTMENT = os.getenv('DEPARTMENT')
+
+# Tests settings
+SELENIUM_HOST = os.getenv('SELENIUM_HOST', None)
+SELENIUM_PORT = os.getenv('SELENIUM_PORT', None)
 
 ALLOWED_HOSTS: List[str] = ['*'] if not DEBUG else [
     'localhost',
@@ -159,23 +165,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'ru-ru'
-LOCALE = 'ru_RU.UTF-8'
-
+LOCALE = os.getenv('LOCALE', 'ru_RU.UTF-8')
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 locale.setlocale(locale.LC_ALL, LOCALE)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/res/'
-STATIC_ROOT = CONFIG.get('app', 'static-root')
+STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'uploads')
 FILE_UPLOAD_PERMISSIONS = 0o644
 DEFAULT_IMG = staticfiles_storage.url('default.png')
@@ -217,16 +218,21 @@ FIXTURE_DIRS = (
 HTML_MINIFY = False if DEBUG else True
 AUTH_USER_MODEL = 'main.User'
 
+# Redgreentests settings
+TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
+
 # django-registration settings
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_OPEN = True
-REGISTRATION_SALT = CONFIG.get('app', 'registration-salt')
+# Todo: Do not use CONFIG
+# REGISTRATION_SALT = CONFIG.get('app', 'registration-salt')
 AUTH_USER_EMAIL_UNIQUE = True
 
 # mail settings
-EMAIL_HOST = CONFIG.get('email', 'host')
-EMAIL_PORT = CONFIG.getint('email', 'port')
-EMAIL_HOST_USER = CONFIG.get('email', 'user')
-EMAIL_HOST_PASSWORD = CONFIG.get('email', 'password')
+# Todo: Do not use CONFIG
+# EMAIL_HOST = CONFIG.get('email', 'host')
+# EMAIL_PORT = CONFIG.getint('email', 'port')
+# EMAIL_HOST_USER = CONFIG.get('email', 'user')
+# EMAIL_HOST_PASSWORD = CONFIG.get('email', 'password')
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')
+# DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')

@@ -9,6 +9,7 @@ from django.test import TestCase
 
 from main.management.scripts.groups import fetch_groups
 from main.models import Group
+from utils.exceptions import LmsDoesNotRespondError
 
 RESPONSE = {
     'data': {
@@ -56,9 +57,5 @@ class GroupTest(TestCase):
         capture = StringIO()
         sys.stdout = capture
 
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(LmsDoesNotRespondError):
             fetch_groups(self.url, '', '')
-        self.assertTrue(capture.getvalue())
-
-        # Set default stdout
-        sys.stdout = sys.__stdout__

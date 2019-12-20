@@ -1,7 +1,6 @@
 import json
 import os
 from datetime import datetime
-from pprint import pprint
 
 from django.test import TestCase
 from django.utils.timezone import make_aware
@@ -20,29 +19,31 @@ class TestImportCommand(TestCase):
         self.data = json.loads(raw_data)
         self.expected_news = [
             News(
-                pk=44,
-                title='Заголовок2',
-                date=make_aware(
-                    datetime.strptime('2019-05-29 12:32:12', '%Y-%m-%d %H:%M:%S'),
-                    timezone=timezone(TIME_ZONE)
-                ),
-                url='test',
-                img='images/news/null/cover.jpg',
-                description='spsh',
-                hidden=True
-            ),
-            News(
-                pk=18,
+                pk=1,
                 title='Заголовок',
                 date=make_aware(
                     datetime.strptime('2015-11-21 00:00:00', '%Y-%m-%d %H:%M:%S'),
                     timezone=timezone(TIME_ZONE)
                 ),
                 url='',
-                img='images/news/no/cover.jpg',
+                cover='images/news/no/cover.jpg',
                 description=':DDDD',
                 text='benis',
-                hidden=False
+                hidden=False,
+                render_in='html'
+            ),
+            News(
+                pk=2,
+                title='Заголовок2',
+                date=make_aware(
+                    datetime.strptime('2019-05-29 12:32:12', '%Y-%m-%d %H:%M:%S'),
+                    timezone=timezone(TIME_ZONE)
+                ),
+                url='test',
+                cover='images/news/null/cover.jpg',
+                description='spsh',
+                hidden=True,
+                render_in='html'
             )
         ]
         self.expected_staff = [
@@ -59,7 +60,7 @@ class TestImportCommand(TestCase):
                 hide=False,
             ),
             Staff(
-                pk=8,
+                pk=2,
                 lastname='Стешняшко',
                 firstname='Константин',
                 middlename='Ильич',
@@ -71,7 +72,7 @@ class TestImportCommand(TestCase):
                 hide=False,
             ),
             Staff(
-                pk=36,
+                pk=3,
                 lastname='Петров',
                 firstname='Антон',
                 middlename='Борисович',
@@ -86,5 +87,7 @@ class TestImportCommand(TestCase):
 
     def test_handle_data(self):
         handle_data(self.data)
-        self.assertListEqual(list(News.objects.all()), self.expected_news)
-        self.assertListEqual(list(Staff.objects.all()), self.expected_staff)
+        result_news = list(News.objects.order_by('pk').all())
+        result_staff = list(Staff.objects.order_by('pk').all())
+        self.assertListEqual(result_news, self.expected_news)
+        self.assertListEqual(result_staff, self.expected_staff)
