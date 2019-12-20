@@ -41,10 +41,11 @@ def insert_news(data: List[Dict]):
             title=news['title'],
             date=make_aware(date, timezone=timezone(TIME_ZONE)),
             url=news['url'],
-            img=image,
+            cover=image,
             description=news['description'],
             text=text,
             hidden=news['hidden'],
+            render_in='html',
         )
 
 

@@ -4,10 +4,11 @@
       "date": "2000-11-11T12:34:56Z",
       "description": "test",
       "hidden": "0",
-      "img": "images/news/20190206/cover.jpg",
+      "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "На ярмарке продалась шиншила",
-      "url": "test_url"
+      "url": "test_url",
+      "render_in": "html"
     },
     "model": "main.news",
     "pk": "1"
@@ -17,10 +18,11 @@
       "date": "2000-11-11T12:34:56Z",
       "description": "Секрет",
       "hidden": "1",
-      "img": "images/news/20190206/cover.jpg",
+      "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "О, нет!",
-      "url": ""
+      "url": "",
+      "render_in": "html"
     },
     "model": "main.news",
     "pk": "2"
@@ -30,10 +32,11 @@
       "date": "2000-11-11T12:34:56Z",
       "description": "test",
       "hidden": "0",
-      "img": "images/news/20190206/cover.jpg",
+      "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Опознан шиншило-генератор!",
-      "url": ""
+      "url": "",
+      "render_in": "html"
     },
     "model": "main.news",
     "pk": "3"
@@ -43,10 +46,11 @@
       "date": "2000-11-11T12:34:56Z",
       "description": "Секрет",
       "hidden": "1",
-      "img": "images/news/20190206/cover.jpg",
+      "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Самая секретная новость на свете!",
-      "url": ""
+      "url": "",
+      "render_in": "html"
     },
     "model": "main.news",
     "pk": "4"

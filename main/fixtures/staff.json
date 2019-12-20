@@ -1,32 +1,44 @@
 [
-  {
-    "fields": {
-      "description": null,
-      "firstname": "Петя",
-      "hide": "0",
-      "img": null,
-      "lastname": "Петров",
-      "leader": "1",
-      "lecturer": "1",
-      "middlename": "Петрович",
-      "regalia": "д.ф.н."
+    {
+        "fields": {
+            "description": null,
+            "hide": false,
+            "leader": true,
+            "lecturer": true,
+            "regalia": "д.ф.н."
+        },
+        "model": "main.staff",
+        "pk": "1"
     },
-      "model": "main.staff",
-      "pk": "1"
-  },
-  {
-    "fields": {
-      "description": null,
-      "firstname": "Артём",
-      "hide": "0",
-      "img": null,
-      "lastname": "Всё тот же",
-      "leader": "0",
-      "lecturer": "1",
-      "middlename": "Артёмович",
-      "regalia": ""
+    {
+        "fields": {
+            "description": null,
+            "hide": true,
+            "leader": false,
+            "lecturer": true,
+            "regalia": ""
+        },
+        "model": "main.staff",
+        "pk": "2"
     },
-      "model": "main.staff",
-      "pk": "2"
-  }
+    {
+        "fields": {
+            "firstname": "Один из",
+            "img": "",
+            "lastname": "вещих",
+            "middlename": "овощей"
+        },
+        "model": "main.profile",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "firstname": "Не самый",
+            "img": "",
+            "lastname": "умный",
+            "middlename": "Преподаватель"
+        },
+        "model": "main.profile",
+        "pk": 2
+    }
 ]

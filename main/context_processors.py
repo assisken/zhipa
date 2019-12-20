@@ -1,4 +1,4 @@
-from smiap.settings import CONFIG
+from smiap.settings import BRAND
 
 
 def app_processor(request):
@@ -45,7 +45,7 @@ def app_processor(request):
         active_items = request.path.split('/')
 
     return {
-        'APP_TITLE': CONFIG.get('brand', 'name'),
+        'APP_TITLE': BRAND,
         'NAV_ITEMS': nav_items,
         'ACTIVE_ITEMS': active_items
     }

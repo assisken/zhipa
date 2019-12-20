@@ -34,7 +34,6 @@ psycopg2==2.8.3
 pycodestyle==2.5.0
 pydot==1.4.1
 Pygments==2.4.2
-pygraphviz==1.5
 pylint==2.3.1
 pylint-django==2.0.9
 pylint-plugin-utils==0.5
@@ -43,7 +42,6 @@ python-dateutil==2.8.0
 python-termstyle==0.1.10
 pytz==2019.1
 requests==2.21.0
-selenium==3.141.0
 six==1.12.0
 soupsieve==1.9.1
 sqlparse==0.3.0
