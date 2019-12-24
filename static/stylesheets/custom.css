@@ -357,10 +357,6 @@ footer p {
     line-height: 1.5;
 }
 
-.homepage {
-    margin: 30px auto
-}
-
 .widepanel {
     background: #f5f5f5;
     background: rgba(255, 255, 255, .5);
@@ -388,37 +384,25 @@ footer p {
 }
 
 .present {
-    letter-spacing: -.3em;
     box-sizing: border-box;
-    overflow: hidden;
-    padding: 0
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
 }
 
 .present .column {
-    height: 225px;
-    padding: 2%;
-    margin: 5px;
-    letter-spacing: normal;
+    padding: 15px;
     border-radius: 2px;
     box-shadow: 0 1px 2px 0 #d0d0d0
 }
 
-.present .column:nth-child(2), .present .column:nth-child(3) {
-	height: 280px;
-}
-
-
-
 .present .full {
-    width: 94%
-}
-
-.present .small {
-    width: 28%
+    grid-column: 1/4;
 }
 
 .present .large {
-    width: 60.8%
+    grid-column: 2/4;
 }
 
 .present .column:first-child {
@@ -460,12 +444,17 @@ footer p {
     text-align: center
 }
 
+.app .studyweeks {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .app .studyweeks .word {
     display: block;
     text-align: center;
     color: #fff;
     font-size: 2em;
-    margin: 5px
 }
 
 .app .studyweeks .number {
@@ -476,21 +465,25 @@ footer p {
     padding: 0 5px 0 0
 }
 
+.app .studyweeks .word:last-of-type {
+    margin: -20px auto 5px;
+}
+
+.app .studyweeks .buttons {
+    margin-top: auto;
+}
+
 .app .lastnews {
     overflow: auto;
     font-size: 11pt
 }
 
 .app .lastnews h1 {
-    text-align: left;
     margin: -7px 0 0
 }
 
 .app .lastnews > ul {
     text-align: left;
-    margin-bottom: 0;
-    overflow-y: auto;
-    height: 166px
 }
 
 .app .lastnews ul a {
@@ -537,9 +530,6 @@ footer p {
         overflow-y: auto;
         height: 60px
     }
-    .present .column:nth-child(2) {
-        height: 200px;
-    }
 }
 
 .flatbox_light {
@@ -572,18 +562,6 @@ article p {
 .sticky-week {
     position: fixed;
     top: 30px;
-}
-
-.app .studyweeks .number {
-    margin: -30px 0 -20px;
-}
-
-.app .studyweeks .word {
-    margin: 5px auto 34px;
-}
-
-.app .studyweeks .word:last-of-type {
-    margin: 5px auto 5px;
 }
 
 table.timetable td {
@@ -696,16 +674,17 @@ div.clear {
     }
 
     .present {
+        grid-template-columns: 1fr;
         margin: 0;
-        padding: 0
+        padding: 0;
     }
 
-    .present .column {
-        height: auto;
-        width: 100%;
-        margin: 0 0 10px;
-        padding: 0;
-        border-radius: 0
+    .present .full {
+        grid-column: 1;
+    }
+
+    .present .large {
+        grid-column: 1;
     }
 
     .widepanel {
@@ -720,10 +699,6 @@ div.clear {
     .app .studyweeks .number, .app .studyweeks .word {
         display: inline;
         vertical-align: middle
-    }
-
-    .app .lastnews h1, .app .lastnews p {
-        padding: 20px 20px 0
     }
 
     .app .teaser p {
@@ -841,7 +816,6 @@ div.clear {
 
     .app .studyweeks .start {
         display: block;
-        padding-top: 10px
     }
 
     .table_publications td:nth-of-type(1):before {
