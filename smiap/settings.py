@@ -10,16 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
 import locale
 import logging
 import logging.config
+import os
 import random
-from configparser import ConfigParser
 from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from django.contrib.staticfiles.storage import staticfiles_storage
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

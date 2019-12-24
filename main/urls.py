@@ -49,13 +49,14 @@ urlpatterns = [
     path('materials/timetable', RedirectView.as_view(url='/students/timetable')),
     path('materials/timetable/extramural', RedirectView.as_view(url='/students/timetable/extramural')),
 
+    # TODO
     # Making registration backend by django-registration
-    path('auth/login', SmiapLoginView.as_view(), name='login'),
-    path('auth/logout', SmiapLogoutView.as_view(), name='logout'),
-    path('auth/register/', SmiapRegistrationView.as_view(), name='registration'),
-    path('auth/register/complete',
-         TemplateView.as_view(template_name='auth/registration_complete.html'), name='registration_complete'),
-    path('auth/activate/<key:activation_key>/', SmiapActivationView.as_view(), name='activation'),
-    path('auth/complete',
-         TemplateView.as_view(template_name='auth/activation_complete.html'), name='activation_complete'),
+    # path('auth/login', SmiapLoginView.as_view(), name='login'),
+    # path('auth/logout', SmiapLogoutView.as_view(), name='logout'),
+    # path('auth/register/', SmiapRegistrationView.as_view(), name='registration'),
+    # path('auth/register/complete',
+    #      TemplateView.as_view(template_name='auth/registration_complete.html'), name='registration_complete'),
+    # path('auth/activate/<key:activation_key>/', SmiapActivationView.as_view(), name='activation'),
+    # path('auth/complete',
+    #      TemplateView.as_view(template_name='auth/activation_complete.html'), name='activation_complete'),
 ]
