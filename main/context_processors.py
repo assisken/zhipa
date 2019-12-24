@@ -1,4 +1,4 @@
-from smiap.settings import CONFIG
+from smiap.settings import BRAND
 
 
 def app_processor(request):
@@ -30,13 +30,14 @@ def app_processor(request):
         ]}
     ]
 
-    if request.user and request.user.is_authenticated:
-        last_item = {"id": "username", "title": request.user.username, "link": None, "subitems": [
-            {"id": "logout", "title": "Выйти", "link": "/auth/logout?next={}".format(request.path), "subitems": []}
-        ]}
-    else:
-        last_item = {"id": "login", "title": "Войти",
-                     "link": "/auth/login?next={}".format(request.path), "subitems": []}
+    # TODO
+    # if request.user and request.user.is_authenticated:
+    #     last_item = {"id": "username", "title": request.user.username, "link": None, "subitems": [
+    #         {"id": "logout", "title": "Выйти", "link": "/auth/logout?next={}".format(request.path), "subitems": []}
+    #     ]}
+    # else:
+    #     last_item = {"id": "login", "title": "Войти",
+    #                  "link": "/auth/login?next={}".format(request.path), "subitems": []}
     # nav_items.append(last_item)
 
     if request.path == '/':
@@ -45,7 +46,7 @@ def app_processor(request):
         active_items = request.path.split('/')
 
     return {
-        'APP_TITLE': CONFIG.get('brand', 'name'),
+        'APP_TITLE': BRAND,
         'NAV_ITEMS': nav_items,
         'ACTIVE_ITEMS': active_items
     }

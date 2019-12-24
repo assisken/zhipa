@@ -160,7 +160,6 @@ p {
 a {
   color: #09f;
   text-decoration: none;
-  margin: 0 5px 0 0;
 }
 a:hover {
   color: #0cf;
@@ -173,7 +172,6 @@ ol,
 ul {
   padding: 0 20px 0 30px;
   list-style-position: inside;
-  margin: 0 0 10px;
 }
 ol li,
 ul li {
@@ -293,14 +291,12 @@ nav {
   width: 9%;
 }
 .menustring {
-  height: 45px;
   padding: 10pt;
 }
 .menustring_item {
   display: inline-table;
   vertical-align: middle;
   width: 130px;
-  height: 43px;
   border-bottom: 1px solid transparent;
   line-height: 45px;
   text-align: center;
@@ -391,6 +387,7 @@ nav {
   margin: 0;
   padding: 0 10pt 0 15pt;
   transition: background-color 0.2s linear;
+  box-sizing: border-box;
 }
 .menustring_subitem a:hover {
   color: #555;
@@ -404,12 +401,18 @@ nav {
   background: rgba(255, 255, 255, 0.8);
   transition: all 0.1s linear;
 }
-.menustring_item:hover > .menustring_subitem {
-  visibility: visible;
-  -webkit-animation: menustring_submenuShow 0.2s 1 linear forwards;
-  -moz-animation: menustring_submenuShow 0.2s 1 linear forwards;
-  -o-animation: menustring_submenuShow 0.2s 1 linear forwards;
-  animation: menustring_submenuShow 0.2s 1 linear forwards;
+@media (min-width:800px) {
+  .menustring_item:hover > .menustring_subitem {
+    visibility: visible;
+    -webkit-animation: menustring_submenuShow 0.2s 1 linear forwards;
+    -moz-animation: menustring_submenuShow 0.2s 1 linear forwards;
+    -o-animation: menustring_submenuShow 0.2s 1 linear forwards;
+    animation: menustring_submenuShow 0.2s 1 linear forwards;
+  }
+
+  .menustring_linksbox {
+    display: inherit !important;
+  }
 }
 @-webkit-keyframes menustring_submenuShow {
   0% {
@@ -752,4 +755,8 @@ div.tabContent.hide {
 }
 .menustring_subitem {
   text-align: left;
+}
+
+.container {
+  min-height: calc(100vh - 232px - 57px - 80px);
 }

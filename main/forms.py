@@ -4,8 +4,9 @@ from django import forms
 from django.contrib.admin import widgets as admin_widgets
 from django.contrib.admin.forms import forms as admin_forms
 from django.core.exceptions import ValidationError
+from django_registration.forms import RegistrationFormUniqueEmail
 
-from main.models import Group, Teacher, News, NewsContentImage
+from main.models import Group, Teacher, News, User
 from utils.news_md_to_html import NewsLexer
 
 
@@ -16,6 +17,15 @@ def check_items(value: str):
         if item.count('||') != 2:
             count = item.count("||") + 1
             raise ValidationError(f'Required 3 or more items, got {count} on line {line + 1}')
+
+
+class SmiapRegistrationForm(RegistrationFormUniqueEmail):
+    error_css_class = 'errors'
+    required_css_class = 'required'
+
+    class Meta:
+        model = User
+        fields = ("email", "username",)
 
 
 class SeveralPublicationsForm(forms.Form):

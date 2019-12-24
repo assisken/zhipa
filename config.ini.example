@@ -1,9 +1,18 @@
 [app]
 secret-key =
+registration-salt =
 debug = no
 static-root =
+lms-url =
 lms-pass =
 department =
+
+[email]
+host = localhost
+port = 1205
+user = smiap
+password = 1234
+from = no-reply@smtp.smiap.ru
 
 [brand]
 name =

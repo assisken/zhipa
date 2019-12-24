@@ -1,94 +1,62 @@
 [
-  {
-    "fields": {
-      "name": "3-ПО3-135Б-99",
-      "course": 1,
-      "degree": 1,
-      "semester": 1,
-      "study_form": "очная",
-      "schedule": {
-        "1": [
-          [
-            "61.61",
-            "Mon",
-            [
-              [
-                "25:25 – 26:26",
-                "LP",
-                "Math and Social Culture",
-                {
-                  "place": "Anywhere",
-                  "auditory": "Here"
-                },
-                [
-                  "Murlishko"
-                ]
-              ],
-              [
-                "27:27 – 28:28",
-                "LM",
-                "Sinister Glowing of Funeral Torch",
-                {
-                  "place": "Anywhere",
-                  "auditory": "Here"
-                },
-                [
-                  "Vlad Smert"
-                ]
-              ]
-            ]
-          ]
-        ],
-        "2": []
-      }
+    {
+        "fields": {
+            "course": 3,
+            "degree": 1,
+            "name": "М14О-33Б-99",
+            "schedule_version": "v9",
+            "semester": 5,
+            "study_form": "очная"
+        },
+        "model": "main.group",
+        "pk": 1
     },
-    "model": "main.group",
-    "pk": "1"
-  },
-  {
-    "fields": {
-      "name": "3-ПО7-213Б-51",
-      "course": 1,
-      "degree": 1,
-      "semester": 2,
-      "study_form": "очная",
-      "schedule": {
-        "1": [
-          [
-            "16.61",
-            "Tue",
-            [
-              [
-                "15:25 – 26:26",
-                "AP",
-                "Math and Social Culture",
-                {
-                  "place": "Anywhere",
-                  "auditory": "Here"
-                },
-                [
-                  "Murlishko"
-                ]
-              ],
-              [
-                "27:27 – 28:28",
-                "LM",
-                "Sinister Glowing of Funeral Torch",
-                {
-                  "place": "Anywhere",
-                  "auditory": "Here"
-                },
-                [
-                  "Vlad Smert"
-                ]
-              ]
-            ]
-          ]
-        ],
-        "2": []
-      }
+    {
+        "fields": {
+            "day": 1,
+            "ends_at": "13:13:13",
+            "groups": [
+                1
+            ],
+            "name": "Введение в методику жиповальни",
+            "places": [
+                1
+            ],
+            "starts_at": "18:15:00",
+            "teachers": [
+                1
+            ],
+            "type": "ЛК"
+        },
+        "model": "main.schedule",
+        "pk": 1
     },
-    "model": "main.group",
-    "pk": "2"
-  }
+    {
+        "fields": {
+            "day": 1,
+            "month": 1,
+            "week": 1,
+            "week_day": "Ср"
+        },
+        "model": "main.day",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "firstname": "Авдеев",
+            "lastname": "Илья",
+            "middlename": "Михайлович",
+            "staff": null
+        },
+        "model": "main.teacher",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "building": "Жип.",
+            "number": "Я-1031223"
+        },
+        "model": "main.place",
+        "pk": 1
+    }
 ]

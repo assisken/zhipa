@@ -1,0 +1,108 @@
+.auth-heading {
+    padding: 15px;
+    font-family: "Open Sans Light";
+    font-weight: 400;
+    font-size: 1.8rem;
+    color: #444;
+    margin: 0;
+}
+
+.auth-input-group {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    padding: 15px;
+}
+
+.auth-input-group > form > * {
+    margin-bottom: 20px;
+}
+
+.auth-label {
+    font-size: .8rem;
+    color: #666;
+}
+
+.auth-input {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dedede;
+    border-radius: 50px;
+    transition: .1s linear;
+}
+
+.auth-input:focus, .auth-input:active {
+    outline: none;
+    border: 1px solid #09f;
+}
+
+.auth-input:hover {
+    outline: none;
+    border: 1px solid #09f;
+}
+
+.auth-link {
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: none;
+}
+
+.auth-button {
+    font-size: 1.1rem;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 50px;
+    border: 1px solid #09f;
+    background-color: #09f;
+    transition: .1s linear;
+}
+
+.auth-button:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #0cf;
+    border-color: #0cf;
+}
+
+.auth-button:focus, .auth-button:active {
+    outline: none;
+    color: #fff;
+    background-color: #06c;
+    border-color: #06c;
+}
+
+.auth-button-outline {
+    background-color: #fff;
+    color: #09f;
+}
+
+.alert {
+    font-weight: lighter;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.alert-danger {
+    color: tomato;
+    background-color: rgba(255, 0, 0, 0.05);
+}
+
+.alert-success {
+    color: green;
+    background-color: rgba(0, 255, 0, 0.05);
+}
+
+.alert-warning {
+    color: grey;
+    background-color: rgba(255, 255, 0, 0.05);
+}

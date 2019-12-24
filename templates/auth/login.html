@@ -2,37 +2,40 @@
 
 {% block content %}
 
-    <div class="about animation-fade">
-        <h1 class="padding-large center">Вход на сайт</h1>
-		<div class="panel left">
+    <div class="about">
+        <h2 class="center auth-heading animation-fade">Вход на сайт</h2>
+		<div class="">
             {% if form.errors %}
-                <p class="middle font-large justify">
-                    Либо нет такого пользователя, либо пароль неверный. Пожалуйста, введите их корректно.
+                <p class="middle center">
+                    Неверное имя пользователя или пароль
                 </p>
             {% endif %}
             {% if next %}
                 {% if user and user.is_authenticated %}
-                    <p class="middle font-large justify">
-                        У вас недостаточные права. Для продолжения войдите в аккаунт, у которого эти права есть
+                    <p class="middle center">
+                        У вас недостаточно прав.
                     </p>
-                {% else %}
-                    <p class="middle font-large justify">Для продолжения необходимо войти.</p>
                 {% endif %}
             {% endif %}
 
         </div>
 	</div>
 
-    <form method="post" action="{{ url('login') }}">
-        {{ csrf_input }}
-        <label class="middle font-large justify">Имя пользователя:</label>
-        {{ form.username }}
-        {{ form.password.label_tag() }}
-        {{ form.password }}
-
-        <input type="submit" value="login">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+    
+    <div class="auth-input-group animation-delay-2 animation-fade">
+        <form method="post" action="{{ url('login') }}">
+            {{ csrf_input }}
+            <label class="auth-label" for="id_username">Имя пользователя:</label>
+            <input class="auth-input" type="text" name="username" autofocus="" required="" id="id_username" autocomplete="username">
+            <label class="auth-label" for="id_password">Пароль:</label>
+            <input class="auth-input" type="password" name="password" required="" id="id_password" autocomplete="current-password">
+            <input class="auth-button" type="submit" value="войти">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+        <a class="auth-link" href="/auth/register"><button class="auth-button auth-button-outline">регистрация</button></a>
+    </div>
+    
+    
 
     {# Assumes you setup the password_reset view in your URLconf #}
 {#    <p><a href="{{ url('password_reset') }}">Lost password?</a></p>#}

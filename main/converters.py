@@ -1,5 +1,5 @@
 class FourDigitYearConverter:
-    regex = '[0-9]{4}'
+    regex = r'[0-9]{4}'
 
     def to_python(self, value):
         return int(value)
@@ -9,10 +9,20 @@ class FourDigitYearConverter:
 
 
 class TwoDigitConverter:
-    regex = '[0-9]{2}'
+    regex = r'[0-9]{2}'
 
     def to_python(self, value):
         return int(value)
 
     def to_url(self, value):
         return '%02s' % value
+
+
+class ActivateCodeConverter:
+    regex = r'[-:\w]+'
+
+    def to_python(self, value):
+        return value
+
+    def to_url(self, value):
+        return value

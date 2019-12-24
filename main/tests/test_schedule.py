@@ -1,10 +1,11 @@
+import locale
 from datetime import date
 from typing import List, Dict, Any
 
 from django.test import TestCase
 from django.urls import reverse
 
-from main.models import Group
+from main.models import Group, Day, Schedule
 from main.views.timetable_view import date_block
 from utils.date import TeachTime
 
@@ -32,31 +33,28 @@ class ScheduleTest(TestCase):
         for group in self.groups:
             url = self.url_pattern.format(url=reverse('timetable'), group=group.name, week=week_with_schedule)
             resp = self.client.get(url)
-            week = group.schedule[week_with_schedule]
-
+            schedule = Schedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
+                                       .filter(groups__exact=group)
             self.assertContains(resp, '&emsp; {} &emsp;'.format(group.name),
                                 msg_prefix='Не отображается имя группы, либо не та страница')
+            self.assertGreater(len(schedule), 0)
 
-            for day in week:
-                date: str = day[0]
-                day_name: str = day[1]
-                items: List[Any] = day[2]
-                self.assertContains(resp, date, msg_prefix=msg)
-                self.assertContains(resp, day_name, msg_prefix=msg)
-                for item in items:
-                    time: str = item[0]
-                    abbrev: str = item[1]
-                    item_name: str = item[2]
-                    place: Dict[str, str] = item[3]['place']
-                    auditory: Dict[str, str] = item[3]['auditory']
-                    teachers: List[str] = item[4]
+            for item in schedule:
+                item: Schedule
+                starts_at = item.starts_at.strftime('%H:%M')
+                ends_at = item.ends_at.strftime('%H:%M')
+                teachers = ', '.join(map(str, item.teachers.all()))
+                places = ', '.join(map(str, item.places.all()))
 
-                    self.assertContains(resp, time, msg_prefix=msg)
-                    self.assertContains(resp, abbrev, msg_prefix=msg)
-                    self.assertContains(resp, item_name, msg_prefix=msg)
-                    self.assertContains(resp, place, msg_prefix=msg)
-                    self.assertContains(resp, auditory, msg_prefix=msg)
-                    self.assertContains(resp, ' '.join(teachers), msg_prefix=msg)
+                self.assertContains(resp, item.day.day, msg_prefix=msg)
+                self.assertContains(resp, item.day.month, msg_prefix=msg)
+                self.assertContains(resp, item.day.week_day, msg_prefix=msg)
+                self.assertContains(resp, starts_at, msg_prefix=msg)
+                self.assertContains(resp, ends_at, msg_prefix=msg)
+                self.assertContains(resp, item.name, msg_prefix=msg)
+                self.assertContains(resp, item.type, msg_prefix=msg)
+                self.assertContains(resp, teachers, msg_prefix=msg)
+                self.assertContains(resp, places, msg_prefix=msg)
 
     def test_date_block(self):
         res = date_block(TeachTime(date(2012, 9, 3)))
@@ -64,11 +62,11 @@ class ScheduleTest(TestCase):
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
         res = date_block(TeachTime(date(2016, 12, 31)))
-        expected = {'text': 'Начало учёбы', 'num': 9, 'desc': 'февраля'}
+        expected = {'text': 'Учёба продолжается', 'num': 18, 'desc': 'неделя'}
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
         res = date_block(TeachTime(date(2016, 1, 1)))
-        expected = {'text': 'Начало учёбы', 'num': 9, 'desc': 'февраля'}
+        expected = {'text': 'Учёба продолжается', 'num': 18, 'desc': 'неделя'}
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
         res = date_block(TeachTime(date(2019, 2, 14)))
@@ -76,5 +74,5 @@ class ScheduleTest(TestCase):
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
 
         res = date_block(TeachTime(date(2027, 7, 1)))
-        expected = {'text': 'Начало учёбы', 'num': 1, 'desc': 'сентября'}
+        expected = {'text': 'Начало учёбы', 'num': 1, 'desc': locale.nl_langinfo(locale.MON_9)}
         self.assertDictEqual(expected, res, msg='Dicts not equal. ')
