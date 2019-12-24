@@ -160,7 +160,6 @@ p {
 a {
   color: #09f;
   text-decoration: none;
-  margin: 0 5px 0 0;
 }
 a:hover {
   color: #0cf;
@@ -173,7 +172,6 @@ ol,
 ul {
   padding: 0 20px 0 30px;
   list-style-position: inside;
-  margin: 0 0 10px;
 }
 ol li,
 ul li {

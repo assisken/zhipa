@@ -119,6 +119,8 @@ dmypy.json
 .idea/
 static/images
 static/media
+static/files
+static/news
 
 .vscode/launch.json
 
