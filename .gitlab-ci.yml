@@ -41,5 +41,5 @@ deploy:
   only:
     - master
   script:
-    - pip install -r requirements-deploy.txt
+    - pip install -qr requirements-deploy.txt
     - fab deploy
