@@ -22,27 +22,26 @@
             <h1 class="margin-large">Расписания занятий</h1>
             <div class="stageblock spanel flatbox padding-large">
                 <form class="inline">
-                    <select id="forms" name="form" onchange="this.form.submit()">
-                        <option value="" selected disabled>Форма обучения</option>
-                        {% for form in study_forms %}
-                            <option value="{{ form[0] }}" selected>{{ form[0] }}</option>
-                        {% endfor %}
-                    </select>
                     <select id="groups" name="group" onchange="this.form.submit()">
                         <option value="" selected disabled>Группа</option>
                         {% for group in groups %}
                             <option value="{{ group }}">{{ group.name }}</option>
                         {% endfor %}
                     </select>
-                    <select id="weeks" name="week" onchange="this.form.submit()">
-                        <option value="" selected disabled>Неделя</option>
-                        {% for week in range(weeks) %}
-                            <option value="{{ week + 1 }}">{{ week + 1 }}</option>
-                        {% endfor %}
-
-                    </select>
+                    {% if show_weeks %}
+                        <select id="weeks" name="week" onchange="this.form.submit()">
+                            <option value="" selected disabled>Неделя</option>
+                            {% for week in range(weeks) %}
+                                <option value="{{ week + 1 }}">{{ week + 1 }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
                 </form>
-                <h2>{{ course }} Курс &emsp; {{ group_name }} &emsp; {{ week }} неделя</h2>
+                {% if show_weeks %}
+                    <h2>{{ course }} Курс &emsp; {{ group_name }} &emsp; {{ week }} неделя</h2>
+                {% else %}
+                    <h2>{{ course }} Курс &emsp; {{ group_name }}</h2>
+                {% endif %}
             </div>
             <div>
                 <table border="1" class="timetable table-responsive">
@@ -57,14 +56,26 @@
                     </tr>
                     {% for day in schedule.keys() %}
                         <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
-                            <td rowspan="{{ schedule[day] | length + 1 }}">
-                                {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
-                            </td>
+                            {% if day %}
+                                <td rowspan="{{ schedule[day] | length + 1 }}">
+                                    {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
+                                </td>
+                            {% else %}
+                                <td rowspan="{{ schedule[day] | length + 1 }}">День по<br>договорённости<br>с
+                                    преподавателем
+                                </td>
+                            {% endif %}
                             {% for item in schedule[day] %}
                                 <tr>
-                                    <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
-                                        по {{ item.ends_at.strftime('%H:%M') }}</td>
-                                    <td>{{ item.name }} {{ item.type }}<br>
+                                    {% if item.starts_at and item.ends_at %}
+                                        <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
+                                            по {{ item.ends_at.strftime('%H:%M') }}</td>
+                                    {% elif item.starts_at %}
+                                        <td>{{ item.starts_at.strftime('%H:%M') }}</td>
+                                    {% else %}
+                                        <td>Время по<br>договорённости<br>с преподавателем</td>
+                                    {% endif %}
+                                    <td>{{ item.name }} {{ item.item_type }}<br>
                                         {{ item.teachers.all() | join(", ") }}
                                     </td>
                                     <td>{{ item.places.all() | join('<br>') | safe }}</td>
@@ -72,7 +83,11 @@
                             {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
+                            {% if session %}
+                                <td colspan="4">На данный момент расписание отсутствует</td>
+                            {% else %}
+                                <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </table>
@@ -82,23 +97,10 @@
 
     <script type="text/javascript">
 	$(function() {
-	    var forms = $('#forms');
 	    var groups = $('#groups');
 	    var weeks = $('#weeks');
-	    forms.prop('value', "{{ form }}").selectric('refresh');
 	    weeks.prop('value', "{{ week }}").selectric('refresh');
         groups.prop('value', "{{ group_name }}").selectric('refresh');
-
-        forms.selectric({
-        	optionsItemBuilder: function(itemData) {
-        		if (itemData.value === "{{ form }}"){
-        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
-        		}
-        		else{
-        			return itemData.text;
-        		}
-		    }
-        });
 
         groups.selectric({
         	optionsItemBuilder: function(itemData) {

@@ -10,39 +10,27 @@ from main.models import Publication
 
 class SeveralPublicationsView(TemplateView):
     template_name = 'admin/publications/add_couple.html'
+    render = {
+        'form': SeveralPublicationsForm(),
+        'opts': Publication._meta,
+        'change': False,
+        'is_popup': False,
+        'save_as': True,
+        'has_delete_permission': False,
+        'has_add_permission': True,
+        'has_change_permission': False,
+        'add': True,
+        'has_view_permission': True,
+        'has_editable_inline_admin_formsets': True,
+    }
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {
-            'form': SeveralPublicationsForm(),
-            'opts': Publication._meta,
-            'change': False,
-            'is_popup': False,
-            'save_as': True,
-            'has_delete_permission': False,
-            'has_add_permission': True,
-            'has_change_permission': False,
-            'add': True,
-            'has_view_permission': True,
-            'has_editable_inline_admin_formsets': True,
-        })
+        return render(request, self.template_name, self.render)
 
     def post(self, request, *args, **kwargs):
         form = SeveralPublicationsForm(request.POST)
         if not form.is_valid():
-            return render(request, self.template_name, {
-                'form': form,
-                'errors': form.errors,
-                'opts': Publication._meta,
-                'change': False,
-                'is_popup': False,
-                'save_as': True,
-                'has_delete_permission': False,
-                'has_add_permission': True,
-                'has_change_permission': False,
-                'add': True,
-                'has_view_permission': True,
-                'has_editable_inline_admin_formsets': True,
-            })
+            return render(request, self.template_name, self.render)
         data = form.cleaned_data['couple_items'].split('\n')
 
         for publication in data:

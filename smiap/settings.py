@@ -47,7 +47,7 @@ DB_PASSWORD = os.getenv('POSTGRES_PASSWORD')
 # App specific settings
 BRAND = os.getenv('BRAND')
 LMS_URL = os.getenv('LMS_URL')
-LMS_PASSWORD = os.getenv('LMS_PASSWORD')
+LMS_PASSWORD = os.getenv('LMS_PASS')
 DEPARTMENT = os.getenv('DEPARTMENT')
 
 # Tests settings

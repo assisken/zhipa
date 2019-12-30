@@ -1,6 +1,7 @@
 from django.urls import path, register_converter
 from django.views.generic import TemplateView, RedirectView
 
+from main.models import FullTimeSchedule, ExtramuralSchedule, Schedule
 from . import converters
 from .views import *
 
@@ -27,8 +28,18 @@ urlpatterns = [
     path('materials/publications', PublicationView.as_view(), name='publications'),
 
     # Timetable
-    path('students/timetable', GroupTimetableView.as_view(), name='timetable'),
-    path('students/timetable/extramural', ExtramuralTimetableView.as_view(), name='timetable-extramural'),
+    path('students/timetable',
+         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.TEACHING),
+         name='timetable'),
+    path('students/timetable/extramural',
+         GroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.TEACHING),
+         name='timetable-extramural'),
+    path('students/session',
+         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.SESSION),
+         name='timetable-session'),
+    path('students/timetable/ex-session',
+         GroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.SESSION),
+         name='timetable-extramural-session'),
 
     path('materials/news', NewsListView.as_view(), name='news-list-begin'),
     path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),

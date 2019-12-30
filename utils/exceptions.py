@@ -4,3 +4,7 @@ class LmsDoesNotRespondError(Exception):
 
 class LmsRespondsAnEmptyListError(Exception):
     pass
+
+
+class GroupListIsEmpty(Exception):
+    pass
