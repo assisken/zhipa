@@ -26,7 +26,8 @@
             "teachers": [
                 1
             ],
-            "type": "ЛК"
+            "item_type": "ЛК",
+            "schedule_type": "Учебн."
         },
         "model": "main.schedule",
         "pk": 1

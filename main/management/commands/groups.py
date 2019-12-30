@@ -2,10 +2,9 @@ from django.core.management import BaseCommand, CommandParser
 from termcolor import cprint
 
 from main.management.scripts.groups import fetch_groups, fetch_groups_from_csv
-from main.management.scripts.schedule import create_schedule_for
-from main.models import Group
+from main.management.scripts.schedule import ScheduleType, ScheduleParser
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
-from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
+from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError, GroupListIsEmpty
 
 
 class Command(BaseCommand):
@@ -24,10 +23,14 @@ class Command(BaseCommand):
             help='Get schedule from mai'
         )
         parser.add_argument(
+            '--session',
+            action='store_true',
+            help='Get session schedule from mai'
+        )
+        parser.add_argument(
             '--file',
             action='store',
-            help='Specify file name. Default is `groups.csv`',
-            default='groups.csv'
+            help='Specify file name. Default is `groups.csv`'
         )
         parser.add_argument(
             '--force',
@@ -37,6 +40,15 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        force: bool = options['force']
+
+        if options['schedule']:
+            schedule_type = ScheduleType.TEACH
+        elif options['session']:
+            schedule_type = ScheduleType.SESSION
+        else:
+            schedule_type = ScheduleType.NONE
+
         if options['lms']:
             cprint('Adding student groups...', attrs=['bold', 'underline'])
             try:
@@ -51,19 +63,17 @@ class Command(BaseCommand):
                 print(e.args[0])
             else:
                 print('Done!')
-
-        elif options['schedule']:
-            cprint('Parsing schedule for student groups...', attrs=['bold', 'underline'])
-            groups = Group.objects.all()
-            if groups.count() == 0:
-                cprint('There is no any student group.', 'red', attrs=['bold'])
-                print('Please, check that they got from lms.')
+            finally:
                 return
-            for group in groups:
-                print('Parsing group {}...'.format(group.name))
-                create_schedule_for(group.name, options['force'])
-            print('Done!')
 
         elif options['file']:
             cprint('Adding student groups from csv file...', attrs=['bold', 'underline'])
             fetch_groups_from_csv(options.get('file'))
+            return
+
+        parser = ScheduleParser(schedule_type, force)
+        try:
+            parser.parse()
+        except GroupListIsEmpty:
+            cprint('There is no any student group.', 'red', attrs=['bold'])
+            print('Please, check that they got from lms.')
