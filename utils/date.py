@@ -2,6 +2,10 @@ from datetime import date, timedelta
 from enum import Flag, auto, Enum
 
 
+def get_week(d: date) -> int:
+    return d.isocalendar()[1]
+
+
 class TeachState(Flag):
     AUTUMN_SEMESTER = auto()
     WINTER_HOLIDAYS = auto()
@@ -63,7 +67,14 @@ class TeachTime:
 
     @property
     def week(self) -> int:
-        return self.now.isocalendar()[1] - self.start.isocalendar()[1] + 1
+        current_week = get_week(self.now)
+        start_week = get_week(self.start)
+        if current_week > start_week:
+            return current_week - start_week + 1
+        else:
+            last_week = get_week(self.now - timedelta(weeks=current_week))
+            weeks_last_year = last_week - start_week
+            return weeks_last_year + current_week + 1
 
     def __teach_time(self, now: date) -> TeachState:
         if self.__autumn_start1 <= now < self.__autumn_end:

@@ -4,7 +4,7 @@ from typing import Iterable
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, Schedule, Teacher
+from main.models import Group, FullTimeSchedule, Teacher
 
 
 def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
@@ -18,7 +18,7 @@ def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
         sh.cell(1, col, value=group.name)
 
         for week in range(17, from_week - 1, -1):
-            for item in Schedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
+            for item in FullTimeSchedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
                 day = item.day
                 item_type = item.type
                 name = item.name
@@ -58,11 +58,11 @@ def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
         sh.cell(1, col, value=str(teacher))
 
         for week in range(17, 0, -1):
-            for item in Schedule.objects.filter(teachers__exact=teacher, day__week=week):
-                item: Schedule
+            for item in FullTimeSchedule.objects.filter(teachers__exact=teacher, day__week=week):
+                item: FullTimeSchedule
                 day = item.day
                 groups = ', '.join(group.name for group in item.groups.only('name'))
-                item_type = item.type
+                item_type = item.item_type
                 name = item.name
                 if not name:
                     continue

@@ -1,11 +1,10 @@
 import locale
 from datetime import date
-from typing import List, Dict, Any
 
 from django.test import TestCase
 from django.urls import reverse
 
-from main.models import Group, Day, Schedule
+from main.models import Group, FullTimeSchedule
 from main.views.timetable_view import date_block
 from utils.date import TeachTime
 
@@ -33,14 +32,14 @@ class ScheduleTest(TestCase):
         for group in self.groups:
             url = self.url_pattern.format(url=reverse('timetable'), group=group.name, week=week_with_schedule)
             resp = self.client.get(url)
-            schedule = Schedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
-                                       .filter(groups__exact=group)
+            schedule = FullTimeSchedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
+                .filter(groups__exact=group)
             self.assertContains(resp, '&emsp; {} &emsp;'.format(group.name),
                                 msg_prefix='Не отображается имя группы, либо не та страница')
             self.assertGreater(len(schedule), 0)
 
             for item in schedule:
-                item: Schedule
+                item: FullTimeSchedule
                 starts_at = item.starts_at.strftime('%H:%M')
                 ends_at = item.ends_at.strftime('%H:%M')
                 teachers = ', '.join(map(str, item.teachers.all()))
@@ -52,7 +51,7 @@ class ScheduleTest(TestCase):
                 self.assertContains(resp, starts_at, msg_prefix=msg)
                 self.assertContains(resp, ends_at, msg_prefix=msg)
                 self.assertContains(resp, item.name, msg_prefix=msg)
-                self.assertContains(resp, item.type, msg_prefix=msg)
+                self.assertContains(resp, item.item_type, msg_prefix=msg)
                 self.assertContains(resp, teachers, msg_prefix=msg)
                 self.assertContains(resp, places, msg_prefix=msg)
 

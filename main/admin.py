@@ -9,7 +9,7 @@ from main.models import *
 from main.types import Degree
 from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
 from main.views.admin.couple_publications import SeveralPublicationsView
-from main.views.admin.get_schedule import GetGroupScheduleView
+from main.views.admin.get_schedule_xlsx import GetGroupScheduleXlsxView
 
 
 @admin.register(Staff)
@@ -43,8 +43,8 @@ class GroupCourseFilter(admin.SimpleListFilter):
     parameter_name = 'courses'
 
     def lookups(self, request, model_admin):
-        courses = Group.objects.distinct('course').only('course')
-        return ((c.course, f'{c.course} курс') for c in courses)
+        courses = Group.objects.distinct('degree', 'course').only('course')
+        return sorted({(c.course, f'{c.course} курс') for c in courses})
 
     def queryset(self, request, queryset: QuerySet):
         if self.value():
@@ -56,7 +56,6 @@ class GroupCourseFilter(admin.SimpleListFilter):
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_per_page = 20
-    ordering = ('degree', 'course', '-study_form', 'name')
     list_display = ('name', 'study_form', 'get_degree', 'semester', 'course', 'schedule_version')
     list_filter = ('study_form', GroupCourseFilter, 'schedule_version')
 
@@ -105,7 +104,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 
 class ItemInline(admin.TabularInline):
-    model = Schedule
+    model = FullTimeSchedule
     extra = 1
 
 
@@ -116,28 +115,48 @@ class DayAdmin(admin.ModelAdmin):
     list_filter = ('week',)
 
 
-@admin.register(Schedule)
-class ScheduleAdmin(admin.ModelAdmin):
+class FullTimeGroupFilter(admin.SimpleListFilter):
+    title = 'Groups'
+    parameter_name = 'group'
+    study_form = Group.FULL_TIME
+
+    def lookups(self, request, model_admin):
+        groups = Group.objects.filter(study_form=self.study_form)
+        return ((group.name, group.name) for group in groups)
+
+    def queryset(self, request, queryset: QuerySet):
+        if self.value():
+            return queryset.filter(groups__name=self.value())
+
+
+@admin.register(FullTimeSchedule)
+class FullTimeScheduleAdmin(admin.ModelAdmin):
     change_list_template = 'admin/schedule/list.html'
     ordering = ('day', 'starts_at', 'ends_at')
-    list_display = ('day', 'starts_at', 'ends_at', 'type', 'name')
-    list_filter = ('groups', 'type', 'starts_at', 'ends_at')
+    list_display = ('day', 'starts_at', 'ends_at', 'item_type', 'schedule_type', 'name')
+    list_filter = (FullTimeGroupFilter, 'item_type', 'schedule_type', 'starts_at', 'ends_at')
     filter_horizontal = ('groups', 'teachers', 'places')
 
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('get-group-schedule/', GetGroupScheduleView.as_view()),
+            path('get-group-schedule/', GetGroupScheduleXlsxView.as_view()),
             # path('get-teacher-schedule/', AddExtramuralSchedule.as_view())
         ]
         return my_urls + urls
 
 
+class ExtramuralGroupFilter(FullTimeGroupFilter):
+    study_form = Group.EXTRAMURAL
+
+
 @admin.register(ExtramuralSchedule)
 class ExtramuralScheduleAdmin(admin.ModelAdmin):
     change_list_template = 'admin/extramural_schedule/list.html'
-    list_display = ('days', 'times', 'item', 'teachers')
-    filter_horizontal = ('groups',)
+    ordering = FullTimeScheduleAdmin.ordering
+    list_display = FullTimeScheduleAdmin.list_display
+    list_filter = (ExtramuralGroupFilter, 'item_type', 'schedule_type', 'starts_at', 'ends_at')
+    filter_horizontal = FullTimeScheduleAdmin.filter_horizontal
 
     def get_urls(self):
         urls = super().get_urls()

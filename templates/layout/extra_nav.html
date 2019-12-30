@@ -1,5 +1,5 @@
 <nav class="subnav-horizontal center middle">
-    {% for item in NAV_ITEMS %}
+    {% for key, item in NAV_ITEMS.items() %}
         {% if item['id'] in ACTIVE_ITEMS %}
     		{% set delay = 1 %}
             {% for subitem in item['subitems'] %}
