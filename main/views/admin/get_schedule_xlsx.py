@@ -6,44 +6,37 @@ from django.views.generic import TemplateView
 
 from main.forms import GetGroupScheduleForm
 from main.management.scripts.generate import gen_groups_table
-from main.models import Schedule
+from main.models import FullTimeSchedule
 
 
-class GetGroupScheduleView(TemplateView):
+class GetGroupScheduleXlsxView(TemplateView):
     template_name = 'admin/schedule/get_schedule.html'
+    render = {
+        'form': GetGroupScheduleForm(),
+        'opts': FullTimeSchedule._meta,
+        'change': False,
+        'is_popup': False,
+        'save_as': True,
+        'has_delete_permission': False,
+        'has_add_permission': True,
+        'has_change_permission': False,
+        'add': True,
+        'has_view_permission': True,
+        'has_editable_inline_admin_formsets': True,
+    }
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {
-            'form': GetGroupScheduleForm(),
-            'opts': Schedule._meta,
-            'change': False,
-            'is_popup': False,
-            'save_as': True,
-            'has_delete_permission': False,
-            'has_add_permission': True,
-            'has_change_permission': False,
-            'add': True,
-            'has_view_permission': True,
-            'has_editable_inline_admin_formsets': True,
-        })
+        return render(request, self.template_name, self.render)
 
     def post(self, request, *args, **kwargs):
         form = GetGroupScheduleForm(request.POST)
         if not form.is_valid():
-            return render(request, self.template_name, {
+            self.render.update({
                 'form': form,
                 'errors': form.errors,
-                'opts': Schedule._meta,
-                'change': False,
-                'is_popup': False,
-                'save_as': True,
-                'has_delete_permission': False,
-                'has_add_permission': True,
-                'has_change_permission': False,
-                'add': True,
-                'has_view_permission': True,
-                'has_editable_inline_admin_formsets': True,
+                'opts': FullTimeSchedule._meta,
             })
+            return render(request, self.template_name, self.render)
 
         groups = form.cleaned_data['groups']
         from_week = form.cleaned_data['from_week']

@@ -1,40 +1,109 @@
+from enum import Enum, auto
+from logging import error
 from time import sleep
 from typing import List, Tuple, Optional, Generator
 from urllib.parse import quote
 
 from lxml import html
 from lxml.html import HtmlElement
-from requests import get
+from requests import get, HTTPError
+from termcolor import cprint
 
-from main.models import Day, Schedule, Teacher, Group, Place
+from main.models import Day, FullTimeSchedule, Teacher, Group, Place
+from utils.exceptions import GroupListIsEmpty
 
 
-def create_schedule_for(group_name: str, force: bool):
-    url = 'https://mai.ru/education/schedule/detail.php?group={group}&week={week}'
+class ScheduleType(Enum):
+    NONE = auto()
+    TEACH = auto()
+    SESSION = auto()
 
-    group = Group.objects.get(name=group_name)
-    version = get_version(url.format(group=quote(group_name), week=1))
-    if not force and group.schedule_version == version:
-        return
 
-    group.schedule_version = version
-    group.save()
+class ScheduleParser:
+    teach_url = 'https://mai.ru/education/schedule/detail.php?group={group}&week={week}'
+    session_url = 'https://mai.ru/education/schedule/session.php?group={group}'
 
-    for week in range(1, 19):
-        resp = get(url.format(group=quote(group_name), week=week))
-        if resp.status_code != 200:
-            print('Error. Received not 200 code.')
-            continue
+    def __init__(self, schedule_type: ScheduleType, force: bool = False):
+        expected_types = [ScheduleType.TEACH, ScheduleType.SESSION]
+        if schedule_type not in expected_types:
+            raise KeyError(f'Wrong ScheduleType, expected: {expected_types}, got {self.type}')
 
+        self.type = schedule_type
+        self.force = force
+
+        if schedule_type == ScheduleType.TEACH:
+            self.schedule_type = FullTimeSchedule.TEACHING
+            self.url = self.teach_url
+        elif schedule_type == ScheduleType.SESSION:
+            self.schedule_type = FullTimeSchedule.SESSION
+            self.url = self.session_url
+
+    def parse(self) -> None:
+        cprint(f'Parsing schedule for student groups...', attrs=['bold', 'underline'])
+        groups = Group.objects.filter(study_form=Group.FULL_TIME)
+
+        if groups.count() == 0:
+            raise GroupListIsEmpty()
+
+        for group in groups:
+            if self.__version_is_equal(group):
+                continue
+            print('Parsing group {}...'.format(group.name))
+            if self.type == ScheduleType.TEACH:
+                self.__parse_teach(group)
+            elif self.type == ScheduleType.SESSION:
+                self.__parse_session(group)
+        print('Done!')
+
+    def __version_is_equal(self, group: Group):
+        try:
+            version = get_version(self.url.format(group=quote(group.name), week=1))
+        except HTTPError as e:
+            error(f'Cant get version of schedule at {self.url}')
+            raise e
+
+        return not self.force and group.schedule_version == version
+
+    def __parse_teach(self, group: Group) -> None:
+        for week in range(1, 19):
+            try:
+                self.__create_schedule_instance(group, week)
+            except HTTPError as e:
+                self.__handle_http_error(e, group=group.name, week=week)
+
+    def __parse_session(self, group: Group):
+        try:
+            self.__create_schedule_instance(group)
+        except HTTPError as e:
+            self.__handle_http_error(e, group=group.name)
+
+    @staticmethod
+    def __handle_http_error(e: HTTPError, **context):
+        group_name = context['group']
+        week = context['week']
+        error(f'Caught {e.response.code} at group {group_name} and week {week}')
+
+    def __create_schedule_instance(self, group: Group, week: Optional[int] = None):
+        resp = get(self.url.format(group=quote(group.name), week=week))
+        if not resp.ok:
+            resp.raise_for_status()
         body = resp.content.decode('utf8')
 
         for day, month, week_day, items in parse_day(body):
             day, _ = Day.objects.get_or_create(day=day, month=month, week_day=week_day, week=week)
-
-            for time, item_type, place_list, name, teachers in parse_items(items):
+            for time, item_type_resp, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
-                item, _ = Schedule.objects.get_or_create(starts_at=start, ends_at=end, type=item_type,
-                                                         name=name, day=day)
+
+                res_item_type = None
+                for item_type_db, item_type_human in FullTimeSchedule.ITEM_TYPES:
+                    if item_type_human == item_type_resp:
+                        res_item_type = item_type_db
+                        break
+                if not res_item_type:
+                    raise KeyError(f'Item type not found for {item_type_resp}')
+
+                item, _ = FullTimeSchedule.objects.get_or_create(starts_at=start, ends_at=end, item_type=res_item_type,
+                                                                 name=name, day=day, schedule_type=self.schedule_type)
                 item.groups.add(group.id)
 
                 for place in place_list:
@@ -52,10 +121,8 @@ def create_schedule_for(group_name: str, force: bool):
 
 def get_version(url: str) -> Optional[str]:
     resp = get(url)
-
-    if resp.status_code != 200:
-        print('Error. Received not 200 code.')
-        return None
+    if not resp.ok:
+        resp.raise_for_status()
 
     tree = html.fromstring(resp.content)
     sleep(1)

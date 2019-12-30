@@ -3,7 +3,6 @@ from math import ceil
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import F
 from django.urls import reverse
 
 from main.validators import validate_news_content_image_begin_name_with_a_letter
@@ -44,7 +43,7 @@ class News(models.Model):
 
     class Meta:
         verbose_name_plural = 'News'
-        ordering = ['-pk']
+        ordering = ('-pk',)
 
     def __str__(self):
         return self.title
@@ -104,7 +103,10 @@ class Group(models.Model):
         super().save(*args, **kwargs)
 
     def weeks(self) -> int:
-        return max(map(int, self.schedule.keys()))
+        return self.schedule_set.count()
+
+    class Meta:
+        ordering = ('degree', 'course', '-study_form', 'name')
 
 
 def get_profile_image_path(instance: 'Profile', filename: str):
@@ -131,14 +133,7 @@ class Staff(Profile):
 
     class Meta:
         verbose_name_plural = 'Staff'
-        ordering = [F('leader').desc(),
-                    F('lecturer').desc(),
-                    F('hide').asc(),
-                    F('lastname').asc(),
-                    F('firstname').asc(),
-                    F('middlename').asc(),
-                    F('pk').asc()]
-        # proxy = True
+        ordering = ('-leader', 'lecturer', 'hide', 'lastname', 'firstname', 'middlename', 'pk')
 
     def __str__(self):
         return f'{self.lastname} {self.firstname} {self.middlename}'
@@ -175,12 +170,15 @@ class Place(models.Model):
         else:
             return self.building
 
+    class Meta:
+        ordering = ('building', 'number', 'pk')
+
 
 class Day(models.Model):
     day = models.PositiveSmallIntegerField()
     month = models.PositiveSmallIntegerField()
-    week_day = models.CharField(max_length=2)
-    week = models.IntegerField()
+    week_day = models.CharField(max_length=2, blank=True)
+    week = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '{} ({:02d}.{:02d})'.format(self.week_day, self.day, self.month)
@@ -194,36 +192,80 @@ class Schedule(models.Model):
     PRACTICE = 'ПЗ'
     LABWORK = 'ЛР'
     CONTROL = 'КСР'
+    EXAM = 'Экз'
+    EMPTY = ''
 
     ITEM_TYPES = [
         (LECTION, 'ЛК'),
         (PRACTICE, 'ПЗ'),
         (LABWORK, 'ЛР'),
-        (CONTROL, 'КСР')
+        (CONTROL, 'КСР'),
+        (EXAM, 'Экзамен'),
+        (EMPTY, 'Оставить пустым'),
     ]
 
-    starts_at = models.TimeField()
-    ends_at = models.TimeField()
-    type = models.CharField(max_length=3, choices=ITEM_TYPES)
+    TEACHING = 'Учебн.'
+    SESSION = 'Сессия'
+
+    SCHEDULE_TYPES = [
+        (TEACHING, 'Учебное время'),
+        (SESSION, 'Сессия')
+    ]
+
+    starts_at = models.TimeField(null=True, blank=True)
+    ends_at = models.TimeField(null=True, blank=True)
+    day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True, blank=True)
+
+    item_type = models.CharField(max_length=3, choices=ITEM_TYPES, default=EMPTY, blank=True)
+    schedule_type = models.CharField(max_length=6, choices=SCHEDULE_TYPES, default=TEACHING)
     name = models.TextField()
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)
-    day = models.ForeignKey(Day, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Group)
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return f'{self.name} ({self.item_type})'
 
     class Meta:
         verbose_name_plural = 'Schedule'
 
 
-class ExtramuralSchedule(models.Model):
-    groups = models.ManyToManyField(Group)
-    days = models.TextField()
-    times = models.TextField()
-    item = models.TextField()
-    teachers = models.TextField()
-    places = models.TextField()
+class FullTimeScheduleManager(models.Manager):
+    study_form = Group.FULL_TIME
+
+    def get_queryset(self):
+        return super().get_queryset().filter(groups__study_form=self.study_form).distinct()
+
+
+class FullTimeSchedule(Schedule):
+    objects = FullTimeScheduleManager()
+
+    def __str__(self):
+        return f'{self.name} ({self.get_item_type_display()}) [Очное]'
 
     class Meta:
+        proxy = True
+        verbose_name_plural = 'Fulltime Schedule'
+
+
+class ExtramuralScheduleManager(FullTimeScheduleManager):
+    study_form = Group.EXTRAMURAL
+
+    def get_queryset(self):
+        return super().get_queryset().filter(day__week=None, groups__study_form=self.study_form).distinct()
+
+
+class ExtramuralSchedule(FullTimeSchedule):
+    objects = ExtramuralScheduleManager()
+
+    def __str__(self):
+        return f'{self.name} ({self.get_item_type_display()}) [Заочное]'
+
+    class Meta:
+        proxy = True
         verbose_name_plural = 'Extramural Schedule'
 
 

@@ -2,11 +2,10 @@ import re
 
 from django import forms
 from django.contrib.admin import widgets as admin_widgets
-from django.contrib.admin.forms import forms as admin_forms
 from django.core.exceptions import ValidationError
 from django_registration.forms import RegistrationFormUniqueEmail
 
-from main.models import Group, Teacher, News, User
+from main.models import Group, Teacher, News, User, ExtramuralSchedule
 from utils.news_md_to_html import NewsLexer
 
 
@@ -45,16 +44,20 @@ def check_schedule(value: str):
             raise ValidationError(f'Required 5 or more items, got {count} on line {line + 1}')
 
 
-class ExtramuralScheduleForm(admin_forms.Form):
+class ExtramuralScheduleForm(forms.Form):
     error_css_class = 'errors'
     required_css_class = 'required'
-    group = admin_forms.ModelMultipleChoiceField(
-        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL).order_by('semester', 'name'),
+
+    group = forms.ModelMultipleChoiceField(
+        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL),
         required=True,
         widget=admin_widgets.FilteredSelectMultiple(
             verbose_name=Group._meta.verbose_name,
             is_stacked=False
         )
+    )
+    schedule_type = forms.ChoiceField(
+        choices=ExtramuralSchedule.SCHEDULE_TYPES
     )
     schedule = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'vLargeTextField'}),
@@ -62,20 +65,20 @@ class ExtramuralScheduleForm(admin_forms.Form):
     )
 
 
-class GetGroupScheduleForm(admin_forms.Form):
+class GetGroupScheduleForm(forms.Form):
     error_css_class = 'errors'
     required_css_class = 'required'
-    groups = admin_forms.ModelMultipleChoiceField(
+    groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.order_by('-study_form', 'degree', 'semester', 'name'),
         required=True,
     )
-    from_week = admin_forms.IntegerField(min_value=1, max_value=17)
+    from_week = forms.IntegerField(min_value=1, max_value=17)
 
 
-class GetTeacherScheduleForm(admin_forms.Form):
+class GetTeacherScheduleForm(forms.Form):
     error_css_class = 'errors'
     required_css_class = 'required'
-    groups = admin_forms.ModelMultipleChoiceField(
+    groups = forms.ModelMultipleChoiceField(
         queryset=Teacher.objects.all(),
         required=True,
         widget=admin_widgets.FilteredSelectMultiple(
