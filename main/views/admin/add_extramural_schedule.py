@@ -69,26 +69,41 @@ class AddExtramuralSchedule(TemplateView):
             days = tuple(Day.objects.get_or_create(day=day.split('.')[0],
                                                    month=day.split('.')[1],
                                                    week_day='')[0]
+                         if day.lower() not in ('none', 'null', 'nil') else None
                          for day in days_data)
-            starts_at = tuple(start for start in starts_at_data)
+            starts_at = tuple(start
+                              if start.lower() not in ('none', 'null', 'nil') else None
+                              for start in starts_at_data)
             teachers = tuple(Teacher.objects.get_or_create(lastname=teacher.split(' ')[0],
                                                            firstname=teacher.split(' ')[1][0],
                                                            middlename=teacher.split(' ')[1][2])[0]
+                             if teacher.lower() not in ('none', 'null', 'nil') else None
                              for teacher in teachers_data)
             place = Place.objects.get_or_create(building=places_data[1],
                                                 number=places_data[0])[0]
 
             for index, day in enumerate(days):
-                schedule, _ = ExtramuralSchedule.objects.get_or_create(
-                    starts_at=starts_at[index],
-                    ends_at=None,
-                    day=day,
-                    item_type=ExtramuralSchedule.EMPTY,
-                    schedule_type=schedule_type,
-                    name=item,
+                _starts_at = starts_at[index]
+                if _starts_at is None and day is None:
+                    schedule = ExtramuralSchedule.objects.create(
+                        starts_at=starts_at[index],
+                        ends_at=None,
+                        day=day,
+                        item_type=ExtramuralSchedule.EMPTY,
+                        schedule_type=schedule_type,
+                        name=item,
+                    )
+                else:
+                    schedule, _ = ExtramuralSchedule.objects.get_or_create(
+                        starts_at=starts_at[index],
+                        ends_at=None,
+                        day=day,
+                        item_type=ExtramuralSchedule.EMPTY,
+                        schedule_type=schedule_type,
+                        name=item,
                 )
                 schedule.places.set((place,))
-                schedule.groups.set(groups)
+                schedule.groups.add(*groups)
                 schedule.teachers.set(teachers)
             count += 1
 
