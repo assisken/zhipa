@@ -149,6 +149,9 @@ class Teacher(models.Model):
     middlename = models.CharField(max_length=30)
     staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True)
 
+    class Meta:
+        ordering = ('lastname', 'firstname', 'middlename')
+
     def save(self, *args, **kwargs):
         try:
             self.staff = Staff.objects.get(lastname=self.lastname, firstname=self.firstname, middlename=self.middlename)
