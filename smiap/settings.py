@@ -25,9 +25,6 @@ load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-logging.config.fileConfig(os.path.join(BASE_DIR, 'logging.ini'))
-LOG = logging.getLogger('SMiAP')
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -238,3 +235,60 @@ AUTH_USER_EMAIL_UNIQUE = True
 # EMAIL_HOST_PASSWORD = CONFIG.get('email', 'password')
 EMAIL_USE_TLS = False
 # DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')
+
+# LOGGING
+log = logging.getLogger('smiap')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/smiap.log',
+            'formatter': 'verbose'
+        },
+        'debug_file': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename': './logfile.log',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'propagate': True,
+        },
+        'smiap': {
+            'handlers': ['console', 'file'],
+            'propagate': True,
+        }
+    }
+}
