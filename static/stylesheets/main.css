@@ -760,3 +760,7 @@ div.tabContent.hide {
 .container {
   min-height: calc(100vh - 232px - 57px - 80px);
 }
+
+.rotated {
+  transform: rotate(-90deg);
+}
