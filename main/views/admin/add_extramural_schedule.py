@@ -111,7 +111,7 @@ class AddExtramuralSchedule(TemplateView):
                         schedule.teachers.set(teachers)
             except Exception as e:
                 trace = traceback.format_exc()
-                logging.exception(e)
+                logging.error(e)
                 form.add_error('schedule', f'line: "{"||".join(cleaned)}"    {trace}')
                 self.render.update({
                     'form': form,
