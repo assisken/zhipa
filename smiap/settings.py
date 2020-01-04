@@ -238,6 +238,7 @@ EMAIL_USE_TLS = False
 
 # LOGGING
 log = logging.getLogger('smiap')
+log.setLevel(logging.DEBUG)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -261,7 +262,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
