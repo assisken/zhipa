@@ -25,8 +25,6 @@ load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-logging.config.fileConfig(os.path.join(BASE_DIR, 'logging.ini'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -239,6 +237,7 @@ EMAIL_USE_TLS = False
 # DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')
 
 # LOGGING
+log = logging.getLogger('smiap')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -274,16 +273,22 @@ LOGGING = {
             'filename': '/var/log/smiap.log',
             'formatter': 'verbose'
         },
+        'debug_file': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'filename': './logfile.log',
+            'formatter': 'verbose'
+        }
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': True,
         },
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': False,
+        'smiap': {
+            'handlers': ['console', 'file'],
+            'propagate': True,
         }
     }
 }
