@@ -61,8 +61,8 @@
                                     {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
                                 </td>
                             {% else %}
-                                <td rowspan="{{ schedule[day] | length + 1 }}">День по<br>договорённости<br>с
-                                    преподавателем
+                                <td class="rotated" rowspan="{{ schedule[day] | length + 1 }}">
+                                    По&nbsp;договорённости с&nbsp;преподавателем
                                 </td>
                             {% endif %}
                             {% for item in schedule[day] %}
@@ -73,7 +73,7 @@
                                     {% elif item.starts_at %}
                                         <td>{{ item.starts_at.strftime('%H:%M') }}</td>
                                     {% else %}
-                                        <td>Время по<br>договорённости<br>с преподавателем</td>
+                                        <td></td>
                                     {% endif %}
                                     <td>{{ item.name }} {{ item.item_type }}<br>
                                         {{ item.teachers.all() | join(", ") }}
