@@ -91,7 +91,7 @@ class AddExtramuralSchedule(TemplateView):
                 schedule.groups.add(*groups)
                 schedule.teachers.set(_teachers)
             except Exception as e:
-                log.debug(f'Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}')
+                log.error(f'Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}')
                 raise e
 
             count += 1
