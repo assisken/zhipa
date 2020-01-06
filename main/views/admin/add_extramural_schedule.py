@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 
 from main.forms import ExtramuralScheduleForm, DATE_FORMAT, PLACE_FORMAT
 from main.models import ExtramuralSchedule, Day, Place, Teacher
+from smiap.settings import log
 
 
 class AddExtramuralSchedule(TemplateView):
@@ -72,22 +73,26 @@ class AddExtramuralSchedule(TemplateView):
         schedule_type = form.cleaned_data['schedule_type']
 
         for date, time, item, teachers, place in form.schedule_fields():
-            day = self.__create_day(date)
-            _place = self.__get_place(place)
-            _teachers = self.__get_teachers(teachers)
+            try:
+                day = self.__create_day(date)
+                _place = self.__get_place(place)
+                _teachers = self.__get_teachers(teachers)
 
-            schedule, _ = ExtramuralSchedule.objects.get_or_create(
-                starts_at=time,
-                ends_at=None,
-                day=day,
-                item_type=ExtramuralSchedule.EMPTY,
-                schedule_type=schedule_type,
-                name=item
-            )
+                schedule, _ = ExtramuralSchedule.objects.get_or_create(
+                    starts_at=time,
+                    ends_at=None,
+                    day=day,
+                    item_type=ExtramuralSchedule.EMPTY,
+                    schedule_type=schedule_type,
+                    name=item
+                )
 
-            schedule.places.set((_place,))
-            schedule.groups.add(*groups)
-            schedule.teachers.set(_teachers)
+                schedule.places.set((_place,))
+                schedule.groups.add(*groups)
+                schedule.teachers.set(_teachers)
+            except Exception as e:
+                log.debug(f'Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}')
+                raise e
 
             count += 1
 
