@@ -3,6 +3,7 @@ from math import ceil
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Max
 from django.urls import reverse
 
 from main.validators import validate_news_content_image_begin_name_with_a_letter
@@ -104,6 +105,10 @@ class Group(models.Model):
 
     def weeks(self) -> int:
         return self.schedule_set.count()
+
+    @property
+    def study_until_week(self) -> int:
+        return self.schedule_set.aggregate(Max('day__week'))['day__week__max']
 
     class Meta:
         ordering = ('degree', 'course', '-study_form', 'name')
@@ -207,11 +212,11 @@ class Schedule(models.Model):
         (EMPTY, 'Оставить пустым'),
     ]
 
-    TEACHING = 'Учебн.'
+    STUDY = 'Учебн.'
     SESSION = 'Сессия'
 
     SCHEDULE_TYPES = [
-        (TEACHING, 'Учебное время'),
+        (STUDY, 'Учебное время'),
         (SESSION, 'Сессия')
     ]
 
@@ -220,7 +225,7 @@ class Schedule(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True, blank=True)
 
     item_type = models.CharField(max_length=3, choices=ITEM_TYPES, default=EMPTY, blank=True)
-    schedule_type = models.CharField(max_length=6, choices=SCHEDULE_TYPES, default=TEACHING)
+    schedule_type = models.CharField(max_length=6, choices=SCHEDULE_TYPES, default=STUDY)
     name = models.TextField()
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)

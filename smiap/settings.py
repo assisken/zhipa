@@ -71,7 +71,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'django_registration',
+    'django_filters',
+    'rest_framework',
     'main.apps.SmiapConfig',
+    'api.apps.ApiConfig',
+    'api.v1.apps.ApiV1Config'
 ]
 
 MIDDLEWARE = (
@@ -292,4 +296,10 @@ LOGGING = {
             'propagate': True,
         }
     }
+}
+
+# REST Framework config
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }

@@ -32,7 +32,7 @@ class ScheduleParser:
         self.force = force
 
         if schedule_type == ScheduleType.TEACH:
-            self.schedule_type = FullTimeSchedule.TEACHING
+            self.schedule_type = FullTimeSchedule.STUDY
             self.url = self.teach_url
         elif schedule_type == ScheduleType.SESSION:
             self.schedule_type = FullTimeSchedule.SESSION

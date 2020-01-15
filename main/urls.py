@@ -29,10 +29,10 @@ urlpatterns = [
 
     # Timetable
     path('students/timetable',
-         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.TEACHING),
+         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.STUDY),
          name='timetable'),
     path('students/timetable/extramural',
-         GroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.TEACHING),
+         GroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.STUDY),
          name='timetable-extramural'),
     path('students/session',
          GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.SESSION),

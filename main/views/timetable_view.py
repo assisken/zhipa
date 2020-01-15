@@ -8,10 +8,20 @@ from main.models import Group, FullTimeSchedule, Teacher, Schedule
 from utils.date import TeachTime, TeachState
 
 
+def get_items(**kwargs):
+    schedule = kwargs.get('schedule')
+    filter_cond = kwargs.get('filter_cond')
+
+    items = schedule.objects.prefetch_related('day', 'places', 'teachers') \
+        .filter(**filter_cond) \
+        .order_by('day__month', 'day__day', 'starts_at')
+    return items
+
+
 class GroupTimetableView(TemplateView):
     template_name = "materials/timetable/index.html"
     schedule = FullTimeSchedule
-    schedule_type = Schedule.TEACHING
+    schedule_type = Schedule.STUDY
 
     @classmethod
     def as_view(cls, **initkwargs):
@@ -24,25 +34,20 @@ class GroupTimetableView(TemplateView):
 
         groups = Group.objects.only('name').filter(study_form=self.schedule.objects.study_form)
         group_name = request.GET.get('group', groups.first().name)
-        show_weeks = self.schedule_type == Schedule.TEACHING and self.schedule == FullTimeSchedule
-
-        if show_weeks:
-            week = request.GET.get('week', teach_time.week)
-        else:
-            week = None
+        show_weeks = self.schedule_type == Schedule.STUDY and self.schedule == FullTimeSchedule
+        week = request.GET.get('week', teach_time.week) if show_weeks else None
 
         group = Group.objects.get(name=group_name)
-        items = self.schedule.objects.prefetch_related('day', 'places', 'teachers') \
-            .filter(schedule_type=self.schedule_type, day__week=week, groups__exact=group) \
-            .order_by('day__month', 'day__day', 'starts_at')
+        filter_cond = {
+            'schedule_type': self.schedule_type,
+            'day__week': week,
+            'groups__exact': group
+        }
+        items = get_items(schedule=self.schedule, filter_cond=filter_cond)
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)
-
-        if len(groups) > 0:
-            weeks = teach_time.weeks_in_semester
-        else:
-            weeks = 0
+        weeks = teach_time.weeks_in_semester if len(groups) > 0 else 0
 
         return render(request, self.template_name, {
             'groups': groups,
