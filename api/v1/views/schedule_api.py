@@ -19,7 +19,7 @@ class ScheduleAPI(APIView):
             'groups__exact': group
         }
         if self.schedule_type == Schedule.STUDY:
-            filter_cond['day__week__in'] = range(1, group.study_until_week)
+            filter_cond['day__week__in'] = range(1, group.study_until_week + 1)
 
         items = get_items(schedule=Schedule, filter_cond=filter_cond)
         schedule = defaultdict(list)
