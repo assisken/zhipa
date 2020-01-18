@@ -11,6 +11,17 @@ from smiap.settings import DEFAULT_IMG
 from utils.news_md_to_html import MD
 
 
+def get_content(object: News):
+    content = MD(object.text) if object.render_in == object.MARKDOWN else object.text
+
+    attachments = NewsContentImage.objects.filter(news=object)
+    replacing_images = {}
+    for a in attachments:
+        replacing_images[a.name] = staticfiles_storage.url(a.img.url) if a.img else DEFAULT_IMG
+    content = content.format(**replacing_images)
+    return content
+
+
 class NewsListView(ListView):
     model = News
     queryset = News.objects.filter(hidden=False)
@@ -29,15 +40,7 @@ class NewsDetailView(DetailView):
         self.object: News
         context = super().get_context_data(**kwargs)
         context['last_news'] = News.objects.filter(hidden=False)[:5]
-
-        content = MD(self.object.text) if self.object.render_in == self.object.MARKDOWN else self.object.text
-
-        attachments = NewsContentImage.objects.filter(news=self.object)
-        replacing_images = {}
-        for a in attachments:
-            replacing_images[a.name] = staticfiles_storage.url(a.img.url) if a.img else DEFAULT_IMG
-        content = content.format(**replacing_images)
-        context['content'] = content
+        context['content'] = get_content(self.object)
 
         return context
 
@@ -81,7 +84,7 @@ class NewsDateDetailView(DetailView):
     context_object_name = 'news'
     template_name = 'materials/news/index.html'
 
-    def get_object(self, queryset: QuerySet=None):
+    def get_object(self, queryset: QuerySet = None):
         kwargs = {
             'date__year': self.kwargs['year'],
             'date__month': self.kwargs['month'],
@@ -96,5 +99,25 @@ class NewsDateDetailView(DetailView):
         month = self.kwargs['month']
         day = self.kwargs['day']
         url = self.kwargs['url']
+        context['content'] = get_content(self.object)
+
+        return context
+
+
+class NewsUrlDetailView(DetailView):
+    model = News
+    context_object_name = 'news'
+    template_name = 'materials/news/index.html'
+
+    def get_object(self, queryset: QuerySet = None):
+        kwargs = {
+            'url': self.kwargs['url'],
+        }
+        return get_object_or_404(self.model, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        url = self.kwargs['url']
+        context['content'] = get_content(self.object)
 
         return context

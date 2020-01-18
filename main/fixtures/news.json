@@ -21,7 +21,7 @@
       "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "О, нет!",
-      "url": "",
+      "url": null,
       "render_in": "html"
     },
     "model": "main.news",
@@ -35,7 +35,7 @@
       "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Опознан шиншило-генератор!",
-      "url": "",
+      "url": null,
       "render_in": "html"
     },
     "model": "main.news",
@@ -49,7 +49,7 @@
       "cover": "images/news/20190206/cover.jpg",
       "text": "test",
       "title": "Самая секретная новость на свете!",
-      "url": "",
+      "url": null,
       "render_in": "html"
     },
     "model": "main.news",

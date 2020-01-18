@@ -44,6 +44,7 @@ urlpatterns = [
     path('materials/news', NewsListView.as_view(), name='news-list-begin'),
     path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
     path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
+    path('materials/news/<slug:url>', NewsUrlDetailView.as_view(), name='news-url'),
     path('materials/<yyyy:year>', NewsDateListView.as_view(), name='news-date'),
     path('materials/<yyyy:year>/<mm:month>', NewsDateListView.as_view(), name='news-date'),
     path('materials/<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),

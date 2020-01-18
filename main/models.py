@@ -33,7 +33,7 @@ class News(models.Model):
 
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
-    url = models.CharField(max_length=60, blank=True, default='')
+    url = models.CharField(max_length=60, blank=True, default=None, null=True, unique=True)
     cover = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_cover_path)
     description = models.TextField()
     text = models.TextField()
@@ -52,12 +52,9 @@ class News(models.Model):
     def get_url(self):
         if self.url:
             kwargs = {
-                'year': str(self.date.year).zfill(4),
-                'month': str(self.date.month).zfill(2),
-                'day': str(self.date.day).zfill(2),
                 'url': self.url
             }
-            return reverse('news-date-url', kwargs=kwargs)
+            return reverse('news-url', kwargs=kwargs)
         return reverse('news', kwargs={'pk': self.pk})
 
 
