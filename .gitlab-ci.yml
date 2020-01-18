@@ -22,6 +22,12 @@ variables:
   LANGUAGE: en_US:en
 #  LC_ALL: $LANG
 
+  # Ansible variables
+  ANSIBLE_FORKS: 2
+  ANSIBLE_PIPELINING: 'True'
+  ANSIBLE_STRATEGY: 'free'
+  ANSIBLE_HOST_KEY_CHECKING: 'False'
+
 stages:
   - test
   - deploy
@@ -29,7 +35,7 @@ stages:
 test:
   stage: test
   services:
-    - postgres:9.6
+    - postgres:9.4
   script:
     - pip install -qr requirements.txt
     - pip install -qr requirements-test.txt
@@ -41,5 +47,10 @@ deploy:
   only:
     - master
   script:
-    - pip install -qr requirements-deploy.txt
-    - fab deploy
+    - cp "$DEPLOY_KEY" id_rsa
+    - chmod 600 id_rsa
+    - pip install -q ansible
+    - ansible-playbook --syntax-check ansible/playbook.yml -i ansible/hosts
+    - ansible-vault decrypt ansible/vault.yml --vault-password-file="$VAULT_PASSWORD"
+    - ansible-vault decrypt ansible/group_vars/*.yml --vault-password-file="$VAULT_PASSWORD"
+    - ansible-playbook -l all -i ansible/hosts --key-file id_rsa --extra-vars '@ansible/vault.yml' ansible/playbook.yml
