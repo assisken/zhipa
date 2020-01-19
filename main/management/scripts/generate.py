@@ -20,7 +20,7 @@ def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
         for week in range(17, from_week - 1, -1):
             for item in FullTimeSchedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
                 day = item.day
-                item_type = item.type
+                item_type = item.item_type
                 name = item.name
                 if not name:
                     continue
