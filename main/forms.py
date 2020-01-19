@@ -3,7 +3,6 @@ import re
 from django import forms
 from django.contrib.admin import widgets as admin_widgets
 from django.core.exceptions import ValidationError
-from django_registration.forms import RegistrationFormUniqueEmail
 
 from main.models import Group, Teacher, News, User, ExtramuralSchedule
 from utils.news_md_to_html import NewsLexer
@@ -18,18 +17,18 @@ def check_items(value: str):
             raise ValidationError(f'Required 3 or more items, got {count} on line {line + 1}')
 
 
-class SmiapRegistrationForm(RegistrationFormUniqueEmail):
+class GeneralForm(forms.Form):
     error_css_class = 'errors'
     required_css_class = 'required'
 
+
+class SmiapRegistrationForm(GeneralForm):
     class Meta:
         model = User
         fields = ("email", "username",)
 
 
-class SeveralPublicationsForm(forms.Form):
-    error_css_class = 'errors'
-    required_css_class = 'required'
+class SeveralPublicationsForm(GeneralForm):
     couple_items = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'vLargeTextField'}),
         validators=(check_items,)
@@ -111,10 +110,7 @@ def check_place_abbreviation_format(places, **kwargs):
                                   f'Строка {line + 1}, значение: "{place}"')
 
 
-class ExtramuralScheduleForm(forms.Form):
-    error_css_class = 'errors'
-    required_css_class = 'required'
-
+class ExtramuralScheduleForm(GeneralForm):
     group = forms.ModelMultipleChoiceField(
         queryset=Group.objects.filter(study_form=Group.EXTRAMURAL),
         required=True,
@@ -165,9 +161,7 @@ class ExtramuralScheduleForm(forms.Form):
             yield date, time, item, _teachers, place
 
 
-class GetGroupScheduleForm(forms.Form):
-    error_css_class = 'errors'
-    required_css_class = 'required'
+class GetGroupScheduleForm(GeneralForm):
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.order_by('-study_form', 'degree', 'semester', 'name'),
         required=True,
@@ -175,9 +169,15 @@ class GetGroupScheduleForm(forms.Form):
     from_week = forms.IntegerField(min_value=1, max_value=17)
 
 
-class GetTeacherScheduleForm(forms.Form):
-    error_css_class = 'errors'
-    required_css_class = 'required'
+class GetTeacherSessionScheduleForm(GeneralForm):
+    teachers = forms.ModelMultipleChoiceField(
+        queryset=Teacher.objects.all(),
+        required=True,
+        initial=Teacher.objects.filter(staff__isnull=False)
+    )
+
+
+class GetTeacherScheduleForm(GeneralForm):
     groups = forms.ModelMultipleChoiceField(
         queryset=Teacher.objects.all(),
         required=True,
