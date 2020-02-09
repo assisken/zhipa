@@ -69,7 +69,7 @@ class TeachTime:
     def week(self) -> int:
         current_week = get_week(self.now)
         start_week = get_week(self.start)
-        if current_week > start_week:
+        if current_week >= start_week:
             return current_week - start_week + 1
         else:
             last_week = get_week(self.now - timedelta(weeks=current_week))
