@@ -113,7 +113,8 @@ class ScheduleParser:
                 for teacher in teachers:
                     if not teacher:
                         continue
-                    lastname, firstname, middlename = teacher.split(' ')
+                    lastname, firstname, *_middlename = teacher.split(' ')
+                    middlename = ' '.join(_middlename)
                     t, _ = Teacher.objects.get_or_create(lastname=lastname, firstname=firstname, middlename=middlename)
                     item.teachers.add(t.id)
         sleep(1)
