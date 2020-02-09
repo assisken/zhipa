@@ -135,7 +135,7 @@ class Staff(Profile):
 
     class Meta:
         verbose_name_plural = 'Staff'
-        ordering = ('-leader', 'lecturer', 'hide', 'lastname', 'firstname', 'middlename', 'pk')
+        ordering = ('-leader', '-lecturer', 'hide', 'lastname', 'firstname', 'middlename', 'pk')
 
     def __str__(self):
         return f'{self.lastname} {self.firstname} {self.middlename}'
