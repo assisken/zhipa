@@ -2,6 +2,7 @@ import re
 from typing import Tuple, List, Optional
 
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages import add_message
 from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
@@ -13,7 +14,7 @@ from main.models import ExtramuralSchedule, Day, Place, Teacher
 from smiap.settings import log
 
 
-class AddExtramuralSchedule(TemplateView):
+class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
     """На данной странице возможно добавление сразу нескольких элементов расписания как для сессии, так и для учебного
     времени.
 
@@ -40,6 +41,7 @@ class AddExtramuralSchedule(TemplateView):
     DD.MM.YYYY || HH:MM || Предмет || Преподаватель И.О. || Площадка
     """
     template_name = 'admin/extramural_schedule/add_extramural.html'
+    permission_required = 'add_schedule'
     render = {
         'description': __doc__,
         'form': ExtramuralScheduleForm(),
