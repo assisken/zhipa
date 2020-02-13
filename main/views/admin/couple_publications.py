@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages import add_message
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -8,8 +9,9 @@ from main.forms import SeveralPublicationsForm
 from main.models import Publication
 
 
-class SeveralPublicationsView(TemplateView):
+class SeveralPublicationsView(PermissionRequiredMixin, TemplateView):
     template_name = 'admin/publications/add_couple.html'
+    permission_required = 'add_publication'
     render = {
         'form': SeveralPublicationsForm(),
         'opts': Publication._meta,

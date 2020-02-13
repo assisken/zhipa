@@ -1,6 +1,7 @@
 from datetime import datetime
 from operator import attrgetter
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
@@ -11,8 +12,9 @@ from main.management.scripts.generate import gen_groups_table
 from main.models import FullTimeSchedule, Schedule
 
 
-class GetGroupScheduleXlsxView(TemplateView):
+class GetGroupScheduleXlsxView(PermissionRequiredMixin, TemplateView):
     schedule = FullTimeSchedule
+    permission_required = 'get_xlsx_schedule'
     template_name = 'admin/schedule/get_schedule.html'
     render = {
         'form': GetGroupScheduleForm(),
