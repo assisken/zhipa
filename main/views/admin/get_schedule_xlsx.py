@@ -14,7 +14,7 @@ from main.models import FullTimeSchedule, Schedule
 
 class GetGroupScheduleXlsxView(PermissionRequiredMixin, TemplateView):
     schedule = FullTimeSchedule
-    permission_required = 'get_xlsx_schedule'
+    permission_required = 'add_schedule'
     template_name = 'admin/schedule/get_schedule.html'
     render = {
         'form': GetGroupScheduleForm(),

@@ -41,7 +41,6 @@ class Command(BaseCommand):
             Permission.objects.get(codename='add_schedule', content_type=schedule),
             Permission.objects.get(codename='change_schedule', content_type=schedule),
             Permission.objects.get(codename='delete_schedule', content_type=schedule),
-            Permission.objects.get(codename='get_xlsx_schedule', content_type=schedule),
         )
 
         group, _ = Group.objects.get_or_create(name='Редактор публикаций')
