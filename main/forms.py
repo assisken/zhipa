@@ -164,7 +164,7 @@ class ExtramuralScheduleForm(GeneralForm):
 
 def check_max_group_count(value: List[str]):
     minimum = 1
-    maximum = 9
+    maximum = 16
     count = len(value)
     if count > maximum or count < minimum:
         raise ValidationError(f'Пожалуйста, выберите от {minimum} до {maximum} групп')
