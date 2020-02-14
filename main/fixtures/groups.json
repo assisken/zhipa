@@ -15,9 +15,7 @@
         "fields": {
             "day": 1,
             "ends_at": "13:13:13",
-            "groups": [
-                1
-            ],
+            "group": 1,
             "name": "Введение в методику жиповальни",
             "places": [
                 1
@@ -30,6 +28,25 @@
             "schedule_type": "Учебн."
         },
         "model": "main.schedule",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "day": 1,
+            "ends_at": "13:13:13",
+            "group": 1,
+            "name": "Введение в методику жиповальни",
+            "places": [
+                1
+            ],
+            "starts_at": "18:15:00",
+            "teachers": [
+                1
+            ],
+            "item_type": "ЛК",
+            "schedule_type": "Учебн."
+        },
+        "model": "main.fulltimeschedule",
         "pk": 1
     },
     {

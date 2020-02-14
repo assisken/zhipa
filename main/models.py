@@ -155,10 +155,9 @@ class Teacher(models.Model):
         ordering = ('lastname', 'firstname', 'middlename')
 
     def save(self, *args, **kwargs):
-        try:
-            self.staff = Staff.objects.get(lastname=self.lastname, firstname=self.firstname, middlename=self.middlename)
-        except Staff.DoesNotExist:
-            self.staff = None
+        staff = Staff.objects.filter(lastname=self.lastname, firstname=self.firstname, middlename=self.middlename)
+        if len(staff) != 0:
+            self.staff = staff[0]
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -226,7 +225,7 @@ class Schedule(models.Model):
     name = models.TextField()
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)
-    groups = models.ManyToManyField(Group)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __repr__(self):
         return str(self)
@@ -234,43 +233,26 @@ class Schedule(models.Model):
     def __str__(self):
         return f'{self.name} ({self.item_type})'
 
+    def key(self):
+        return f'{self.starts_at.isoformat()} {self.ends_at.isoformat()} {str(self.day)} {self.name} {self.item_type}'
+
     class Meta:
         verbose_name_plural = 'Schedule'
 
 
-class FullTimeScheduleManager(models.Manager):
-    study_form = Group.FULL_TIME
-
-    def get_queryset(self):
-        return super().get_queryset().filter(groups__study_form=self.study_form).distinct()
-
-
 class FullTimeSchedule(Schedule):
-    objects = FullTimeScheduleManager()
-
     def __str__(self):
-        return f'{self.name} ({self.get_item_type_display()}) [Очное]'
+        return f'{self.name} ({self.get_item_type_display()} [Очное])'
 
     class Meta:
-        proxy = True
         verbose_name_plural = 'Fulltime Schedule'
 
 
-class ExtramuralScheduleManager(FullTimeScheduleManager):
-    study_form = Group.EXTRAMURAL
-
-    def get_queryset(self):
-        return super().get_queryset().filter(day__week=None, groups__study_form=self.study_form).distinct()
-
-
-class ExtramuralSchedule(FullTimeSchedule):
-    objects = ExtramuralScheduleManager()
-
+class ExtramuralSchedule(Schedule):
     def __str__(self):
         return f'{self.name} ({self.get_item_type_display()}) [Заочное]'
 
     class Meta:
-        proxy = True
         verbose_name_plural = 'Extramural Schedule'
 
 

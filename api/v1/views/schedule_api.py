@@ -16,7 +16,7 @@ class ScheduleAPI(APIView):
         group = Group.objects.get(id=group_id)
         filter_cond = {
             'schedule_type': self.schedule_type,
-            'groups__exact': group
+            'group': group
         }
         if self.schedule_type == Schedule.STUDY:
             filter_cond['day__week__in'] = range(1, group.study_until_week + 1)

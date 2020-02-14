@@ -9,7 +9,11 @@ from main.models import *
 from main.types import Degree
 from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
 from main.views.admin.couple_publications import SeveralPublicationsView
-from main.views.admin.get_schedule_xlsx import GetGroupScheduleXlsxView, GetTeacherSessionSchedule
+from main.views.admin.get_schedule_xlsx import (
+    GetGroupFulltimeScheduleXlsxView,
+    GetTeacherSessionSchedule,
+    GetGroupExtramuralScheduleXlsxView
+)
 
 
 @admin.register(Staff)
@@ -135,12 +139,12 @@ class FullTimeScheduleAdmin(admin.ModelAdmin):
     ordering = ('day', 'starts_at', 'ends_at')
     list_display = ('day', 'starts_at', 'ends_at', 'item_type', 'schedule_type', 'name')
     list_filter = (FullTimeGroupFilter, 'item_type', 'schedule_type', 'starts_at', 'ends_at')
-    filter_horizontal = ('groups', 'teachers', 'places')
+    filter_horizontal = ('teachers', 'places')
 
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path('get-group-schedule/', GetGroupScheduleXlsxView.as_view(schedule=FullTimeSchedule)),
+            path('get-group-schedule/', GetGroupFulltimeScheduleXlsxView.as_view(schedule=FullTimeSchedule)),
             path('get-teacher-schedule/', GetTeacherSessionSchedule.as_view(schedule=FullTimeSchedule))
         ]
         return my_urls + urls
@@ -162,7 +166,7 @@ class ExtramuralScheduleAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         my_urls = [
             path('add-extramural/', AddExtramuralSchedule.as_view()),
-            path('get-group-schedule/', GetGroupScheduleXlsxView.as_view(schedule=ExtramuralSchedule)),
+            path('get-group-schedule/', GetGroupExtramuralScheduleXlsxView.as_view(schedule=ExtramuralSchedule)),
             path('get-teacher-schedule/', GetTeacherSessionSchedule.as_view(schedule=ExtramuralSchedule))
         ]
         return my_urls + urls
