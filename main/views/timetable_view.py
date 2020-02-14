@@ -22,6 +22,7 @@ class GroupTimetableView(TemplateView):
     template_name = "materials/timetable/index.html"
     schedule = FullTimeSchedule
     schedule_type = Schedule.STUDY
+    study_form = Group.FULL_TIME if schedule == FullTimeSchedule else Group.EXTRAMURAL
 
     @classmethod
     def as_view(cls, **initkwargs):
@@ -32,7 +33,7 @@ class GroupTimetableView(TemplateView):
     def get(self, request, *args, **kwargs):
         teach_time = TeachTime()
 
-        groups = Group.objects.only('name').filter(study_form=self.schedule.objects.study_form)
+        groups = Group.objects.only('name').filter(study_form=self.study_form)
         group_name = request.GET.get('group', groups.first().name)
         show_weeks = self.schedule_type == Schedule.STUDY and self.schedule == FullTimeSchedule
         week = request.GET.get('week', teach_time.week) if show_weeks else None
@@ -41,7 +42,7 @@ class GroupTimetableView(TemplateView):
         filter_cond = {
             'schedule_type': self.schedule_type,
             'day__week': week,
-            'groups__exact': group
+            'group': group
         }
         items = get_items(schedule=self.schedule, filter_cond=filter_cond)
         schedule = defaultdict(list)
@@ -99,7 +100,7 @@ class TeacherTimetableView(TemplateView):
                                       middlename__startswith=middlename)
         week = request.GET.get('week',
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
-        items = FullTimeSchedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
+        items = FullTimeSchedule.objects.prefetch_related('day', 'group', 'teachers', 'places') \
             .filter(day__week=week, teachers__exact=teacher)\
                                 .order_by('day__date', 'starts_at')
         schedule = defaultdict(list)

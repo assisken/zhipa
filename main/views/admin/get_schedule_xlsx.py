@@ -3,16 +3,16 @@ from operator import attrgetter
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from main.forms import GetGroupScheduleForm, GetTeacherSessionScheduleForm
-from main.management.scripts.generate import gen_groups_table
-from main.models import FullTimeSchedule, Schedule
+from main.management.scripts.generate import gen_groups_table, gen_teachers_table
+from main.models import FullTimeSchedule, Schedule, ExtramuralSchedule
 
 
-class GetGroupScheduleXlsxView(PermissionRequiredMixin, TemplateView):
+class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
     schedule = FullTimeSchedule
     permission_required = 'add_schedule'
     template_name = 'admin/schedule/get_schedule.html'
@@ -50,7 +50,18 @@ class GetGroupScheduleXlsxView(PermissionRequiredMixin, TemplateView):
 
         groups = form.cleaned_data['groups']
         from_week = form.cleaned_data['from_week']
-        filename = gen_groups_table(groups, from_week)
+        try:
+            filename = gen_groups_table(groups, from_week)
+        except AttributeError:
+            form.add_error('groups', 'Превышен максимальный лимит групп')
+            self.render.update({
+                'form': form,
+                'errors': form.errors,
+            })
+            return render(request, self.template_name, self.render)
+        return self._send_xlsx(filename)
+
+    def _send_xlsx(self, filename: str):
         try:
             with open(f'{filename}.xlsx', 'rb') as f:
                 file_data = f.read()
@@ -65,8 +76,11 @@ class GetGroupScheduleXlsxView(PermissionRequiredMixin, TemplateView):
         return response
 
 
-class GetTeacherSessionSchedule(TemplateView):
-    schedule = FullTimeSchedule
+class GetGroupExtramuralScheduleXlsxView(GetGroupFulltimeScheduleXlsxView):
+    schedule = ExtramuralSchedule
+
+
+class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
     template_name = 'admin/schedule/get_schedule.html'
     render = {
         'form': GetTeacherSessionScheduleForm(),
@@ -100,6 +114,26 @@ class GetTeacherSessionSchedule(TemplateView):
             })
             return render(request, self.template_name, self.render)
 
+        schedule_type = form.cleaned_data['schedule_type']
+        if schedule_type == Schedule.STUDY:
+            return self.__post_study(request, form)
+        else:
+            return self.__post_session(request, form)
+
+    def __post_study(self, request, form: GetTeacherSessionScheduleForm):
+        if not form.is_valid():
+            self.render.update({
+                'form': form,
+                'errors': form.errors,
+                'opts': FullTimeSchedule._meta,
+            })
+            return render(request, self.template_name, self.render)
+
+        teachers = form.cleaned_data['teachers']
+        filename = gen_teachers_table(teachers)
+        return super()._send_xlsx(filename)
+
+    def __post_session(self, request, form: GetTeacherSessionScheduleForm):
         teachers = form.cleaned_data['teachers']
         items: QuerySet = Schedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
             .filter(teachers__in=teachers, schedule_type=Schedule.SESSION)

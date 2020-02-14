@@ -1,10 +1,11 @@
 import re
+from typing import List
 
 from django import forms
 from django.contrib.admin import widgets as admin_widgets
 from django.core.exceptions import ValidationError
 
-from main.models import Group, Teacher, News, User, ExtramuralSchedule
+from main.models import Group, Teacher, News, User, ExtramuralSchedule, Schedule
 from utils.news_md_to_html import NewsLexer
 
 
@@ -161,10 +162,28 @@ class ExtramuralScheduleForm(GeneralForm):
             yield date, time, item, _teachers, place
 
 
+def check_max_group_count(value: List[str]):
+    minimum = 1
+    maximum = 9
+    count = len(value)
+    if count > maximum or count < minimum:
+        raise ValidationError(f'Пожалуйста, выберите от {minimum} до {maximum} групп')
+
+
+def check_max_teacher_count(value: List[str]):
+    minimum = 1
+    maximum = 16
+    count = len(value)
+    if count > maximum or count < minimum:
+        raise ValidationError(f'Пожалуйста, выберите от {minimum} до {maximum} преподавателей')
+
+
 class GetGroupScheduleForm(GeneralForm):
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.order_by('-study_form', 'degree', 'semester', 'name'),
         required=True,
+        initial=Group.objects.filter(study_form=Group.FULL_TIME),
+        validators=(check_max_group_count,)
     )
     from_week = forms.IntegerField(min_value=1, max_value=17)
 
@@ -173,7 +192,13 @@ class GetTeacherSessionScheduleForm(GeneralForm):
     teachers = forms.ModelMultipleChoiceField(
         queryset=Teacher.objects.all(),
         required=True,
-        initial=Teacher.objects.filter(staff__isnull=False)
+        initial=Teacher.objects.filter(staff__isnull=False),
+        validators=(check_max_teacher_count,)
+    )
+    schedule_type = forms.ChoiceField(
+        choices=Schedule.SCHEDULE_TYPES,
+        required=True,
+        initial=Schedule.STUDY
     )
 
 

@@ -13,4 +13,4 @@ class Command(BaseCommand):
         call_command('import')
         call_command('groups', '--lms')
         call_command('groups', '--file', 'groups.csv')
-        call_command('groups', '--extramural_schedule')
+        call_command('groups', '--schedule')

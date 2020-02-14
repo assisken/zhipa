@@ -1,10 +1,12 @@
 import re
+from collections import defaultdict
+from pprint import pprint
 from typing import Iterable
 
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, FullTimeSchedule, Teacher
+from main.models import Group, Schedule, Teacher
 
 
 def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
@@ -18,7 +20,7 @@ def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
         sh.cell(1, col, value=group.name)
 
         for week in range(17, from_week - 1, -1):
-            for item in FullTimeSchedule.objects.filter(groups__exact=group, day__week=week).order_by('day__date'):
+            for item in Schedule.objects.filter(group=group, day__week=week).order_by('day__date'):
                 day = item.day
                 item_type = item.item_type
                 name = item.name
@@ -48,7 +50,7 @@ def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
 
 
 def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
-    filename = 'teachers.xlsx'
+    filename = 'teachers'
     wb = load_workbook('template1.xlsx')
     sh: Worksheet = wb['all']
 
@@ -58,15 +60,33 @@ def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
         sh.cell(1, col, value=str(teacher))
 
         for week in range(17, 0, -1):
-            for item in FullTimeSchedule.objects.filter(teachers__exact=teacher, day__week=week):
-                item: FullTimeSchedule
-                day = item.day
-                groups = ', '.join(group.name for group in item.groups.only('name'))
-                item_type = item.item_type
-                name = item.name
+            items = {}
+            for item in Schedule.objects.filter(teachers__exact=teacher, day__week=week, schedule_type=Schedule.STUDY):
+                item: Schedule
+                try:
+                    existing = items[item.key()]
+                except KeyError:
+                    items[item.key()] = {
+                        'day': item.day,
+                        'starts_at': item.starts_at,
+                        'ends_at': item.ends_at,
+                        'groups': frozenset((str(item.group),)),
+                        'item_type': item.item_type,
+                        'name': item.name,
+                        'places': frozenset((str(place) for place in item.places.all()))
+                    }
+                else:
+                    existing['groups'] |= {str(item.group)}
+                    existing['places'] |= {str(place) for place in item.places.all()}
+
+            for _, value in items.items():
+                day = value['day']
+                groups = ', '.join(sorted(value['groups']))
+                item_type = value['item_type']
+                name = value['name']
                 if not name:
                     continue
-                place = '\n'.join(str(place) for place in item.places.all())
+                place = '\n'.join(value['places'])
 
                 if len(name) > 57:
                     _name = re.split(r'[ \-,.]', name)
@@ -76,12 +96,12 @@ def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
                 fill_items(sh, col,
                            content=f'{name} {item_type}\n{groups}',
                            place=place,
-                           day=day.day,
-                           time_start=item.starts_at,
-                           time_end=item.ends_at,
+                           day=day.week_day,
+                           time_start=value['starts_at'],
+                           time_end=value['ends_at'],
                            week=week)
 
-    wb.save(filename)
+    wb.save(f'{filename}.xlsx')
     return filename
 
 

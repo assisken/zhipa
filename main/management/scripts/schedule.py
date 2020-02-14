@@ -9,7 +9,7 @@ from lxml.html import HtmlElement
 from requests import get, HTTPError
 from termcolor import cprint
 
-from main.models import Day, FullTimeSchedule, Teacher, Group, Place
+from main.models import Day, Schedule, Teacher, Group, Place, FullTimeSchedule
 from utils.exceptions import GroupListIsEmpty
 
 
@@ -32,10 +32,10 @@ class ScheduleParser:
         self.force = force
 
         if schedule_type == ScheduleType.TEACH:
-            self.schedule_type = FullTimeSchedule.STUDY
+            self.schedule_type = Schedule.STUDY
             self.url = self.teach_url
         elif schedule_type == ScheduleType.SESSION:
-            self.schedule_type = FullTimeSchedule.SESSION
+            self.schedule_type = Schedule.SESSION
             self.url = self.session_url
 
     def parse(self) -> None:
@@ -90,32 +90,40 @@ class ScheduleParser:
         body = resp.content.decode('utf8')
 
         for day, month, week_day, items in parse_day(body):
-            day, _ = Day.objects.get_or_create(day=day, month=month, week_day=week_day, week=week)
+            day, _ = Day.objects.update_or_create(day=day, month=month, week_day=week_day, week=week)
             for time, item_type_resp, place_list, name, teachers in parse_items(items):
                 start, end = time.split(' – ')
 
                 res_item_type = None
-                for item_type_db, item_type_human in FullTimeSchedule.ITEM_TYPES:
+                for item_type_db, item_type_human in Schedule.ITEM_TYPES:
                     if item_type_human == item_type_resp:
                         res_item_type = item_type_db
                         break
                 if not res_item_type:
                     raise KeyError(f'Item type not found for {item_type_resp}')
 
-                item, _ = FullTimeSchedule.objects.get_or_create(starts_at=start, ends_at=end, item_type=res_item_type,
-                                                                 name=name, day=day, schedule_type=self.schedule_type)
-                item.groups.add(group.id)
+                item, _ = FullTimeSchedule.objects.update_or_create(
+                    starts_at=start,
+                    ends_at=end,
+                    item_type=res_item_type,
+                    name=name,
+                    day=day,
+                    schedule_type=self.schedule_type,
+                    group=group
+                )
 
                 for place in place_list:
                     building, number = normalize_place(place)
-                    p, _ = Place.objects.get_or_create(building=building, number=number)
+                    p, _ = Place.objects.update_or_create(building=building, number=number)
                     item.places.add(p.id)
                 for teacher in teachers:
                     if not teacher:
                         continue
                     lastname, firstname, *_middlename = teacher.split(' ')
                     middlename = ' '.join(_middlename)
-                    t, _ = Teacher.objects.get_or_create(lastname=lastname, firstname=firstname, middlename=middlename)
+                    t, _ = Teacher.objects.update_or_create(
+                        lastname=lastname, firstname=firstname, middlename=middlename
+                    )
                     item.teachers.add(t.id)
         sleep(1)
 

@@ -32,8 +32,8 @@ class ScheduleTest(TestCase):
         for group in self.groups:
             url = self.url_pattern.format(url=reverse('timetable'), group=group.name, week=week_with_schedule)
             resp = self.client.get(url)
-            schedule = FullTimeSchedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
-                .filter(groups__exact=group)
+            schedule = FullTimeSchedule.objects.prefetch_related('day', 'group', 'teachers', 'places') \
+                .filter(group=group)
             self.assertContains(resp, '&emsp; {} &emsp;'.format(group.name),
                                 msg_prefix='Не отображается имя группы, либо не та страница')
             self.assertGreater(len(schedule), 0)
