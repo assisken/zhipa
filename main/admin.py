@@ -130,7 +130,7 @@ class FullTimeGroupFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset: QuerySet):
         if self.value():
-            return queryset.filter(groups__name=self.value())
+            return queryset.filter(group__name=self.value())
 
 
 @admin.register(FullTimeSchedule)
@@ -157,9 +157,9 @@ class ExtramuralGroupFilter(FullTimeGroupFilter):
 @admin.register(ExtramuralSchedule)
 class ExtramuralScheduleAdmin(admin.ModelAdmin):
     change_list_template = 'admin/extramural_schedule/list.html'
-    ordering = FullTimeScheduleAdmin.ordering
-    list_display = FullTimeScheduleAdmin.list_display
-    list_filter = (ExtramuralGroupFilter, 'item_type', 'schedule_type', 'starts_at', 'ends_at')
+    ordering = ('day',)
+    list_display = ('day', 'schedule_type', 'name')
+    list_filter = (ExtramuralGroupFilter, 'schedule_type')
     filter_horizontal = FullTimeScheduleAdmin.filter_horizontal
 
     def get_urls(self):

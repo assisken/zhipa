@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.forms import ExtramuralScheduleForm, DATE_FORMAT, PLACE_FORMAT
+from main.forms import ExtramuralScheduleForm, PLACE_FORMAT
 from main.models import ExtramuralSchedule, Day, Place, Teacher
 from smiap.settings import log
 
@@ -24,8 +24,8 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
     Schedule: Поле, в которые вставляются само расписание по шаблону.
 
     На данный момент принят следующий шаблон:
-    DD.MM || HH:MM || Предмет || Преподаватель И.О. || Кабинет Площадка
-    DD.MM || HH:MM || Предмет || Преподаватель И.О. || Кабинет Площадка
+    DD.MM DD.MM DD.MM || HH:MM || Предмет || Преподаватель И.О. || Кабинет Площадка
+    Нет занятий || совсем || Предмет || Преподаватель И.О. || Кабинет Площадка
     ...
 
     Поля можно опускать, если хотите оставить пустыми:
@@ -71,26 +71,23 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
             return render(request, self.template_name, self.render)
 
         count = 0
-        groups: QuerySet = form.cleaned_data['group']
+        group: QuerySet = form.cleaned_data['group']
         schedule_type = form.cleaned_data['schedule_type']
 
         for date, time, item, teachers, place in form.schedule_fields():
             try:
-                day = self.__create_day(date)
                 _place = self.__get_place(place)
                 _teachers = self.__get_teachers(teachers)
 
                 schedule, _ = ExtramuralSchedule.objects.get_or_create(
-                    starts_at=time,
-                    ends_at=None,
-                    day=day,
-                    item_type=ExtramuralSchedule.EMPTY,
+                    day=date,
+                    time=time,
                     schedule_type=schedule_type,
-                    name=item
+                    name=item,
+                    group=group
                 )
 
                 schedule.places.set((_place,))
-                schedule.groups.add(*groups)
                 schedule.teachers.set(_teachers)
             except Exception as e:
                 log.error(f'Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}')
@@ -101,18 +98,6 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
         ending = 'ы' if count > 1 else ''
         add_message(request, messages.INFO, f'Предмет{ending} успешно добавлены! ({count} шт.)')
         return HttpResponseRedirect('../')
-
-    @staticmethod
-    def __create_day(date: Optional[str]) -> Optional[Day]:
-        if not date:
-            return None
-
-        regex = re.compile(DATE_FORMAT)
-        match = regex.match(date)
-        day, _ = Day.objects.get_or_create(day=match.group('day'),
-                                           month=match.group('month'),
-                                           week_day='')
-        return day
 
     @staticmethod
     def __get_place(place: Optional[str]) -> Optional[Place]:

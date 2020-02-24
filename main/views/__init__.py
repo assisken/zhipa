@@ -4,4 +4,4 @@ from .index_view import IndexView
 from .news_view import NewsListView, NewsDetailView, NewsDateListView, NewsDateDetailView, NewsUrlDetailView
 from .publications_view import PublicationView
 from .staff_view import StaffView
-from .timetable_view import GroupTimetableView, TeacherTimetableView
+from .timetable_view import GroupTimetableView, ExtramuralGroupTimetableView, TeacherTimetableView

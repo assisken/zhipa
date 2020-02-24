@@ -1,12 +1,10 @@
 import re
-from collections import defaultdict
-from pprint import pprint
 from typing import Iterable
 
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, Schedule, Teacher
+from main.models import Group, Schedule, Teacher, FullTimeSchedule
 
 
 def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
@@ -20,7 +18,7 @@ def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:
         sh.cell(1, col, value=group.name)
 
         for week in range(17, from_week - 1, -1):
-            for item in Schedule.objects.filter(group=group, day__week=week).order_by('day__date'):
+            for item in FullTimeSchedule.objects.filter(group=group, day__week=week).order_by('day__date'):
                 day = item.day
                 item_type = item.item_type
                 name = item.name
@@ -61,7 +59,9 @@ def gen_teachers_table(teachers: Iterable[Teacher]) -> str:
 
         for week in range(17, 0, -1):
             items = {}
-            for item in Schedule.objects.filter(teachers__exact=teacher, day__week=week, schedule_type=Schedule.STUDY):
+            for item in FullTimeSchedule.objects.filter(
+                    teachers__exact=teacher, day__week=week, schedule_type=Schedule.STUDY
+            ):
                 item: Schedule
                 try:
                     existing = items[item.key()]

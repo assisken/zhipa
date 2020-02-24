@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Group, Schedule, Day, Teacher
+from main.models import Group, Day, Teacher, FullTimeSchedule, ExtramuralSchedule
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -21,14 +21,26 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = ('lastname', 'firstname', 'middlename')
 
 
-class ScheduleSerializer(serializers.ModelSerializer):
+class FulltimeScheduleSerializer(serializers.ModelSerializer):
     places = serializers.SerializerMethodField()
     day = DaySerializer(many=False, read_only=True)
     teachers = TeacherSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Schedule
+        model = FullTimeSchedule
         fields = ('day', 'starts_at', 'ends_at', 'item_type', 'schedule_type', 'name', 'teachers', 'places')
+
+    def get_places(self, obj: Meta.model):
+        return [str(place) for place in obj.places.all()]
+
+
+class ExtramuralScheduleSerializer(serializers.ModelSerializer):
+    places = serializers.SerializerMethodField()
+    teachers = TeacherSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ExtramuralSchedule
+        fields = ('day', 'time', 'schedule_type', 'name', 'teachers', 'places')
 
     def get_places(self, obj: Meta.model):
         return [str(place) for place in obj.places.all()]
