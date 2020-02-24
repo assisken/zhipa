@@ -14,7 +14,7 @@
                 <td colspan="2">{{ item.day }}<br>{{ item.time }}</td>
             {% else %}
                 <td>{{ item.day }}</td>
-                <td>{{ item.time }}</td>
+                <td>{{ item.time | safe }}</td>
             {% endif %}
             <td>{{ item.name }}<br>
                 {{ item.teachers.all() | join(", ") }}
