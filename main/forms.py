@@ -36,8 +36,6 @@ class SeveralPublicationsForm(GeneralForm):
     )
 
 
-DATE_FORMAT = r'^(?P<day>\d\d)\.(?P<month>\d\d)\.?(?P<year>\d\d\d\d)?$'
-TIME_FORMAT = r'^(\d\d):(\d\d)$'
 TEACHER_FORMAT = r'^[А-Яа-яЁё]+ [А-Яа-яЁё]\.[А-Яа-яЁё]\.(, [А-Яа-яёЁ]+ [А-Яа-яЁё]\.[А-Яа-яЁё]\.)*$'
 PLACE_FORMAT = r'^(?P<cabinet>[\S]+) ?(?P<area>.*)$'
 
@@ -69,24 +67,6 @@ def parse_columns(func):
 
 
 @parse_columns
-def check_format_date(dates, **kwargs):
-    for line, date in enumerate(dates):
-        if not re.match(DATE_FORMAT, date) and date != '':
-            raise ValidationError('Дата должна быть оформлена в формате БDD.MM" или "DD.MM.YYYY".\n'
-                                  'Ставить пустымв случае, если желаемое значение было "По договору с преподавателем"\n'
-                                  f'Строка {line + 1}, значение: "{date}"')
-
-
-@parse_columns
-def check_time_format(times, **kwargs):
-    for line, time in enumerate(times):
-        if not re.match(TIME_FORMAT, time) and time != '':
-            raise ValidationError('Время должно быть оформлено в формате "HH:MM".\n'
-                                  'Также возможно опустить данный столбец (оставить пустым)\n'
-                                  f'Строка {line + 1}, значение: "{time}"')
-
-
-@parse_columns
 def check_teacher_abbreviation_format(teachers, **kwargs):
     for line, teacher in enumerate(teachers):
         if not re.match(TEACHER_FORMAT, teacher) and teacher != '':
@@ -112,13 +92,9 @@ def check_place_abbreviation_format(places, **kwargs):
 
 
 class ExtramuralScheduleForm(GeneralForm):
-    group = forms.ModelMultipleChoiceField(
+    group = forms.ModelChoiceField(
         queryset=Group.objects.filter(study_form=Group.EXTRAMURAL),
         required=True,
-        widget=admin_widgets.FilteredSelectMultiple(
-            verbose_name=Group._meta.verbose_name,
-            is_stacked=False
-        )
     )
     schedule_type = forms.ChoiceField(
         choices=ExtramuralSchedule.SCHEDULE_TYPES
@@ -131,8 +107,6 @@ class ExtramuralScheduleForm(GeneralForm):
         widget=forms.Textarea(attrs={'class': 'vLargeTextField'}),
         validators=(
             check_columns_count,
-            check_format_date,
-            check_time_format,
             check_teacher_abbreviation_format,
             check_place_abbreviation_format,
         )

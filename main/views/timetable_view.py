@@ -4,7 +4,7 @@ from collections import defaultdict
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group, FullTimeSchedule, Teacher, Schedule
+from main.models import Group, FullTimeSchedule, Teacher, Schedule, ExtramuralSchedule
 from utils.date import TeachTime, TeachState
 
 
@@ -60,7 +60,39 @@ class GroupTimetableView(TemplateView):
             'date_block': date_block(teach_time),
             'course': group.course if group_name else 0,
             'study_forms': Group.objects.order_by('-study_form').values_list('study_form').distinct(),
-            'session': self.schedule_type == Schedule.SESSION
+            'session': self.schedule_type == Schedule.SESSION,
+            'is_fulltime': self.schedule == FullTimeSchedule
+        })
+
+
+class ExtramuralGroupTimetableView(TemplateView):
+    schedule = ExtramuralSchedule
+    schedule_type = Schedule.STUDY
+    template_name = GroupTimetableView.template_name
+
+    def get(self, request, *args, **kwargs):
+        teach_time = TeachTime()
+
+        groups = Group.objects.only('name').filter(study_form=Group.EXTRAMURAL)
+        group_name = request.GET.get('group', groups.first().name)
+        show_weeks = False
+
+        group = Group.objects.get(name=group_name)
+        items = self.schedule.objects.prefetch_related('places', 'teachers').filter(group=group).order_by('name')
+
+        weeks = teach_time.weeks_in_semester if len(groups) > 0 else 0
+
+        return render(request, self.template_name, {
+            'groups': groups,
+            'group_name': group_name,
+            'show_weeks': show_weeks,
+            'weeks': weeks,
+            'schedule': items,
+            'date_block': date_block(teach_time),
+            'course': group.course if group_name else 0,
+            'study_forms': Group.objects.order_by('-study_form').values_list('study_form').distinct(),
+            'session': self.schedule_type == Schedule.SESSION,
+            'is_fulltime': self.schedule == FullTimeSchedule
         })
 
 
@@ -101,8 +133,8 @@ class TeacherTimetableView(TemplateView):
         week = request.GET.get('week',
                                teach_time.week if teach_time.week <= teach_time.weeks_in_semester else teach_time.week)
         items = FullTimeSchedule.objects.prefetch_related('day', 'group', 'teachers', 'places') \
-            .filter(day__week=week, teachers__exact=teacher)\
-                                .order_by('day__date', 'starts_at')
+            .filter(day__week=week, teachers__exact=teacher) \
+            .order_by('day__date', 'starts_at')
         schedule = defaultdict(list)
         for item in items:
             schedule[item.day].append(item)

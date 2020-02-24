@@ -44,53 +44,11 @@
                 {% endif %}
             </div>
             <div>
-                <table border="1" class="timetable table-responsive">
-                    <tr>
-                        <th rowspan="2" width="60">День</th>
-                        <th rowspan="2">Время</th>
-                        <th colspan="2">{{ group_name }}</th>
-                    </tr>
-                    <tr class="subhead">
-                        <th style="background: #a4e2ff">Название предмета</th>
-                        <th style="background: #a4e2ff">Ауд.</th>
-                    </tr>
-                    {% for day in schedule.keys() %}
-                        <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
-                            {% if day %}
-                                <td rowspan="{{ schedule[day] | length + 1 }}">
-                                    {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
-                                </td>
-                            {% else %}
-                                <td class="rotated" rowspan="{{ schedule[day] | length + 1 }}">
-                                    По&nbsp;договорённости с&nbsp;преподавателем
-                                </td>
-                            {% endif %}
-                            {% for item in schedule[day] %}
-                                <tr>
-                                    {% if item.starts_at and item.ends_at %}
-                                        <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
-                                            по {{ item.ends_at.strftime('%H:%M') }}</td>
-                                    {% elif item.starts_at %}
-                                        <td>{{ item.starts_at.strftime('%H:%M') }}</td>
-                                    {% else %}
-                                        <td></td>
-                                    {% endif %}
-                                    <td>{{ item.name }} {{ item.item_type }}<br>
-                                        {{ item.teachers.all() | join(", ") }}
-                                    </td>
-                                    <td>{{ item.places.all() | join('<br>') | safe }}</td>
-                                </tr>
-                            {% endfor %}
-                    {% else %}
-                        <tr>
-                            {% if session %}
-                                <td colspan="4">На данный момент расписание отсутствует</td>
-                            {% else %}
-                                <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
+                {% if is_fulltime %}
+                    {% include 'materials/timetable/timetable_fulltime.html' %}
+                {% else %}
+                    {% include 'materials/timetable/timetable_extramural.html' %}
+                {% endif %}
             </div>
         </div>
     </div>

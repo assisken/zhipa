@@ -1,0 +1,33 @@
+<table border="1" class="timetable table-responsive">
+    <tr>
+        <th rowspan="2" width="60">День</th>
+        <th rowspan="2">Время</th>
+        <th colspan="2">{{ group_name }}</th>
+    </tr>
+    <tr class="subhead">
+        <th style="background: #a4e2ff">Название предмета</th>
+        <th style="background: #a4e2ff">Ауд.</th>
+    </tr>
+    {% for item in schedule %}
+        <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
+            {% if item.day.startswith('По договоренности') %}
+                <td colspan="2">{{ item.day }}<br>{{ item.time }}</td>
+            {% else %}
+                <td>{{ item.day }}</td>
+                <td>{{ item.time }}</td>
+            {% endif %}
+            <td>{{ item.name }}<br>
+                {{ item.teachers.all() | join(", ") }}
+            </td>
+            <td>{{ item.places.all() | join('<br>') | safe }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            {% if session %}
+                <td colspan="4">На данный момент расписание отсутствует</td>
+            {% else %}
+                <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>

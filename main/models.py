@@ -1,7 +1,9 @@
 import os
 from math import ceil
+from typing import Optional
 
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import FieldError
 from django.db import models
 from django.db.models import Max
 from django.urls import reverse
@@ -104,8 +106,11 @@ class Group(models.Model):
         return self.schedule_set.count()
 
     @property
-    def study_until_week(self) -> int:
-        return self.schedule_set.aggregate(Max('day__week'))['day__week__max']
+    def study_until_week(self) -> Optional[int]:
+        try:
+            return self.schedule_set.aggregate(Max('day__week'))['day__week__max']
+        except FieldError:
+            return
 
     class Meta:
         ordering = ('degree', 'course', '-study_form', 'name')
@@ -192,6 +197,25 @@ class Day(models.Model):
 
 
 class Schedule(models.Model):
+    STUDY = 'Учебн.'
+    SESSION = 'Сессия'
+
+    SCHEDULE_TYPES = [
+        (STUDY, 'Учебное время'),
+        (SESSION, 'Сессия')
+    ]
+
+    schedule_type = models.CharField(max_length=6, choices=SCHEDULE_TYPES, default=STUDY, null=True)
+    name = models.TextField(null=True)
+    places = models.ManyToManyField(Place)
+    teachers = models.ManyToManyField(Teacher)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+
+    def __repr__(self):
+        return str(self)
+
+
+class FullTimeSchedule(Schedule):
     LECTION = 'ЛК'
     PRACTICE = 'ПЗ'
     LABWORK = 'ЛР'
@@ -208,39 +232,14 @@ class Schedule(models.Model):
         (EMPTY, 'Оставить пустым'),
     ]
 
-    STUDY = 'Учебн.'
-    SESSION = 'Сессия'
-
-    SCHEDULE_TYPES = [
-        (STUDY, 'Учебное время'),
-        (SESSION, 'Сессия')
-    ]
-
+    day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True, blank=True)
     starts_at = models.TimeField(null=True, blank=True)
     ends_at = models.TimeField(null=True, blank=True)
-    day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True, blank=True)
-
     item_type = models.CharField(max_length=3, choices=ITEM_TYPES, default=EMPTY, blank=True)
-    schedule_type = models.CharField(max_length=6, choices=SCHEDULE_TYPES, default=STUDY)
-    name = models.TextField()
-    places = models.ManyToManyField(Place)
-    teachers = models.ManyToManyField(Teacher)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-
-    def __repr__(self):
-        return str(self)
-
-    def __str__(self):
-        return f'{self.name} ({self.item_type})'
 
     def key(self):
         return f'{self.starts_at.isoformat()} {self.ends_at.isoformat()} {str(self.day)} {self.name} {self.item_type}'
 
-    class Meta:
-        verbose_name_plural = 'Schedule'
-
-
-class FullTimeSchedule(Schedule):
     def __str__(self):
         return f'{self.name} ({self.get_item_type_display()} [Очное])'
 
@@ -249,8 +248,11 @@ class FullTimeSchedule(Schedule):
 
 
 class ExtramuralSchedule(Schedule):
+    day = models.TextField(null=True, blank=True)
+    time = models.TextField(null=True, blank=True)
+
     def __str__(self):
-        return f'{self.name} ({self.get_item_type_display()}) [Заочное]'
+        return f'{self.name} [Заочное]'
 
     class Meta:
         verbose_name_plural = 'Extramural Schedule'
