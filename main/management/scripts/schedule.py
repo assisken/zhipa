@@ -9,7 +9,7 @@ from lxml.html import HtmlElement
 from requests import get, HTTPError
 from termcolor import cprint
 
-from main.models import Day, Schedule, Teacher, Group, Place, FullTimeSchedule
+from main.models import Day, Teacher, Group, Place, FullTimeSchedule, Schedule
 from utils.exceptions import GroupListIsEmpty
 
 
@@ -95,7 +95,7 @@ class ScheduleParser:
                 start, end = time.split(' – ')
 
                 res_item_type = None
-                for item_type_db, item_type_human in Schedule.ITEM_TYPES:
+                for item_type_db, item_type_human in FullTimeSchedule.ITEM_TYPES:
                     if item_type_human == item_type_resp:
                         res_item_type = item_type_db
                         break
