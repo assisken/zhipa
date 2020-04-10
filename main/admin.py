@@ -177,11 +177,32 @@ class PlaceAdmin(admin.ModelAdmin):
     pass
 
 
+class PublicationYearFilter(admin.SimpleListFilter):
+    title = 'Publication Year'
+    parameter_name = 'publication'
+
+    def lookups(self, request, model_admin):
+        def get_year():
+            for pub in Publication.objects.values('place'):
+                year = get_year_from_string(pub['place'])
+                if year is None:
+                    yield 'Не определен'
+                    continue
+                yield year
+        years = frozenset(get_year())
+        return ((year, year) for year in sorted(years))
+
+    def queryset(self, request, queryset: QuerySet):
+        if self.value():
+            return queryset.filter(place__contains=self.value())
+
+
 @admin.register(Publication)
 class PublicationAdmin(admin.ModelAdmin):
     change_list_template = 'admin/publications/list.html'
-    list_display = ('pk', 'name', 'place', 'authors')
+    list_display = ('pk', 'year', 'name', 'place', 'authors')
     list_display_links = ('name',)
+    list_filter = (PublicationYearFilter,)
 
     def get_urls(self):
         urls = super().get_urls()

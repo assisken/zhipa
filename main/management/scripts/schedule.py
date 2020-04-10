@@ -10,7 +10,7 @@ from requests import get, HTTPError
 from termcolor import cprint
 
 from main.models import Day, Teacher, Group, Place, FullTimeSchedule, Schedule
-from utils.exceptions import GroupListIsEmpty
+from main.utils.exceptions import GroupListIsEmpty
 
 
 class ScheduleType(Enum):

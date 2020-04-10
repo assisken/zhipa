@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from main.models import Group, FullTimeSchedule, Teacher, Schedule, ExtramuralSchedule
-from utils.date import TeachTime, TeachState
+from main.utils.date import TeachTime, TeachState
 
 
 def get_items(**kwargs):

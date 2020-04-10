@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from main.models import Group, FullTimeSchedule
 from main.views.timetable_view import date_block
-from utils.date import TeachTime
+from main.utils.date import TeachTime
 
 
 class ScheduleTest(TestCase):
