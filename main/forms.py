@@ -6,7 +6,7 @@ from django.contrib.admin import widgets as admin_widgets
 from django.core.exceptions import ValidationError
 
 from main.models import Group, Teacher, News, User, ExtramuralSchedule, Schedule
-from utils.news_md_to_html import NewsLexer
+from main.utils.news_md_to_html import NewsLexer
 
 
 def check_items(value: str):

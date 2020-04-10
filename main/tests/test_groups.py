@@ -9,7 +9,7 @@ from django.test import TestCase
 
 from main.management.scripts.groups import fetch_groups
 from main.models import Group
-from utils.exceptions import LmsDoesNotRespondError
+from main.utils.exceptions import LmsDoesNotRespondError
 
 RESPONSE = {
     'data': {

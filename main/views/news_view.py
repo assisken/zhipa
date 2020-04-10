@@ -1,14 +1,13 @@
-from calendar import month_abbr
 from datetime import datetime
 
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, View
+from django.views.generic import DetailView, ListView
 
 from main.models import News, NewsContentImage
 from smiap.settings import DEFAULT_IMG
-from utils.news_md_to_html import MD
+from main.utils.news_md_to_html import MD
 
 
 def get_content(object: News):

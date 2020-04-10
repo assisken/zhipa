@@ -8,8 +8,9 @@ from django.db import models
 from django.db.models import Max
 from django.urls import reverse
 
+from main.utils.date import get_year_from_string
 from main.validators import validate_news_content_image_begin_name_with_a_letter
-from utils import group
+from main.utils import group
 
 
 class User(AbstractUser):
@@ -264,7 +265,10 @@ class Publication(models.Model):
     authors = models.TextField(blank=False, null=False)
 
     class Meta:
-        ordering = ('pk',)
+        ordering = ('-pk',)
 
     def __str__(self):
         return self.name
+
+    def year(self) -> Optional[str]:
+        return get_year_from_string(self.place)

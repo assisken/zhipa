@@ -7,7 +7,7 @@ from django.db import IntegrityError
 
 from main.models import Group
 from smiap.settings import BASE_DIR
-from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
+from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
 
 def fetch_groups(url_pattern: str, password: str, department: str) -> None:

@@ -1,1 +1,2 @@
 redgreenunittest==0.1.1
+parameterized==0.7.1

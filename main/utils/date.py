@@ -1,5 +1,7 @@
+import re
 from datetime import date, timedelta
 from enum import Flag, auto, Enum
+from typing import Optional
 
 
 def get_week(d: date) -> int:
@@ -94,3 +96,7 @@ class TeachTime:
             date += timedelta(days=1)
         return date
 
+
+def get_year_from_string(string: str) -> Optional[str]:
+    found = re.search(r'\b((19|20)\d{2})', string)
+    return None if found is None else found.group(0)

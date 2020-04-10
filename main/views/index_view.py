@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 from main.models import News, Group
 from main.views.timetable_view import date_block
-from utils.date import TeachTime
+from main.utils.date import TeachTime
 
 
 class IndexView(TemplateView):

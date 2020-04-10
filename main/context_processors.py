@@ -1,5 +1,5 @@
 from smiap.settings import BRAND
-from utils.date import TeachTime, TeachState
+from main.utils.date import TeachTime, TeachState
 
 
 def app_processor(request):

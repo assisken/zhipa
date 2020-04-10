@@ -4,7 +4,7 @@ from termcolor import cprint
 from main.management.scripts.groups import fetch_groups, fetch_groups_from_csv
 from main.management.scripts.schedule import ScheduleType, ScheduleParser
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
-from utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError, GroupListIsEmpty
+from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError, GroupListIsEmpty
 
 
 class Command(BaseCommand):
