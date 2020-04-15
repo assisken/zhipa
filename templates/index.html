@@ -3,6 +3,7 @@
 {% block content %}
     <section class="homepage center">
         <div class="present limit-1024">
+            {% include 'layout/message_warning.html' %}
             {% if teach_state.SUMMER_HOLIDAYS %}
                 {% include 'layout/index_abiturient.html' %}
             {% else %}
