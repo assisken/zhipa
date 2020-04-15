@@ -5,7 +5,8 @@
         <div class="present limit-1024">
             {% include 'layout/message_warning.html' %}
             {% if teach_state.SUMMER_HOLIDAYS %}
-                {% include 'layout/index_abiturient.html' %}
+               {# Ломается стили у последующих блоков. Лечится фиксом css, либо комментированием этого блока. #}
+               {# {% include 'layout/index_abiturient.html' %} #}
             {% else %}
                 <div class="app column full animation-fade animation-tiles" style="height: 0; width: 0; margin: 0; padding: 0; box-shadow: none; background: none"></div>
             {% endif %}
