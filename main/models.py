@@ -2,6 +2,7 @@ import os
 from math import ceil
 from typing import Optional
 
+from colorfield.fields import ColorField
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import FieldError
 from django.db import models
@@ -17,8 +18,8 @@ class User(AbstractUser):
     pass
 
 
-def get_news_cover_path(instance: 'News', filename: str):
-    return os.path.join('news', instance.date.strftime('%Y%m%d'), 'cover.jpg')
+def get_news_cover_path(instance: 'NewsCover', filename: str):
+    return os.path.join('news', instance.news.date.strftime('%Y%m%d'), 'cover.jpg')
 
 
 def get_news_content_image_path(instance: 'NewsContentImage', filename: str):
@@ -37,7 +38,7 @@ class News(models.Model):
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
     url = models.CharField(max_length=60, blank=True, default=None, null=True, unique=True)
-    cover = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_cover_path)
+    cover = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_cover_path,)
     description = models.TextField()
     text = models.TextField()
     render_in = models.CharField(max_length=8, choices=RENDERS, null=False, blank=False, default=HTML)
@@ -52,6 +53,12 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
+    def news_cover(self) -> Optional['NewsCover']:
+        covers = self.newscover_set.all()
+        if len(covers) == 0:
+            return None
+        return covers.first()
+
     def get_url(self):
         if self.url:
             kwargs = {
@@ -59,6 +66,13 @@ class News(models.Model):
             }
             return reverse('news-url', kwargs=kwargs)
         return reverse('news', kwargs={'pk': self.pk})
+
+
+class NewsCover(models.Model):
+    img = models.ImageField(max_length=120, blank=True, default='', upload_to=get_news_cover_path)
+    content = models.CharField(max_length=60, null=True, blank=True, default=None)
+    color = ColorField(default='#0997ef')
+    news = models.ForeignKey(News, on_delete=models.CASCADE, null=False, blank=False)
 
 
 class NewsContentImage(models.Model):

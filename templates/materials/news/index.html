@@ -15,6 +15,19 @@
         <div class="width-80 top">
             <div style="margin: 10px;">
                 <div class="eventbox flatbox">
+                    {% if news.hidden %}
+                        <h1>Как эта новость выглядит в списке новостей</h1>
+                        <div class="news-preview">
+                            <div class="eventbox flatbox" id="{{ news.pk }}">
+                                <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
+                                <a href="{{ news.get_url() }}" class="news-title_link">
+                                    <h2 class="bottom-line">{{ news.title }}</h2>
+                                </a>
+                                {% include 'layout/news_cover.html' %}
+                                <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
+                            </div>
+                        </div>
+                    {% endif %}
                     <span class="category"><a href="{{ url('news-list-begin') }}">Новости</a></span>
                     <span class="news-date">
                         <a href="{{ url('news-date', kwargs={'year': news.date.strftime('%Y') }) }}">{{ news.date.strftime('%Y') }}</a>/

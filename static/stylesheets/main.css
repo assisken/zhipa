@@ -1,3 +1,54 @@
+.news .eventbox .with_image .cover {
+  width: 258px;
+  height: 172px;
+  float: left;
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+
+  /* Text in cover */
+  text-shadow: #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px,
+               #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
+  font-family: "PT Sans", sans-serif;
+  font-size: 16pt;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Cover name text */
+.cover-content {
+  padding-left: .2em;
+  padding-top: .3em;
+  height: 1.6em;
+}
+
+.cover span {
+  display: inline-block;
+  transform: scaleY(1.5);
+}
+
+/* Cover year text */
+.cover-year {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 1.4em;
+  padding: .3em .2em 0;
+}
+
+.news-preview {
+  margin-bottom: 1rem;
+  border: 2px black dashed;
+  border-left: 0;
+  border-right: 0;
+}
+
 blockquote {
   margin: 0 auto;
   padding: 1em;
