@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, ListView
 
 from main.models import News, NewsContentImage
@@ -42,6 +42,12 @@ class NewsDetailView(DetailView):
         context['content'] = get_content(self.object)
 
         return context
+
+    def get(self, request, *args, **kwargs):
+        news: News = self.get_object()
+        if news.url:
+            return redirect('news-url', url=news.url)
+        return super().get(request, *args, **kwargs)
 
 
 class NewsDateListView(ListView):
