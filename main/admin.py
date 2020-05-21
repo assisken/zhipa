@@ -24,7 +24,6 @@ class StaffAdmin(admin.ModelAdmin):
 
 class InlineNewsCoverAdmin(admin.TabularInline):
     model = NewsCover
-    min_num = 1
     max_num = 1
     can_delete = True
     extra = 0
