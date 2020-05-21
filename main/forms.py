@@ -191,7 +191,7 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = '__all__'
-        exclude = ('author',)
+        exclude = ('author', 'cover',)
 
     def clean(self):
         self.check_text_has_image_name_in_form()

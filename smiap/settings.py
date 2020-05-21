@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django_registration',
     'django_filters',
     'rest_framework',
+    'colorfield',
     'main.apps.SmiapConfig',
     'api.apps.ApiConfig',
     'api.v1.apps.ApiV1Config'

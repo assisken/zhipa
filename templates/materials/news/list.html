@@ -17,16 +17,7 @@
                         <a href="{{ news.get_url() }}" class="news-title_link">
                             <h2 class="bottom-line">{{ news.title }}</h2>
                         </a>
-                        {% if news.cover %}
-                            <div class="with_image">
-                                <a href="{{ news.get_url() }}">
-  			                	    <img src="{{ static(news.cover.url) }}" alt="" class="animation-fade animation-delay-2">
-                                </a>
-                                <p>{{ news.description|safe }}</p>
-  	                        </div>
-                        {% else %}
-                            <p>{{ news.description|safe }}</p>
-                        {% endif %}
+                        {% include 'layout/news_cover.html' %}
                         <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
                     </div>
   				{% else %}

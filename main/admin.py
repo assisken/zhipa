@@ -22,6 +22,14 @@ class StaffAdmin(admin.ModelAdmin):
     list_filter = ('leader', 'lecturer', 'hide')
 
 
+class InlineNewsCoverAdmin(admin.TabularInline):
+    model = NewsCover
+    min_num = 1
+    max_num = 1
+    can_delete = True
+    extra = 0
+
+
 class InlineNewsContentImageAdmin(admin.TabularInline):
     model = NewsContentImage
     extra = 1
@@ -33,7 +41,7 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
     list_filter = ('hidden',)
     form = NewsForm
-    inlines = (InlineNewsContentImageAdmin,)
+    inlines = (InlineNewsCoverAdmin, InlineNewsContentImageAdmin,)
 
     def save_model(self, request, obj: News, form: Form, change):
         if form.is_valid() and not obj.author:

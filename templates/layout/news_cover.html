@@ -1,0 +1,25 @@
+{% if news.news_cover() %}
+    {% set cover = news.news_cover() %}
+    <div class="with_image">
+        <a href="{{ news.get_url() }}">
+            <div class="cover" style="background-image: url({{ static(cover.img.url) }})">
+                <div class="cover-content" style="background-color: {{ cover.color }}aa">
+                    <span>{{ cover.content }}</span>
+                </div>
+                <div class="cover-year" style="background-color: {{ cover.color }}aa">
+                    <span>{{ news.date.strftime('%Y') }}</span>
+                </div>
+            </div>
+        </a>
+        <p>{{ news.description|safe }}</p>
+    </div>
+{% elif news.cover %}
+    <div class="with_image">
+        <a href="{{ news.get_url() }}">
+            <img src="{{ static(news.cover.url) }}" alt="" class="animation-fade animation-delay-2">
+        </a>
+        <p>{{ news.description|safe }}</p>
+    </div>
+{% else %}
+    <p>{{ news.description|safe }}</p>
+{% endif %}
