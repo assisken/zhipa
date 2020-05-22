@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "PT Sans";
+  src: local('PT Sans'), local('PTSans-Regular'), url("../fonts/PTSans-Regular.ttf"), url("https://fonts.gstatic.com/s/ptsans/v11/jizaRExUiTo99u79D0-ExdGM.woff2") format('woff2');
+}
+
 .news .eventbox .with_image .cover {
   width: 258px;
   height: 172px;
@@ -14,7 +19,7 @@
   text-shadow: #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px,
                #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
   font-family: "PT Sans", sans-serif;
-  font-size: 16pt;
+  font-size: 18pt;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -24,13 +29,13 @@
 /* Cover name text */
 .cover-content {
   padding-left: .2em;
-  padding-top: .3em;
-  height: 1.6em;
+  padding-top: .1em;
+  height: 1.5em;
 }
 
 .cover span {
   display: inline-block;
-  transform: scaleY(1.5);
+  transform: scaleY(1.3);
 }
 
 /* Cover year text */
@@ -39,7 +44,7 @@
   bottom: 0;
   right: 0;
   height: 1.4em;
-  padding: .3em .2em 0;
+  padding: .15em .15em 0;
 }
 
 .news-preview {
