@@ -181,10 +181,11 @@ locale.setlocale(locale.LC_ALL, LOCALE)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/res/'
-STATIC_ROOT = os.getenv('STATIC_ROOT')
+FILES_ROOT = os.getenv('FILES_ROOT')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(FILES_ROOT, 'static')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(STATIC_ROOT, 'uploads')
+MEDIA_ROOT = os.path.join(FILES_ROOT, 'media')
 FILE_UPLOAD_PERMISSIONS = 0o644
 DEFAULT_IMG = staticfiles_storage.url('default.png')
 

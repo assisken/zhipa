@@ -5,7 +5,7 @@ variables:
   LMS_URL: example.com
   LMS_PASSWORD: admin
   DEPARTMENT: MASS APOCRIF
-  STATIC_ROOT: /app/static
+  FILES_ROOT: /app
   DEBUG: 'no'
   LOCALE: C.UTF-8
   BRAND: Interception Intersception
