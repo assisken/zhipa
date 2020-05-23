@@ -47,7 +47,7 @@
                                 {
                                     title: '{{ news.title }}',
                                     noparse: false,
-                                    {% if news.cover %}image: 'http://smiap.ru{{ static(news.cover.url) }}',{% endif %}
+                                    {% if news.cover %}image: 'http://smiap.ru{{ news.cover.url }}',{% endif %}
                                 }
                                 ));
                             </script>

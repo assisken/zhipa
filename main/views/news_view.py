@@ -16,7 +16,7 @@ def get_content(object: News):
     attachments = NewsContentImage.objects.filter(news=object)
     replacing_images = {}
     for a in attachments:
-        replacing_images[a.name] = staticfiles_storage.url(a.img.url) if a.img else DEFAULT_IMG
+        replacing_images[a.name] = a.img.url if a.img else DEFAULT_IMG
     content = content.format(**replacing_images)
     return content
 

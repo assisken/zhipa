@@ -13,7 +13,7 @@
             {% for leader in leaders %}
                 <div class="leader">
                     {% if leader.img %}
-                        <img src="{{ static(leader.img.url) }}"
+                        <img src="{{ leader.img.url }}"
                             class="animation-fade animation-delay-2"
                             alt="{{ leader.lastname }} {{ leader.firstname }} {{ leader.middlename }}"
                         />
@@ -42,7 +42,7 @@
                     {% for lecturer in lecturers %}
 			        	<div class="column none">
 			        		{% if lecturer.img %}
-			                    <img src="{{ static(lecturer.img.url) }}" alt="{{ lecturer.lastname }}">
+			                    <img src="{{ lecturer.img.url }}" alt="{{ lecturer.lastname }}">
 			                {% else %}
 			                    <img src="{{ static('images/user.png') }}" alt="{{ lecturer.lastname }}">
 			                {% endif %}
