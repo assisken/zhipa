@@ -36,7 +36,7 @@ class InlineNewsContentImageAdmin(admin.TabularInline):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'title', 'hidden', 'author')
+    list_display = ('id', 'title', 'hidden', 'author')
     list_display_links = ('title',)
     list_filter = ('hidden',)
     form = NewsForm
@@ -207,7 +207,7 @@ class PublicationYearFilter(admin.SimpleListFilter):
 @admin.register(Publication)
 class PublicationAdmin(admin.ModelAdmin):
     change_list_template = 'admin/publications/list.html'
-    list_display = ('pk', 'year', 'name', 'place', 'authors')
+    list_display = ('id', 'year', 'name', 'place', 'authors')
     list_display_links = ('name',)
     list_filter = (PublicationYearFilter,)
 
@@ -217,3 +217,18 @@ class PublicationAdmin(admin.ModelAdmin):
             path('add-couple/', SeveralPublicationsView.as_view())
         ]
         return my_urls + urls
+
+
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'file', 'author')
+    list_display_links = ('name',)
+    exclude = ('author',)
+    change_form_template = 'admin/files/index.html'
+
+    def save_model(self, request, obj: News, form: Form, change):
+        if form.is_valid() and not obj.author:
+            user = request.user
+            obj.author = user
+        super().save_model(request, obj, form, change)
+

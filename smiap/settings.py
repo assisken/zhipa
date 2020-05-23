@@ -18,6 +18,8 @@ import random
 from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from urllib.parse import urljoin
+
 from django.contrib.staticfiles.storage import staticfiles_storage
 from dotenv import load_dotenv
 
@@ -181,6 +183,7 @@ locale.setlocale(locale.LC_ALL, LOCALE)
 
 STATIC_URL = '/res/'
 STATIC_ROOT = os.getenv('STATIC_ROOT')
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'uploads')
 FILE_UPLOAD_PERMISSIONS = 0o644
 DEFAULT_IMG = staticfiles_storage.url('default.png')
