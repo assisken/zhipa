@@ -1,4 +1,5 @@
 import os
+import uuid
 from math import ceil
 from typing import Optional
 
@@ -24,6 +25,25 @@ def get_news_cover_path(instance: 'NewsCover', filename: str):
 
 def get_news_content_image_path(instance: 'NewsContentImage', filename: str):
     return os.path.join('news', instance.news.date.strftime('%Y%m%d'), filename)
+
+
+def get_files_path(instance: 'File', filename: str):
+    _uuid = uuid.uuid4()
+    return os.path.join('files', str(_uuid), filename)
+
+
+class File(models.Model):
+    name = models.CharField(max_length=200)
+    file = models.FileField(upload_to=get_files_path, max_length=200, null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
+
+    def __str__(self):
+        return self.name
+
+    def delete(self, using=None, keep_parents=False):
+        super().delete()
+        os.remove(self.file.path)
+        os.removedirs(os.path.dirname(self.file.path))
 
 
 class News(models.Model):
@@ -73,6 +93,9 @@ class NewsCover(models.Model):
     content = models.CharField(max_length=60, null=True, blank=True, default=None)
     color = ColorField(default='#0997ef')
     news = models.ForeignKey(News, on_delete=models.CASCADE, null=False, blank=False)
+
+    def __str__(self):
+        return self.content
 
 
 class NewsContentImage(models.Model):
