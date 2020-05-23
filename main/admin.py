@@ -224,11 +224,9 @@ class FileAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'file', 'author')
     list_display_links = ('name',)
     exclude = ('author',)
-    change_form_template = 'admin/files/index.html'
 
     def save_model(self, request, obj: News, form: Form, change):
         if form.is_valid() and not obj.author:
             user = request.user
             obj.author = user
         super().save_model(request, obj, form, change)
-
