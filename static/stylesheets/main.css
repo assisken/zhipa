@@ -1,16 +1,14 @@
-@font-face {
-  font-family: "PT Sans";
-  src: local('PT Sans'), local('PTSans-Regular'), url("../fonts/PTSans-Regular.ttf"), url("https://fonts.gstatic.com/s/ptsans/v11/jizaRExUiTo99u79D0-ExdGM.woff2") format('woff2');
-}
+@import url(../fonts/pt-sans.css);
 
 .news .eventbox .with_image .cover {
-  width: 258px;
-  height: 172px;
+  width: 39%;
+  height: 0;
+  padding-bottom: 27%;
   float: left;
-  background-size: auto 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-right: 5px;
+  margin-right: 10px;
   border-radius: 3px;
   overflow: hidden;
   position: relative;
@@ -19,7 +17,7 @@
   text-shadow: #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px,
                #000 0px 0px 1px,   #000 0px 0px 1px,   #000 0px 0px 1px;
   font-family: "PT Sans", sans-serif;
-  font-size: 18pt;
+  font-size: 17pt;
   color: white;
   text-align: center;
   font-weight: bold;

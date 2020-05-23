@@ -1,0 +1,4 @@
+@font-face {
+  font-family: "PT Sans";
+  src: local('PT Sans'), local('PTSans-Regular'), url("PTSans-Regular.ttf"), url("https://fonts.gstatic.com/s/ptsans/v11/jizaRExUiTo99u79D0-ExdGM.woff2") format('woff2');
+}

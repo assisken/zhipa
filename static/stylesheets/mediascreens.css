@@ -7,6 +7,10 @@
         width: 15%;
         min-width: 120px
     }
+
+    .news .eventbox .with_image .cover {
+        font-size: calc((23vw - 4.5rem) / 7);
+    }
 }
 
 @media(max-width:800px) {
@@ -116,6 +120,10 @@
     .container {
         min-height: calc(100vh - 54px - 174px - 80px);
       }
+
+    .news .eventbox .with_image .cover {
+        font-size: calc((32vw - 4.5rem) / 7);
+    }
 }
 
 @media(max-width:540px) {
@@ -197,5 +205,12 @@
 
     .timetable td {
         font-size: 70% !important;
+    }
+
+    .news .eventbox .with_image .cover {
+        width: 100%;
+        padding-bottom: 70.25%;
+        margin-bottom: 15px;
+        font-size: calc((70vw - 4.5rem) / 7);
     }
 }
