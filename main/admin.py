@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
 from django.forms import Form
 from django.urls import path
+from django.utils.safestring import mark_safe
 
 from main.forms import NewsForm
 from main.models import *
@@ -221,9 +222,15 @@ class PublicationAdmin(admin.ModelAdmin):
 
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'file', 'author')
+    list_display = ('id', 'name', 'get_link', 'file', 'uploaded_date', 'author')
+    ordering = ('-uploaded_date',)
+    exclude = ('author', 'uploaded_date')
     list_display_links = ('name',)
-    exclude = ('author',)
+
+    def get_link(self, obj: File):
+        return mark_safe(f'<a href="{reverse("short-file", kwargs={"link": obj.link})}">{obj.link}</a>')
+
+    get_link.short_description = 'Link'
 
     def save_model(self, request, obj: News, form: Form, change):
         if form.is_valid() and not obj.author:

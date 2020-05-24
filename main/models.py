@@ -1,5 +1,6 @@
 import os
 import uuid
+from datetime import datetime
 from math import ceil
 from typing import Optional
 
@@ -34,8 +35,10 @@ def get_files_path(instance: 'File', filename: str):
 
 class File(models.Model):
     name = models.CharField(max_length=200)
+    link = models.CharField(max_length=200, unique=True, null=False, blank=False, default=str(uuid.uuid4())[:8])
     file = models.FileField(upload_to=get_files_path, max_length=200, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
+    uploaded_date = models.DateTimeField(null=False, blank=False, default=datetime.now())
 
     def __str__(self):
         return self.name

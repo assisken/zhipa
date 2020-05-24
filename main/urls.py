@@ -4,6 +4,7 @@ from django.views.generic import TemplateView, RedirectView
 from main.models import FullTimeSchedule, ExtramuralSchedule, Schedule
 from . import converters
 from .views import *
+from .views.link_view import LinkView
 
 register_converter(converters.FourDigitYearConverter, 'yyyy')
 register_converter(converters.TwoDigitConverter, 'mm')
@@ -50,6 +51,8 @@ urlpatterns = [
     path('materials/<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),
     path('materials/news/<yyyy:year>/<mm:month>/<dd:day>/<slug:url>',
          NewsDateDetailView.as_view(), name='news-date-url'),
+
+    path('f/<slug:link>', LinkView.as_view(), name='short-file'),
 
     # Deprecated: https://trello.com/c/I7ygJ9Nk
     path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
