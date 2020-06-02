@@ -45,8 +45,9 @@ class File(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         super().delete()
-        os.remove(self.file.path)
-        os.removedirs(os.path.dirname(self.file.path))
+        if self.file:
+            os.remove(self.file.path)
+            os.removedirs(os.path.dirname(self.file.path))
 
 
 class News(models.Model):
