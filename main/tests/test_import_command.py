@@ -2,13 +2,19 @@ import json
 import os
 from datetime import datetime
 
+from django.apps import apps
 from django.test import TestCase
 from django.utils.timezone import make_aware
 from pytz import timezone
 
+from news.models import News
+
 from main.management.scripts.file_import import handle_data
-from main.models import News, Staff
+from main.models import Staff
 from smiap.settings import BASE_DIR, TIME_ZONE
+
+
+News: News = apps.get_model('news', 'News')
 
 
 class TestImportCommand(TestCase):

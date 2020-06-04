@@ -2,10 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import QuerySet
 from django.forms import Form
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 
-from main.forms import NewsForm
 from main.models import *
 from main.types import Degree
 from main.views.admin.add_extramural_schedule import AddExtramuralSchedule
@@ -21,33 +20,6 @@ from main.views.admin.get_schedule_xlsx import (
 class StaffAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'regalia', 'leader', 'lecturer', 'hide')
     list_filter = ('leader', 'lecturer', 'hide')
-
-
-class InlineNewsCoverAdmin(admin.TabularInline):
-    model = NewsCover
-    max_num = 1
-    can_delete = True
-    extra = 0
-
-
-class InlineNewsContentImageAdmin(admin.TabularInline):
-    model = NewsContentImage
-    extra = 1
-
-
-@admin.register(News)
-class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'hidden', 'author')
-    list_display_links = ('title',)
-    list_filter = ('hidden',)
-    form = NewsForm
-    inlines = (InlineNewsCoverAdmin, InlineNewsContentImageAdmin,)
-
-    def save_model(self, request, obj: News, form: Form, change):
-        if form.is_valid() and not obj.author:
-            user = request.user
-            obj.author = user
-        super().save_model(request, obj, form, change)
 
 
 class GroupCourseFilter(admin.SimpleListFilter):
@@ -232,7 +204,7 @@ class FileAdmin(admin.ModelAdmin):
 
     get_link.short_description = 'Link'
 
-    def save_model(self, request, obj: News, form: Form, change):
+    def save_model(self, request, obj: File, form: Form, change):
         if form.is_valid() and not obj.author:
             user = request.user
             obj.author = user

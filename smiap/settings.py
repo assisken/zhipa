@@ -78,7 +78,8 @@ INSTALLED_APPS = [
     'colorfield',
     'main.apps.SmiapConfig',
     'api.apps.ApiConfig',
-    'api.v1.apps.ApiV1Config'
+    'api.v1.apps.ApiV1Config',
+    'news.apps.NewsConfig',
 ]
 
 MIDDLEWARE = (

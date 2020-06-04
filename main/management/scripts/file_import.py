@@ -1,12 +1,17 @@
 from datetime import datetime
 from typing import Dict, List
 
+from django.apps import apps
 from django.db import IntegrityError
 from django.utils.timezone import make_aware
 from pytz import timezone
 
-from main.models import News, Staff
+from news.models import News
+
+from main.models import Staff
 from smiap.settings import TIME_ZONE
+
+News: News = apps.get_model('news', 'News')
 
 
 def handle_data(data: List[Dict]):

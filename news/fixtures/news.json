@@ -10,7 +10,7 @@
       "url": "test_url",
       "render_in": "html"
     },
-    "model": "main.news",
+    "model": "news.news",
     "pk": "1"
   },
   {
@@ -24,7 +24,7 @@
       "url": null,
       "render_in": "html"
     },
-    "model": "main.news",
+    "model": "news.news",
     "pk": "2"
   },
   {
@@ -38,7 +38,7 @@
       "url": null,
       "render_in": "html"
     },
-    "model": "main.news",
+    "model": "news.news",
     "pk": "3"
   },
     {
@@ -52,7 +52,7 @@
       "url": null,
       "render_in": "html"
     },
-    "model": "main.news",
+    "model": "news.news",
     "pk": "4"
   }
 ]

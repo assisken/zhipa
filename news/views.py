@@ -1,13 +1,12 @@
 from datetime import datetime
 
-from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, ListView
 
-from main.models import News, NewsContentImage
+from .models import News, NewsContentImage
 from smiap.settings import DEFAULT_IMG
-from main.utils.news_md_to_html import MD
+from news.news_md_to_html import MD
 
 
 def get_content(object: News):
@@ -23,7 +22,7 @@ def get_content(object: News):
 
 class NewsListView(ListView):
     model = News
-    queryset = News.objects.filter(hidden=False)
+    queryset = News.objects.filter(hidden=False).prefetch_related('newscover')
     paginate_by = 5
     page_kwarg = 'number'
     context_object_name = 'news_list'

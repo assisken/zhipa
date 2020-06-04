@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import main.models
+from news.models import get_news_cover_path
 
 
 class Migration(migrations.Migration):
@@ -18,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='news',
             name='img',
-            field=models.ImageField(blank=True, default='', max_length=120, upload_to=main.models.get_news_cover_path),
+            field=models.ImageField(blank=True, default='', max_length=120, upload_to=get_news_cover_path),
         ),
         migrations.AlterField(
             model_name='profile',
