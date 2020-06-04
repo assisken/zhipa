@@ -5,8 +5,7 @@ from django import forms
 from django.contrib.admin import widgets as admin_widgets
 from django.core.exceptions import ValidationError
 
-from main.models import Group, Teacher, News, User, ExtramuralSchedule, Schedule
-from main.utils.news_md_to_html import NewsLexer
+from main.models import Group, Teacher, User, ExtramuralSchedule, Schedule
 
 
 def check_items(value: str):
@@ -185,25 +184,3 @@ class GetTeacherScheduleForm(GeneralForm):
             is_stacked=False
         )
     )
-
-
-class NewsForm(forms.ModelForm):
-    class Meta:
-        model = News
-        fields = '__all__'
-        exclude = ('author', 'cover',)
-
-    def clean(self):
-        self.check_text_has_image_name_in_form()
-        return super().clean()
-
-    def check_text_has_image_name_in_form(self):
-        images = frozenset(v for k, v in self.data.items() if v and re.match(r'newscontentimage_set-\d+-name', k))
-        value: str = self.data['text']
-        for line in value.splitlines():
-            match = NewsLexer.several_images.match(line)
-            if not match:
-                continue
-            _, _, text_images = NewsLexer.get_items(match)
-            if not frozenset(text_images) <= images:
-                raise ValidationError({'text': 'Text contains image that does not exist'})

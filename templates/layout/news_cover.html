@@ -1,5 +1,5 @@
-{% if news.news_cover() %}
-    {% set cover = news.news_cover() %}
+{% if news.newscover %}
+    {% set cover = news.newscover %}
     <div class="with_image">
         <a href="{{ news.get_url() }}">
             <div class="cover" style="background-image: url({{ cover.img.url if cover.img else '' }})">

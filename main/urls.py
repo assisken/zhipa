@@ -2,9 +2,8 @@ from django.urls import path, register_converter
 from django.views.generic import TemplateView, RedirectView
 
 from main.models import FullTimeSchedule, ExtramuralSchedule, Schedule
-from . import converters
+from news import converters
 from .views import *
-from .views.link_view import LinkView
 
 register_converter(converters.FourDigitYearConverter, 'yyyy')
 register_converter(converters.TwoDigitConverter, 'mm')
@@ -24,7 +23,6 @@ urlpatterns = [
     path('about/staff', StaffView.as_view(), name='staff'),
     path('about/contacts', TemplateView.as_view(template_name='about/contacts.html'), name='contacts'),
 
-    path('materials/', NewsListView.as_view()),
     path('materials/tutorials', TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
     path('materials/publications', PublicationView.as_view(), name='publications'),
 
@@ -41,16 +39,6 @@ urlpatterns = [
     path('students/timetable/ex-session',
          ExtramuralGroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.SESSION),
          name='timetable-extramural-session'),
-
-    path('materials/news', NewsListView.as_view(), name='news-list-begin'),
-    path('materials/news/page<int:number>', NewsListView.as_view(), name='news-list'),
-    path('materials/news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
-    path('materials/news/<slug:url>', NewsUrlDetailView.as_view(), name='news-url'),
-    path('materials/<yyyy:year>', NewsDateListView.as_view(), name='news-date'),
-    path('materials/<yyyy:year>/<mm:month>', NewsDateListView.as_view(), name='news-date'),
-    path('materials/<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),
-    path('materials/news/<yyyy:year>/<mm:month>/<dd:day>/<slug:url>',
-         NewsDateDetailView.as_view(), name='news-date-url'),
 
     path('f/<str:link>', LinkView.as_view(), name='short-file'),
 

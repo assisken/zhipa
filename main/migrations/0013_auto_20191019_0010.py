@@ -3,6 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import main.models
+from news.models import get_news_content_image_path
 
 
 class Migration(migrations.Migration):
@@ -22,7 +23,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.TextField()),
-                ('img', models.ImageField(blank=True, default='', max_length=120, upload_to=main.models.get_news_content_image_path)),
+                ('img', models.ImageField(blank=True, default='', max_length=120, upload_to=get_news_content_image_path)),
                 ('news', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='main.News')),
             ],
         ),

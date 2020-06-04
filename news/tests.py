@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from main.models import Staff
-
 
 class UnitTests(TestCase):
     fixtures = ['news.json']
@@ -13,7 +11,7 @@ class UnitTests(TestCase):
         visible = ['На ярмарке продалась шиншила',
                    'Опознан шиншило-генератор!']
         hidden = ['Самая секретная новость на свете!', 'О, нет!']
-        url = reverse('news-list-begin')
+        url = reverse('news:news-list-begin')
         response = self.client.get(url)
 
         for news in visible:
@@ -30,7 +28,7 @@ class UnitTests(TestCase):
 
         title = 'На ярмарке продалась шиншила'
         # url = '/materials/news/2000/11/11/test_url'
-        url = reverse('news-date-url', kwargs={
+        url = reverse('news:news-date-url', kwargs={
             'year': 2000,
             'month': 11,
             'day': 11,
