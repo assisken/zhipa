@@ -13,7 +13,7 @@ from django.views.generic import TemplateView
 
 from .forms import ExtramuralScheduleForm, PLACE_FORMAT, GetTeacherSessionScheduleForm, GetGroupScheduleForm
 from schedule.management.scripts.generate import gen_groups_table, gen_teachers_table
-from smiap.settings import log
+from smiap.settings.components.logging import log
 from .models import ExtramuralSchedule, Place, Teacher, FullTimeSchedule, Schedule
 
 

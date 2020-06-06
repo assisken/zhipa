@@ -11,15 +11,15 @@
                 </div>
             </div>
         </a>
-        <p>{{ news.description|safe }}</p>
+        {% include 'layout/news/news_description.html' %}
     </div>
 {% elif news.cover %}
     <div class="with_image">
         <a href="{{ news.get_url() }}">
             <img src="{{ news.cover.url }}" alt="" class="animation-fade animation-delay-2">
         </a>
-        <p>{{ news.description|safe }}</p>
+        {% include 'layout/news/news_description.html' %}
     </div>
 {% else %}
-    <p>{{ news.description|safe }}</p>
+    {% include 'layout/news/news_description.html' %}
 {% endif %}

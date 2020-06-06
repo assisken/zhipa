@@ -28,4 +28,3 @@ class NewsAdmin(admin.ModelAdmin):
             user = request.user
             obj.author = user
         super().save_model(request, obj, form, change)
-

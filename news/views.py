@@ -4,20 +4,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, ListView
 
-from .models import News, NewsContentImage
-from smiap.settings import DEFAULT_IMG
-from news.news_md_to_html import MD
-
-
-def get_content(object: News):
-    content = MD(object.text) if object.render_in == object.MARKDOWN else object.text
-
-    attachments = NewsContentImage.objects.filter(news=object)
-    replacing_images = {}
-    for a in attachments:
-        replacing_images[a.name] = a.img.url if a.img else DEFAULT_IMG
-    content = content.format(**replacing_images)
-    return content
+from .models import News
 
 
 class NewsListView(ListView):
@@ -38,7 +25,6 @@ class NewsDetailView(DetailView):
         self.object: News
         context = super().get_context_data(**kwargs)
         context['last_news'] = News.objects.filter(hidden=False)[:5]
-        context['content'] = get_content(self.object)
 
         return context
 
@@ -103,7 +89,6 @@ class NewsDateDetailView(DetailView):
         month = self.kwargs['month']
         day = self.kwargs['day']
         url = self.kwargs['url']
-        context['content'] = get_content(self.object)
 
         return context
 
@@ -122,6 +107,5 @@ class NewsUrlDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         url = self.kwargs['url']
-        context['content'] = get_content(self.object)
 
         return context

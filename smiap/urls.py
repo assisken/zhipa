@@ -17,6 +17,7 @@ Including another URLconf
 from logging import DEBUG
 
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
@@ -27,6 +28,9 @@ urlpatterns = [
     path('materials/', include(('news.urls', 'news'), namespace='news')),
     path('students/', include(('schedule.urls', 'schedule'), namespace='schedule')),
     path('', include('main.urls', namespace='')),
+
+    # Plugins
+    url(r'martor/', include('martor.urls'))
 ]
 
 if DEBUG:
