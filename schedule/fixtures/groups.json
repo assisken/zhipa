@@ -8,7 +8,7 @@
             "semester": 5,
             "study_form": "очная"
         },
-        "model": "main.group",
+        "model": "schedule.group",
         "pk": 1
     },
     {
@@ -23,7 +23,7 @@
             ],
             "schedule_type": "Учебн."
         },
-        "model": "main.schedule",
+        "model": "schedule.schedule",
         "pk": 1
     },
     {
@@ -42,7 +42,7 @@
             "item_type": "ЛК",
             "schedule_type": "Учебн."
         },
-        "model": "main.fulltimeschedule",
+        "model": "schedule.fulltimeschedule",
         "pk": 1
     },
     {
@@ -52,7 +52,7 @@
             "week": 1,
             "week_day": "Ср"
         },
-        "model": "main.day",
+        "model": "schedule.day",
         "pk": 1
     },
     {
@@ -62,7 +62,7 @@
             "middlename": "Михайлович",
             "staff": null
         },
-        "model": "main.teacher",
+        "model": "schedule.teacher",
         "pk": 1
     },
     {
@@ -70,7 +70,7 @@
             "building": "Жип.",
             "number": "Я-1031223"
         },
-        "model": "main.place",
+        "model": "schedule.place",
         "pk": 1
     }
 ]

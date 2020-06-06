@@ -4,8 +4,8 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from main.models import Group, FullTimeSchedule
-from main.views.timetable_view import date_block
+from schedule.models import Group, FullTimeSchedule
+from schedule.views import date_block
 from main.utils.date import TeachTime
 
 
@@ -21,7 +21,7 @@ class ScheduleTest(TestCase):
         expect = 'На данной неделе занятия по расписанию отсутствуют'
 
         for group in self.groups:
-            url = self.url_pattern.format(url=reverse('timetable'), group=group.name, week=empty_week)
+            url = self.url_pattern.format(url=reverse('schedule:timetable'), group=group.name, week=empty_week)
             resp = self.client.get(url)
             self.assertContains(resp, expect, msg_prefix='Некорректное отображение пустой недели')
 
@@ -30,7 +30,7 @@ class ScheduleTest(TestCase):
         msg = 'Некорректно отображается расписание'
 
         for group in self.groups:
-            url = self.url_pattern.format(url=reverse('timetable'), group=group.name, week=week_with_schedule)
+            url = self.url_pattern.format(url=reverse('schedule:timetable'), group=group.name, week=week_with_schedule)
             resp = self.client.get(url)
             schedule = FullTimeSchedule.objects.prefetch_related('day', 'group', 'teachers', 'places') \
                 .filter(group=group)

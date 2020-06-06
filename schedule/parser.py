@@ -1,9 +1,9 @@
-from lxml import html
-from lxml.html import HtmlElement
 from dataclasses import dataclass
 from typing import List
-import logging
+
 import requests
+from lxml import html
+from lxml.html import HtmlElement
 from requests.exceptions import Timeout
 
 

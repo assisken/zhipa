@@ -2,8 +2,8 @@ from django.apps import apps
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group
-from main.views.timetable_view import date_block
+from schedule.models import Group
+from schedule.views import date_block
 from main.utils.date import TeachTime
 from news.models import News
 

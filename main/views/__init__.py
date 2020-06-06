@@ -4,4 +4,3 @@ from .index_view import IndexView
 from .link_view import LinkView
 from .publications_view import PublicationView
 from .staff_view import StaffView
-from .timetable_view import GroupTimetableView, ExtramuralGroupTimetableView, TeacherTimetableView

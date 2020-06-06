@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Group, Day, Teacher, FullTimeSchedule, ExtramuralSchedule
+from .models import Group, Day, Teacher, FullTimeSchedule, ExtramuralSchedule
 
 
 class GroupSerializer(serializers.ModelSerializer):

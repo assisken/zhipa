@@ -1,7 +1,9 @@
+from django.apps import apps
 from django.urls import path
 
 from api.v1.views import *
-from main.models import Schedule
+
+Schedule = apps.get_model(app_label='schedule', model_name='Schedule')
 
 urlpatterns = [
     path('groups/', GroupList.as_view(), name='groups'),
