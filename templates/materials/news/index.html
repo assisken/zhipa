@@ -23,7 +23,7 @@
                                 <a href="{{ news.get_url() }}" class="news-title_link">
                                     <h2 class="bottom-line">{{ news.title }}</h2>
                                 </a>
-                                {% include 'layout/news_cover.html' %}
+                                {% include 'layout/news/news_cover.html' %}
                                 <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
                             </div>
                         </div>
@@ -36,10 +36,12 @@
                     </span>
                     <article style="margin-top: 10px">
                         <h1 class="bottom-line">{{ news.title }}</h1>
-                        {% if news.text %}
-                            {{ content|safe }}
+                        {% if news.render_in == 'md' %}
+                            {{ news.text | news_text(news.id) | safe }}
+                        {% elif news.render_in == 'html' %}
+                            {{ news.text | safe }}
                         {% else %}
-                            <p>{{ news.description|safe }}</p>
+                            {{ news.text }}
                         {% endif %}
 
                         <div class="share">

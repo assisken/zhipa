@@ -1,4 +1,4 @@
-from smiap.settings import BRAND
+from smiap.settings.components.app import BRAND
 from main.utils.date import TeachTime, TeachState
 
 

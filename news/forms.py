@@ -2,12 +2,19 @@ import re
 
 from django import forms
 from django.core.exceptions import ValidationError
+from martor.widgets import MartorWidget
 
 from .models import News
 from .news_md_to_html import NewsLexer
 
 
 class NewsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.render_in == self.instance.MARKDOWN:
+            self.fields['description'].widget = MartorWidget()
+            self.fields['text'].widget = MartorWidget()
+
     class Meta:
         model = News
         fields = '__all__'

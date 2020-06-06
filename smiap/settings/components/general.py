@@ -11,21 +11,14 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import locale
-import logging
-import logging.config
 import os
 import random
-from typing import List
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from urllib.parse import urljoin
 
 from django.contrib.staticfiles.storage import staticfiles_storage
-from dotenv import load_dotenv
 
-load_dotenv(verbose=True)
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -35,31 +28,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', ''.join(
     [random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)]
 ))
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', False)
-DB_NAME = os.getenv('POSTGRES_DB')
-DB_USER = os.getenv('POSTGRES_USER')
-DB_HOST = os.getenv('POSTGRES_HOST')
-DB_PORT = os.getenv('POSTGRES_PORT')
-DB_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-
-# App specific settings
-BRAND = os.getenv('BRAND')
-LMS_URL = os.getenv('LMS_URL')
-LMS_PASSWORD = os.getenv('LMS_PASSWORD')
-DEPARTMENT = os.getenv('DEPARTMENT')
 
 # Tests settings
 SELENIUM_HOST = os.getenv('SELENIUM_HOST', None)
 SELENIUM_PORT = os.getenv('SELENIUM_PORT', None)
-
-ALLOWED_HOSTS: List[str] = ['*'] if not DEBUG else [
-    'localhost',
-    '127.0.0.1',
-    '10.8.0.0/24',
-    'duck.nepnep.ru',
-    'vl4dmati.mati.su'
-]
 
 # Application definition
 
@@ -76,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'colorfield',
+    'martor',
     'main.apps.SmiapConfig',
     'schedule.apps.ScheduleConfig',
     'news.apps.NewsConfig',
@@ -135,22 +108,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'smiap.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-        'TEST': {
-            'NAME': 'test_smiap',
-        },
-    }
-}
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -196,25 +153,6 @@ STATICFILES_DIRS = (
     MEDIA_ROOT,
 )
 
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.logging.LoggingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
-]
-
-DEBUG_TOOLBAR_CONFIG = {
-    'RENDER_PANELS': True
-}
-
 INTERNAL_IPS = [
     '127.0.0.1',
     '10.8.0.2',
@@ -225,85 +163,10 @@ FIXTURE_DIRS = (
     # os.path.join(BASE_DIR, 'main', 'fixtures'),
 )
 
-HTML_MINIFY = False if DEBUG else True
 AUTH_USER_MODEL = 'main.User'
 
 # Redgreentests settings
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
-
-# django-registration settings
-ACCOUNT_ACTIVATION_DAYS = 7
-REGISTRATION_OPEN = True
-# Todo: Do not use CONFIG
-# REGISTRATION_SALT = CONFIG.get('app', 'registration-salt')
-AUTH_USER_EMAIL_UNIQUE = True
-
-# mail settings
-# Todo: Do not use CONFIG
-# EMAIL_HOST = CONFIG.get('email', 'host')
-# EMAIL_PORT = CONFIG.getint('email', 'port')
-# EMAIL_HOST_USER = CONFIG.get('email', 'user')
-# EMAIL_HOST_PASSWORD = CONFIG.get('email', 'password')
-EMAIL_USE_TLS = False
-# DEFAULT_FROM_EMAIL = CONFIG.get('email', 'from')
-
-# LOGGING
-log = logging.getLogger('smiap')
-log.setLevel(logging.DEBUG)
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-        'file': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'logging.FileHandler',
-            'filename': '/var/log/smiap.log',
-            'formatter': 'verbose'
-        },
-        'debug_file': {
-            'level': 'ERROR',
-            'filters': ['require_debug_true'],
-            'class': 'logging.FileHandler',
-            'filename': './logfile.log',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'propagate': True,
-        },
-        'smiap': {
-            'handlers': ['console', 'file'],
-            'propagate': True,
-        }
-    }
-}
 
 # REST Framework config
 REST_FRAMEWORK = {
@@ -313,5 +176,3 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ]
 }
-if DEBUG:
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
