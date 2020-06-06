@@ -1,7 +1,6 @@
 from django.urls import path, register_converter
 from django.views.generic import TemplateView, RedirectView
 
-from main.models import FullTimeSchedule, ExtramuralSchedule, Schedule
 from news import converters
 from .views import *
 
@@ -26,24 +25,7 @@ urlpatterns = [
     path('materials/tutorials', TemplateView.as_view(template_name='materials/tutorials.html'), name='tutorials'),
     path('materials/publications', PublicationView.as_view(), name='publications'),
 
-    # Timetable
-    path('students/timetable',
-         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.STUDY),
-         name='timetable'),
-    path('students/timetable/extramural',
-         ExtramuralGroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.STUDY),
-         name='timetable-extramural'),
-    path('students/session',
-         GroupTimetableView.as_view(schedule=FullTimeSchedule, schedule_type=Schedule.SESSION),
-         name='timetable-session'),
-    path('students/timetable/ex-session',
-         ExtramuralGroupTimetableView.as_view(schedule=ExtramuralSchedule, schedule_type=Schedule.SESSION),
-         name='timetable-extramural-session'),
-
     path('f/<str:link>', LinkView.as_view(), name='short-file'),
-
-    # Deprecated: https://trello.com/c/I7ygJ9Nk
-    path('materials/timetable/teacher', TeacherTimetableView.as_view(), name='timetable-teacher'),
 
     # Redirects from old url.
     path('programs', RedirectView.as_view(url='/abiturients/programs')),

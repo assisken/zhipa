@@ -4,8 +4,8 @@ from collections import defaultdict
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.models import Group, FullTimeSchedule, Teacher, Schedule, ExtramuralSchedule
 from main.utils.date import TeachTime, TeachState
+from .models import FullTimeSchedule, ExtramuralSchedule, Schedule, Group, Teacher
 
 
 def get_items(**kwargs):

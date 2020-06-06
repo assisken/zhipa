@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand, CommandParser
 
-from main.management.scripts import generate
+from schedule.management.scripts import generate
 
 
 class Command(BaseCommand):

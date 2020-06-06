@@ -77,9 +77,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'colorfield',
     'main.apps.SmiapConfig',
+    'schedule.apps.ScheduleConfig',
+    'news.apps.NewsConfig',
     'api.apps.ApiConfig',
     'api.v1.apps.ApiV1Config',
-    'news.apps.NewsConfig',
 ]
 
 MIDDLEWARE = (

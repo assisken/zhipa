@@ -1,8 +1,8 @@
 from django.core.management import BaseCommand, CommandParser
 from termcolor import cprint
 
-from main.management.scripts.groups import fetch_groups, fetch_groups_from_csv
-from main.management.scripts.schedule import ScheduleType, ScheduleParser
+from schedule.management.scripts.groups import fetch_groups, fetch_groups_from_csv
+from schedule.management.scripts.schedule import ScheduleType, ScheduleParser
 from smiap.settings import LMS_PASSWORD, LMS_URL, DEPARTMENT
 from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError, GroupListIsEmpty
 

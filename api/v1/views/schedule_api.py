@@ -1,11 +1,17 @@
 from collections import defaultdict
 
+from django.apps import apps
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.v1.serializers import FulltimeScheduleSerializer, ExtramuralScheduleSerializer
-from main.models import Group, Schedule, ExtramuralSchedule, FullTimeSchedule
-from main.views.timetable_view import get_items
+from schedule.serializers import FulltimeScheduleSerializer, ExtramuralScheduleSerializer
+from schedule.views import get_items
+
+
+Group = apps.get_model(app_label='schedule', model_name='Group')
+Schedule = apps.get_model(app_label='schedule', model_name='Schedule')
+FullTimeSchedule = apps.get_model(app_label='schedule', model_name='FullTimeSchedule')
+ExtramuralSchedule = apps.get_model(app_label='schedule', model_name='ExtramuralSchedule')
 
 
 class FullTimeScheduleAPI(APIView):

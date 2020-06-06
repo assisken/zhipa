@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(('api.urls', 'api'), namespace='api')),
     path('materials/', include(('news.urls', 'news'), namespace='news')),
+    path('students/', include(('schedule.urls', 'schedule'), namespace='schedule')),
     path('', include('main.urls', namespace='')),
 ]
 

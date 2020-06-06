@@ -4,7 +4,7 @@ from typing import Iterable
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-from main.models import Group, Schedule, Teacher, FullTimeSchedule
+from schedule.models import Group, Schedule, Teacher, FullTimeSchedule
 
 
 def gen_groups_table(groups: Iterable[Group], from_week: int) -> str:

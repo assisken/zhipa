@@ -1,9 +1,12 @@
+from django.apps import apps
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView
 
-from api.v1.serializers import GroupSerializer
-from main.models import Group
+from schedule.serializers import GroupSerializer
+
+
+Group = apps.get_model(app_label='schedule', model_name='Group')
 
 
 class GroupList(ListAPIView):

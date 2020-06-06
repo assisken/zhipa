@@ -7,8 +7,8 @@ from unittest.mock import patch, Mock
 
 from django.test import TestCase
 
-from main.management.scripts.groups import fetch_groups
-from main.models import Group
+from schedule.management.scripts.groups import fetch_groups
+from schedule.models import Group
 from main.utils.exceptions import LmsDoesNotRespondError
 
 RESPONSE = {

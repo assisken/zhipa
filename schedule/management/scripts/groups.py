@@ -5,7 +5,7 @@ import os
 import requests
 from django.db import IntegrityError
 
-from main.models import Group
+from schedule.models import Group
 from smiap.settings import BASE_DIR
 from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
