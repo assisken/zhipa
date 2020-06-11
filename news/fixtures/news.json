@@ -1,58 +1,58 @@
 [
   {
+    "model": "news.news",
+    "pk": "1",
     "fields": {
       "date": "2000-11-11T12:34:56Z",
-      "description": "test",
+      "description": "description random text",
       "hidden": "0",
       "cover": "images/news/20190206/cover.jpg",
-      "text": "test",
+      "text": "test text",
       "title": "На ярмарке продалась шиншила",
       "url": "test_url",
       "render_in": "html"
-    },
-    "model": "news.news",
-    "pk": "1"
+    }
   },
   {
+    "model": "news.news",
+    "pk": "2",
     "fields": {
       "date": "2000-11-11T12:34:56Z",
       "description": "Секрет",
       "hidden": "1",
       "cover": "images/news/20190206/cover.jpg",
-      "text": "test",
+      "text": "test text",
       "title": "О, нет!",
       "url": null,
       "render_in": "html"
-    },
-    "model": "news.news",
-    "pk": "2"
+    }
   },
   {
+    "model": "news.news",
+    "pk": "3",
     "fields": {
       "date": "2000-11-11T12:34:56Z",
-      "description": "test",
+      "description": "description random text",
       "hidden": "0",
       "cover": "images/news/20190206/cover.jpg",
-      "text": "test",
+      "text": "test text",
       "title": "Опознан шиншило-генератор!",
       "url": null,
       "render_in": "html"
-    },
-    "model": "news.news",
-    "pk": "3"
+    }
   },
-    {
+  {
+    "model": "news.news",
+    "pk": "4",
     "fields": {
       "date": "2000-11-11T12:34:56Z",
       "description": "Секрет",
       "hidden": "1",
       "cover": "images/news/20190206/cover.jpg",
-      "text": "test",
+      "text": "test text",
       "title": "Самая секретная новость на свете!",
       "url": null,
       "render_in": "html"
-    },
-    "model": "news.news",
-    "pk": "4"
+    }
   }
 ]

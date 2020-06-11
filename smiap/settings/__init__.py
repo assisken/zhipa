@@ -3,6 +3,11 @@ import os
 from dotenv import load_dotenv
 from split_settings.tools import include
 
+# Stubs for IDE
+BASE_DIR: str
+BRAND: str
+TIME_ZONE: str
+
 load_dotenv(verbose=True)
 ENV = os.getenv('ENV', 'development')
 DEBUG = ENV == 'development'

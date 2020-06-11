@@ -43,12 +43,8 @@ class News(models.Model):
         return self.title
 
     def get_url(self):
-        if self.url:
-            kwargs = {
-                'url': self.url
-            }
-            return reverse('news:news-url', kwargs=kwargs)
-        return reverse('news:news', kwargs={'pk': self.pk})
+        kwargs = {'url': self.url} if self.url else {'pk': self.id}
+        return reverse('news:news', kwargs=kwargs)
 
 
 class NewsCover(models.Model):

@@ -31,7 +31,7 @@ class NewsDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         news: News = self.get_object()
         if news.url:
-            return redirect('news-url', url=news.url)
+            return redirect('news:news', url=news.url)
         return super().get(request, *args, **kwargs)
 
 
@@ -41,23 +41,13 @@ class NewsDateListView(ListView):
     template_name = 'materials/news/list.html'
 
     def get_queryset(self):
-        kwargs = {
-            'date__year': self.kwargs['year']
-        }
-        month = self.kwargs.get('month', None)
-        day = self.kwargs.get('day', None)
-        if month:
-            kwargs['date__month'] = month
-        if day:
-            kwargs['date__day'] = day
-
-        return News.objects.filter(hidden=False, **kwargs)
+        return News.objects.filter(hidden=False, **self.kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        year = self.kwargs['year']
-        month = self.kwargs.get('month', 1)
-        day = self.kwargs.get('day', 1)
+        year = self.kwargs['date__year']
+        month = self.kwargs.get('date__month', 1)
+        day = self.kwargs.get('date__day', 1)
         date = datetime(year, month, day)
         if day:
             context['news_date'] = f'за {date.strftime("%-d %B %Y")} года'
@@ -75,22 +65,7 @@ class NewsDateDetailView(DetailView):
     template_name = 'materials/news/index.html'
 
     def get_object(self, queryset: QuerySet = None):
-        kwargs = {
-            'date__year': self.kwargs['year'],
-            'date__month': self.kwargs['month'],
-            'date__day': self.kwargs['day'],
-            'url': self.kwargs['url'],
-        }
-        return get_object_or_404(self.model, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        year = self.kwargs['year']
-        month = self.kwargs['month']
-        day = self.kwargs['day']
-        url = self.kwargs['url']
-
-        return context
+        return get_object_or_404(self.model, **self.kwargs)
 
 
 class NewsUrlDetailView(DetailView):
@@ -106,6 +81,4 @@ class NewsUrlDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        url = self.kwargs['url']
-
         return context
