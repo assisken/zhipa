@@ -1,0 +1,42 @@
+[
+  {
+    "model": "news.newscover",
+    "pk": "1",
+    "fields": {
+      "img": "images/news/vobla/cover.jpg",
+      "content": "Кролики-канюки",
+      "color": "#000",
+      "news": 1
+    }
+  },
+  {
+    "model": "news.newscover",
+    "pk": "2",
+    "fields": {
+      "img": "images/news/vobla/cover.jpg",
+      "content": "Путь всякой плоти",
+      "color": "#111",
+      "news": 2
+    }
+  },
+  {
+    "model": "news.newscover",
+    "pk": "3",
+    "fields": {
+      "img": "images/news/vobla/cover.jpg",
+      "content": "Итак, это обложка",
+      "color": "#222",
+      "news": 3
+    }
+  },
+  {
+    "model": "news.newscover",
+    "pk": "4",
+    "fields": {
+      "img": "images/news/vobla/cover.jpg",
+      "content": "Кролики-канюки2",
+      "color": "#333",
+      "news": 4
+    }
+  }
+]

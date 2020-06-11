@@ -28,11 +28,11 @@
                             </div>
                         </div>
                     {% endif %}
-                    <span class="category"><a href="{{ url('news:news-list-begin') }}">Новости</a></span>
+                    <span class="category"><a href="{{ url('news:news-list') }}">Новости</a></span>
                     <span class="news-date">
-                        <a href="{{ url('news:news-date', kwargs={'year': news.date.strftime('%Y') }) }}">{{ news.date.strftime('%Y') }}</a>/
-                        <a href="{{ url('news:news-date', kwargs={'year': news.date.strftime('%Y'), 'month': news.date.strftime('%m') }) }}">{{ news.date.strftime('%m') }}</a>/
-                        <a href="{{ url('news:news-date', kwargs={'year': news.date.strftime('%Y'), 'month': news.date.strftime('%m'), 'day': news.date.strftime('%d') }) }}">{{ news.date.strftime('%d') }}</a>
+                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y') }) }}">{{ news.date.strftime('%Y') }}</a>/
+                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m') }) }}">{{ news.date.strftime('%m') }}</a>/
+                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m'), 'date__day': news.date.strftime('%d') }) }}">{{ news.date.strftime('%d') }}</a>
                     </span>
                     <article style="margin-top: 10px">
                         <h1 class="bottom-line">{{ news.title }}</h1>

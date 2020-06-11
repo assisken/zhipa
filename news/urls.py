@@ -10,13 +10,14 @@ register_converter(converters.ActivateCodeConverter, 'key')
 
 urlpatterns = [
     path('', NewsListView.as_view()),
-    path('news', NewsListView.as_view(), name='news-list-begin'),
+    path('news', NewsListView.as_view(), name='news-list'),
     path('news/page<int:number>', NewsListView.as_view(), name='news-list'),
+    path('<yyyy:date__year>', NewsDateListView.as_view(), name='news-list'),
+    path('<yyyy:date__year>/<mm:date__month>', NewsDateListView.as_view(), name='news-list'),
+    path('<yyyy:date__year>/<mm:date__month>/<dd:date__day>', NewsDateListView.as_view(), name='news-list'),
+
     path('news/id/<int:pk>', NewsDetailView.as_view(), name='news'),
-    path('news/<slug:url>', NewsUrlDetailView.as_view(), name='news-url'),
-    path('<yyyy:year>', NewsDateListView.as_view(), name='news-date'),
-    path('<yyyy:year>/<mm:month>', NewsDateListView.as_view(), name='news-date'),
-    path('<yyyy:year>/<mm:month>/<dd:day>', NewsDateListView.as_view(), name='news-date'),
-    path('news/<yyyy:year>/<mm:month>/<dd:day>/<slug:url>',
-         NewsDateDetailView.as_view(), name='news-date-url'),
+    path('news/<slug:url>', NewsUrlDetailView.as_view(), name='news'),
+    path('news/<yyyy:date__year>/<mm:date__month>/<dd:date__day>/<slug:url>',
+         NewsDateDetailView.as_view(), name='news'),
 ]
