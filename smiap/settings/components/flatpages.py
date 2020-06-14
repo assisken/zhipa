@@ -1,0 +1,2 @@
+SITE_ID = 1
+APPEND_SLASH = False

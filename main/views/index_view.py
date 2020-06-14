@@ -1,23 +1,33 @@
 from django.apps import apps
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.shortcuts import reverse
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.auth.views import redirect_to_login
 
 from schedule.models import Group
 from schedule.views import date_block
 from main.utils.date import TeachTime
 from news.models import News
+from main.views.flatpage_view import FlatPageView
 
 
-class IndexView(TemplateView):
-    template_name = 'index.html'
-
+class IndexView(FlatPageView):
     def get(self, request, *args, **kwargs):
+        if super()._not_authorized():
+            return redirect_to_login(self.request.path)
+        super()._mark_safe()
+
+        template = super()._get_template()
         teach_time = TeachTime()
         news: News = apps.get_model(app_label='news', model_name='News')
+        important_message = FlatPage.objects.get(url=reverse('important-message'))
 
-        return render(request, self.template_name, {
+        content = template.render({
+            'flatpage': self.flatpage,
             'date_block': date_block(teach_time),
             'groups': Group.objects.only('name'),
             'latest_news': news.objects.filter(hidden=False).order_by('-date')[:4],
-            'teach_state': teach_time.teach_state
-        })
+            'teach_state': teach_time.teach_state,
+            'important_message': important_message.content
+        }, request)
+        return HttpResponse(content)

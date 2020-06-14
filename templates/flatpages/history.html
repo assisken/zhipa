@@ -8,7 +8,7 @@
     {% include 'layout/extra_nav.html' %}
 
     <div class="about animation-fade">
-        {% block history_content %}{% endblock %}
+        {{ flatpage.content }}
         <div class="pagination center font-large padding-large">
             <a
                     href="{{ url('history', kwargs={'number': 1}) }}"
