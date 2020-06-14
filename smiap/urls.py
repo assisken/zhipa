@@ -30,7 +30,7 @@ urlpatterns = [
     path('', include('main.urls', namespace='')),
 
     # Plugins
-    url(r'martor/', include('martor.urls'))
+    path('', include('django.contrib.flatpages.urls')),
 ]
 
 if DEBUG:

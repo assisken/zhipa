@@ -1,0 +1,182 @@
+[
+  {
+    "model": "flatpages.flatpage",
+    "pk": 1,
+    "fields": {
+      "url": "/about/intro",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 2,
+    "fields": {
+      "url": "/about/history/page1",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/history.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 3,
+    "fields": {
+      "url": "/about/history/page2",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/history.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 4,
+    "fields": {
+      "url": "/about/history/page3",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/history.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 5,
+    "fields": {
+      "url": "/about/history/page4",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/history.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 7,
+    "fields": {
+      "url": "/about/contacts",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 8,
+    "fields": {
+      "url": "/materials/tutorials",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 9,
+    "fields": {
+      "url": "/",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/homepage.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 10,
+    "fields": {
+      "url": "/important-message",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/default.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 13,
+    "fields": {
+      "url": "/about/conferences",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/default.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 18,
+    "fields": {
+      "url": "/abiturients/info",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/default.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "flatpages.flatpage",
+    "pk": 19,
+    "fields": {
+      "url": "/abiturients/programs",
+      "title": "Title of page",
+      "content": "Page",
+      "enable_comments": false,
+      "template_name": "flatpages/default.html",
+      "registration_required": false,
+      "sites": [
+        1
+      ]
+    }
+  }
+]

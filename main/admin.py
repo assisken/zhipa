@@ -1,12 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
 from django.db.models import QuerySet
 from django.forms import Form
 from django.urls import path, reverse
 from django.utils.safestring import mark_safe
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
+from main.forms import FlatpageForm
 from main.models import *
 from main.views.admin.couple_publications import SeveralPublicationsView
+from .signals import *
 
 
 @admin.register(Staff)
@@ -42,6 +47,7 @@ class PublicationYearFilter(admin.SimpleListFilter):
                     yield 'Не определен'
                     continue
                 yield year
+
         years = frozenset(get_year())
         return ((year, year) for year in sorted(years))
 
@@ -82,3 +88,45 @@ class FileAdmin(admin.ModelAdmin):
             user = request.user
             obj.author = user
         super().save_model(request, obj, form, change)
+
+
+admin.site.unregister(FlatPage)
+
+
+@admin.register(FlatPage)
+class FlatPageAdmin(FlatPageAdminOld):
+    delete_error_msg = 'You cannot delete this page: {page}'
+    form = FlatpageForm
+
+    def has_delete_permission(self, request, obj: Optional[FlatPage] = None):
+        if obj:
+            url = obj.url[1:] if obj.url.startswith('/') else obj.url
+            return all(url != str(urlpattern.pattern) for urlpattern in urlpatterns)
+        return super().has_delete_permission(request, obj)
+
+    def delete_view(self, request, object_id, extra_context=None):
+        try:
+            return super().delete_view(request, object_id, extra_context)
+        except ProtectedError as e:
+            msg = self.delete_error_msg.format(page=e.protected_objects)
+            self.message_user(request, msg, messages.ERROR)
+            opts = self.model._meta
+            return_url = reverse(
+                'admin:%s_%s_change' % (opts.app_label, opts.model_name),
+                args=(object_id,),
+                current_app=self.admin_site.name,
+            )
+            return HttpResponseRedirect(return_url)
+
+    def response_action(self, request, queryset):
+        try:
+            return super().response_action(request, queryset)
+        except ProtectedError as e:
+            msg = self.delete_error_msg.format(page=e.protected_objects)
+            self.message_user(request, msg, messages.ERROR)
+            opts = self.model._meta
+            return_url = reverse(
+                'admin:%s_%s_changelist' % (opts.app_label, opts.model_name),
+                current_app=self.admin_site.name,
+            )
+            return HttpResponseRedirect(return_url)

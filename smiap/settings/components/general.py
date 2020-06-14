@@ -33,6 +33,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', ''.join(
 SELENIUM_HOST = os.getenv('SELENIUM_HOST', None)
 SELENIUM_PORT = os.getenv('SELENIUM_PORT', None)
 
+# Configuration for django editor widgets
+from djangoeditorwidgets.config import *
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +51,9 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'colorfield',
-    'martor',
+    'djangoeditorwidgets',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'main.apps.SmiapConfig',
     'schedule.apps.ScheduleConfig',
     'news.apps.NewsConfig',
@@ -64,6 +69,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
@@ -76,10 +82,11 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'smiap.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,7 +97,7 @@ TEMPLATES = [
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates', 'django')],
+        'DIRS': [os.path.join(TEMPLATE_DIR, 'django')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

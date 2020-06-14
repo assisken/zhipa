@@ -1,7 +1,12 @@
-import re
+import os
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.flatpages.forms import FlatpageForm as FlatpageFormOld
+from djangoeditorwidgets.widgets import MonacoEditorWidget
+from django.conf import settings
+from pathlib import Path
 
 from main.models import User
 
@@ -33,3 +38,17 @@ class SeveralPublicationsForm(GeneralForm):
     )
 
 
+class FlatpageForm(FlatpageFormOld):
+    content = forms.CharField(widget=MonacoEditorWidget(attrs={'data-minimap': 'true'}))
+    template_name = forms.ChoiceField(
+        help_text='Используйте default.html, если не уверены.',
+        initial='flatpages/default.html',
+        choices=(
+            (f'flatpages/{path.name}', path.name)
+            for path in Path(os.path.join(settings.TEMPLATE_DIR, 'flatpages')).rglob("*.html")
+        )
+    )
+
+    class Meta:
+        model = FlatPage
+        fields = '__all__'

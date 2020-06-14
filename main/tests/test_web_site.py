@@ -7,7 +7,7 @@ from smiap.settings import BASE_DIR, BRAND
 
 
 class TestWebSite(TestCase):
-    fixtures = ['groups.json']
+    fixtures = ['groups.json', 'flatpages.json']
 
     def setUp(self):
         super().setUp()

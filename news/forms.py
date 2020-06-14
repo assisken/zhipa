@@ -2,7 +2,7 @@ import re
 
 from django import forms
 from django.core.exceptions import ValidationError
-from martor.widgets import MartorWidget
+from djangoeditorwidgets.widgets import MonacoEditorWidget
 
 from .models import News
 from .news_md_to_html import NewsLexer
@@ -11,9 +11,13 @@ from .news_md_to_html import NewsLexer
 class NewsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.render_in == self.instance.MARKDOWN:
-            self.fields['description'].widget = MartorWidget()
-            self.fields['text'].widget = MartorWidget()
+        language = 'markdown' if self.instance.render_in == 'md' else self.instance.render_in
+        self.fields['description'].widget = MonacoEditorWidget(
+            attrs={'data-language': language, 'data-wordwrap': 'on'}
+        )
+        self.fields['text'].widget = MonacoEditorWidget(
+            attrs={'data-language': language, 'data-wordwrap': 'on'}
+        )
 
     class Meta:
         model = News

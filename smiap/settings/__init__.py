@@ -17,7 +17,7 @@ base_settings = [
     'components/app.py',
     'components/database.py',
     'components/logging.py',
-    'components/martor.py',
+    'components/flatpages.py',
 
     # Select the environment
     f'environments/{ENV}.py',
