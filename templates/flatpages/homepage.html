@@ -3,18 +3,9 @@
 {% block content %}
     <section class="homepage center">
         <div class="present limit-1024">
-{#            {% include 'layout/message_warning.html' %}#}
-{#            {% if teach_state.SUMMER_HOLIDAYS %}#}
-               {# Ломается стили у последующих блоков. Лечится фиксом css, либо комментированием этого блока. #}
-               {# {% include 'layout/index_abiturient.html' %} #}
-{#            {% else %}#}
-{#                <div class="app column full animation-fade animation-tiles" style="height: 0; width: 0; margin: 0; padding: 0; box-shadow: none; background: none"></div>#}
-{#            {% endif %}#}
-
             <div class="app column full animation-fade animation-tiles" style="/*background-color: #fcd135;*/">
                 {{ important_message | safe }}
             </div>
-
             <div class="app column small center animation-fade animation-tiles animation-delay-1">
                 <div class="studyweeks">
                     <span class="word start" style="font-size: 1.5em">{{ date_block.text }}</span>
@@ -25,7 +16,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="app column large animation-fade animation-tiles animation-delay-2">
                 <div class="lastnews">
                     <h1>Последние публикации</h1>
@@ -42,9 +32,7 @@
                     <div class="buttons">
                         <a href="{{ url('news:news-list') }}" class="button_primary">Все новости</a>
                     </div>
-
                 </div>
-
             </div>
             {{ flatpage.content }}
         </div>
