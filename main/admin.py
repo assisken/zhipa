@@ -18,6 +18,7 @@ from .signals import *
 class StaffAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'regalia', 'leader', 'lecturer', 'hide')
     list_filter = ('leader', 'lecturer', 'hide')
+    search_fields = ('lastname', 'firstname', 'middlename', 'regalia')
 
 
 @admin.register(User)
@@ -27,7 +28,10 @@ class SmiapUserAdmin(UserAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', '__str__', 'closed')
+    list_display_links = ('__str__',)
+    ordering = ('lastname', 'firstname', 'middlename')
+    search_fields = ('lastname', 'firstname', 'middlename')
 
 
 @admin.register(Student)
@@ -62,6 +66,7 @@ class PublicationAdmin(admin.ModelAdmin):
     list_display = ('id', 'year', 'name', 'place', 'authors')
     list_display_links = ('name',)
     list_filter = (PublicationYearFilter,)
+    search_fields = ('id', 'name', 'place', 'authors')
 
     def get_urls(self):
         urls = super().get_urls()

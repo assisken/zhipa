@@ -1,32 +1,33 @@
 [
     {
         "fields": {
-            "description": null,
+            "description": "",
             "hide": false,
             "leader": true,
             "lecturer": true,
             "regalia": "д.ф.н."
         },
         "model": "main.staff",
-        "pk": "1"
+        "pk": 1
     },
     {
         "fields": {
-            "description": null,
+            "description": "",
             "hide": true,
             "leader": false,
             "lecturer": true,
             "regalia": ""
         },
         "model": "main.staff",
-        "pk": "2"
+        "pk": 2
     },
     {
         "fields": {
             "firstname": "Один из",
             "img": "",
             "lastname": "вещих",
-            "middlename": "овощей"
+            "middlename": "овощей",
+            "closed": true
         },
         "model": "main.profile",
         "pk": 1
@@ -36,8 +37,9 @@
             "firstname": "Не самый",
             "img": "",
             "lastname": "умный",
-            "middlename": "Преподаватель"
-        },
+            "middlename": "Преподаватель",
+             "closed": true
+       },
         "model": "main.profile",
         "pk": 2
     }

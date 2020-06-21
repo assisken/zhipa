@@ -261,6 +261,15 @@ nav {
 .padding-large {
   padding: 2%;
 }
+.padding-hz-small {
+    padding: 0 .5%;
+}
+.padding-hz-medium {
+  padding: 0 1%;
+}
+.padding-hz-large {
+  padding: 0 2%;
+}
 .middle {
   vertical-align: middle;
 }

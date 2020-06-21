@@ -1,10 +1,15 @@
 {% extends 'layout/base.html' %}
 
+{% block title %}
+    Научные публикации {{ profile.get_short_fio() }} :: {{ APP_TITLE }}
+{% endblock title %}
+
+
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
     <div class="width-100 animation-fade">
-		<h1 class="center padding-medium">Научные публикации кафедры СМиАП</h1>
+		<h1 class="center padding-medium">Научные публикации {{ profile.get_short_fio() }}</h1>
 		<div class="adaptive">
 		    {% include 'layout/publications_table.html' %}
 		</div>

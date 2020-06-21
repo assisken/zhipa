@@ -30,7 +30,7 @@
 
 	<div class="mainmenu">
 		<nav class="menustring center">
-            {% for key, item in NAV_ITEMS.items() %}
+            {% for key, item in NAV_ITEMS.items() if not item['hidden'] %}
 		    	{% if item['id'] in ACTIVE_ITEMS %}
 		    		{% set activeitem = " menustring_activeitem" %}
                 {% else %}

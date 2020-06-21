@@ -23,7 +23,7 @@
                         {% for news in latest_news %}
                             <li>
                                 {{ news.date.strftime('%-d %B %Y') | title }} -
-                                <a href="{{ news.get_url() }}">{{ news.title }}</a>
+                                <a href="{{ news.get_absolute_url() }}">{{ news.title }}</a>
                             </li>
                         {% else %}
                             Последних публикаций нет...

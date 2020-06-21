@@ -7,18 +7,18 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="news">
+    <div class="content">
   		<div class="width-70 top">
   		    <div style="margin: 0 5px 20px 10px;">
                 <h1 class="bottom-line" style="margin: 20px 10px">Новости</h1>
   				{% for news in news_list %}
                     <div class="eventbox flatbox" id="{{ news.pk }}">
                         <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
-                        <a href="{{ news.get_url() }}" class="news-title_link">
+                        <a href="{{ news.get_absolute_url() }}" class="news-title_link">
                             <h2 class="bottom-line">{{ news.title }}</h2>
                         </a>
                         {% include 'layout/news/news_cover.html' %}
-                        <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
+                        <p class="right"><a href="{{ news.get_absolute_url() }}" class="button_primary">Подробнее</a></p>
                     </div>
   				{% else %}
   					<h1 class="bottom-line" style="margin: 20px 10px">На данный момент новостей нет...</h1>

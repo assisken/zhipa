@@ -4,7 +4,7 @@
     transition: all .2s ease-in-out
 }
 
-.news .news-aside .compact h3, .news h2, .timetable th, h1 {
+.content .news-aside .compact h3, .content h2, .timetable th, h1 {
     font-weight: 400
 }
 
@@ -13,11 +13,11 @@
     color: #444
 }
 
-.news h2:hover {
+.content h2:hover {
     color: #AAA
 }
 
-.app .lastnews, .app .smallteaser p, .app .studyweeks, .button_danger, .button_default, .button_primary, .button_success, .font-light, .news .news-aside .compact h3, .news h2, .timetable td, h1 {
+.app .lastnews, .app .smallteaser p, .app .studyweeks, .button_danger, .button_default, .button_primary, .button_success, .font-light, .content .news-aside .compact h3, .content h2, .timetable td, h1 {
     font-family: "Open Sans Light"
 }
 
@@ -182,20 +182,24 @@ footer p {
     margin: 5px 0 40px
 }
 
-.lectures .column img {
+.user-photo {
     width: 60%;
     border-radius: 50%;
     padding: 0;
     background: #fff;
     border: 2px solid #f7f7f7;
-    margin-bottom: 20px;
-    margin-top: 20px
 }
 
 .lectures .column p {
     text-align: left;
     text-indent: 0;
     font-size: 10pt
+}
+
+.photo-caption {
+    padding: 0;
+    margin-bottom: 20px;
+    margin-top: 20px
 }
 
 .lectures .leader {
@@ -211,7 +215,8 @@ footer p {
     display: inline-block;
     zoom: 1;
     width: 30%;
-    padding: 0 10px;
+    margin: 0 10px;
+    border-radius: 0;
     vertical-align: middle
 }
 
@@ -302,58 +307,61 @@ footer p {
     font-size: 10pt
 }
 
-.news {
+.content {
     line-height: 1.2
 }
 
-.news .eventbox {
+.content .eventbox {
     padding: 10px;
     margin: 5px 5px 20px
 }
 
-.news .eventbox:last-of-type {
+.content .eventbox:last-of-type {
     margin-bottom: 5px
 }
 
-.news .eventbox h2 {
+.content .eventbox h2 {
     font-size: 18pt
 }
 
-.news .eventbox .with_image {
+.content .eventbox .with_image {
     margin: 0;
     padding: 0
 }
 
-.news .eventbox .with_image img {
+.content .eventbox .with_image img {
     display: inline-block;
     zoom: 1;
     width: 39%;
     margin-right: 5px;
     vertical-align: top;
-    border-radius: 3px
 }
 
-.news .eventbox .with_image p {
+.news-cover {
+    border-radius: 3px;
+}
+
+.content .eventbox .with_image .description {
     display: inline-block;
     zoom: 1;
     width: 55%
 }
 
-.news .news-date {
+.content .news-date {
     color: #22a7ff;
     font-size: 10pt
 }
 
-.news .category {
+.content .category {
     color: gray;
     font-size: 11pt
 }
 
-.news .category:after {
+.content .category:after {
     content: "\bb"
 }
 
-.news p {
+.content p {
     line-height: 1.5;
 }
 
@@ -361,7 +369,7 @@ footer p {
     background: #f5f5f5;
     background: rgba(255, 255, 255, .5);
     box-shadow: 0 0 2px 0 #e5e5e5;
-    border-top: 1px smolid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
     margin: 10px 0
 }
@@ -550,7 +558,7 @@ footer p {
     border-radius: 2px
 }
 
-.news p {
+.content p {
     line-height: 1.5;
 }
 
@@ -692,7 +700,7 @@ div.clear {
         margin: 0
     }
 
-    .news .news-aside {
+    .content .news-aside {
         padding: 15px
     }
 
@@ -758,17 +766,17 @@ div.clear {
         border-bottom: 2px solid #ccc !important
     }
 
-    .news section {
+    .content section {
         margin: 5px 0
     }
 
-    .news .eventbox .with_image img {
+    .content .eventbox .with_image img {
         display: block;
         width: 100%;
         margin: 0 0 15px
     }
 
-    .news .eventbox .with_image p {
+    .content .eventbox .with_image .description {
         display: block;
         width: 100%
     }
@@ -869,4 +877,26 @@ div.clear {
     width: 100%;
     height: 100%
 }
-	
+
+.headerlink {
+    opacity: 0;
+    font-size: 0.8em;
+    position: relative;
+    top: -0.17em;
+    font-weight: 700;
+    text-decoration: none;
+    -webkit-transition: opacity 200ms ease-in-out;
+    transition: opacity 200ms ease-in-out;
+}
+
+h1:hover > .headerlink,
+h2:hover > .headerlink,
+h3:hover > .headerlink,
+h4:hover > .headerlink,
+h5:hover > .headerlink,
+h6:hover > .headerlink,
+dl:hover > .headerlink,
+dt:hover > .headerlink,
+td:hover > .headerlink {
+    opacity: 1;
+}
