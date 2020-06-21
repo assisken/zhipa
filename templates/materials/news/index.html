@@ -20,11 +20,11 @@
                         <div class="news-preview">
                             <div class="eventbox flatbox" id="{{ news.pk }}">
                                 <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
-                                <a href="{{ news.get_url() }}" class="news-title_link">
+                                <a href="{{ news.get_absolute_url() }}" class="news-title_link">
                                     <h2 class="bottom-line">{{ news.title }}</h2>
                                 </a>
                                 {% include 'layout/news/news_cover.html' %}
-                                <p class="right"><a href="{{ news.get_url() }}" class="button_primary">Подробнее</a></p>
+                                <p class="right"><a href="{{ news.get_absolute_url() }}" class="button_primary">Подробнее</a></p>
                             </div>
                         </div>
                     {% endif %}
@@ -65,7 +65,7 @@
                         {% for n in last_news %}
                         <div class="compact">
                             <span class="news-date">{{ n.date.strftime('%-d %B %Y') | title }}</span>
-                            <a href="{{ n.get_url() }}"><h3>{{ n.title }}</h3></a>
+                            <a href="{{ n.get_absolute_url() }}"><h3>{{ n.title }}</h3></a>
                         </div>
                         {% endfor %}
                     {% endif %}

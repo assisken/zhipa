@@ -31,6 +31,9 @@ urlpatterns = [
 
     path('f/<str:link>', LinkView.as_view(), name='short-file'),
 
+    path('profile/<int:profile>/description', ProfileDescriptionView.as_view(), name='profile-description'),
+    path('profile/<int:profile>/publications', ProfilePublicationsView.as_view(), name='profile-publications'),
+
     # Redirects from old url.
     path('programs', RedirectView.as_view(pattern_name='programs')),
     path('conferences', RedirectView.as_view(pattern_name='conferences')),

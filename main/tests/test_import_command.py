@@ -3,21 +3,19 @@ import os
 from datetime import datetime
 
 from django.apps import apps
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.utils.timezone import make_aware
 from pytz import timezone
 
-from news.models import News
-
 from main.management.scripts.file_import import handle_data
 from main.models import Staff
+from news.models import News
 from smiap.settings import BASE_DIR, TIME_ZONE
-
 
 News: News = apps.get_model('news', 'News')
 
 
-class TestImportCommand(TestCase):
+class TestImportCommand(TransactionTestCase):
     def setUp(self) -> None:
         with open(os.path.join(BASE_DIR, 'main', 'tests', 'files', 'data.json'), 'r') as file:
             raw_data = file.read()
@@ -25,7 +23,7 @@ class TestImportCommand(TestCase):
         self.data = json.loads(raw_data)
         self.expected_news = [
             News(
-                pk=1,
+                pk=5,
                 title='Заголовок',
                 date=make_aware(
                     datetime.strptime('2015-11-21 00:00:00', '%Y-%m-%d %H:%M:%S'),
@@ -39,7 +37,7 @@ class TestImportCommand(TestCase):
                 render_in='html'
             ),
             News(
-                pk=2,
+                pk=6,
                 title='Заголовок2',
                 date=make_aware(
                     datetime.strptime('2019-05-29 12:32:12', '%Y-%m-%d %H:%M:%S'),
@@ -54,7 +52,7 @@ class TestImportCommand(TestCase):
         ]
         self.expected_staff = [
             Staff(
-                pk=1,
+                pk=3,
                 lastname='Пупкин',
                 firstname='Вася',
                 middlename='Петрович',
@@ -66,7 +64,7 @@ class TestImportCommand(TestCase):
                 hide=False,
             ),
             Staff(
-                pk=2,
+                pk=4,
                 lastname='Стешняшко',
                 firstname='Константин',
                 middlename='Ильич',
@@ -78,7 +76,7 @@ class TestImportCommand(TestCase):
                 hide=False,
             ),
             Staff(
-                pk=3,
+                pk=5,
                 lastname='Петров',
                 firstname='Антон',
                 middlename='Борисович',

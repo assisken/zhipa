@@ -1,0 +1,16 @@
+<table style="width: 80%;" class="font-small table_publications">
+    <tr>
+        <th>Название</th>
+        <th>Мероприятие</th>
+        <th>Авторы</th>
+    </tr>
+    {% for publication in publications %}
+        <tr id="{{ publication.id }}">
+            <td>{{ publication.name }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
+            <td>{{ publication.place }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
+            <td>{{ publication.authors }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="3">Публикации отсутствуют</td></tr>
+    {% endfor %}
+</table>

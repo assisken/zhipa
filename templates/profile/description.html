@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+    {{ profile.get_short_fio() }} :: {{ APP_TITLE }}
+{% endblock title %}
+
+{% block content %}
+    <div class="content">
+        {% include 'layout/extra_nav.html' %}
+		<div class="eventbox">
+            <div class="with_image">
+                <div class="width-20 top">
+                    {% if profile.img %}
+                        <div class="padding-hz-large width-90">
+                            <img class="user-photo" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
+                        </div>
+                    {% else %}
+                        <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}" style="width: 100%">
+                    {% endif %}
+                </div>
+                <div class="width-80">
+                    <h1 class="bottom-line">{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}</h1>
+                    <p><b>{{ profile.regalia }}</b></p>
+                    <p>{{ profile.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

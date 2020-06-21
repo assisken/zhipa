@@ -42,7 +42,7 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
-    def get_url(self):
+    def get_absolute_url(self):
         kwargs = {'url': self.url} if self.url else {'pk': self.id}
         return reverse('news:news', kwargs=kwargs)
 

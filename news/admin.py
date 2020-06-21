@@ -17,11 +17,13 @@ class InlineNewsContentImageAdmin(admin.TabularInline):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'hidden', 'author')
+    list_display = ('id', 'title', 'hidden', 'author', 'render_in')
     list_display_links = ('title',)
     list_filter = ('hidden',)
+    search_fields = ('title', 'description', 'text')
     form = NewsForm
     inlines = (InlineNewsCoverAdmin, InlineNewsContentImageAdmin,)
+    view_on_site = True
 
     def save_model(self, request, obj: News, form: Form, change):
         if form.is_valid() and not obj.author:

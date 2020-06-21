@@ -25,7 +25,7 @@ class TestNewsContentRender(TestCase):
             news: News
             self.assertContains(response, news.title)
             self.assertContains(response, news.description)
-            self.assertContains(response, news.get_url())
+            self.assertContains(response, news.get_absolute_url())
             self.assertContains(response, do_title(news.date.strftime('%Y')))
             self.assertContains(response, do_title(news.date.strftime('%B')))
             self.assertContains(response, do_title(news.date.strftime('%-d')))

@@ -1,8 +1,9 @@
-from smiap.settings.components.app import BRAND
 from main.utils.date import TeachTime, TeachState
+from smiap.settings.components.app import BRAND
 
 
 def app_processor(request):
+    kwargs = request.resolver_match.kwargs
     nav_items = {
         'home': {"id": "home", "title": "Главная", "link": "/", "subitems": []},
         'about': {"id": "about", "title": "О кафедре", "link": "/about/intro", "subitems": [
@@ -28,6 +29,11 @@ def app_processor(request):
         'students': {"id": "students", "title": "Студентам", "link": "/students/timetable", "subitems": [
             {"id": "timetable", "title": "Расписания очных занятий", "link": "/students/timetable"},
             {"id": "extramural", "title": "Расписания заочных занятий", "link": "/students/timetable/extramural"}
+        ]},
+
+        'profile': {"id": "profile", "hidden": True, "subitems": [
+            {"id": "description", "title": "Описание", "link": "/profile/{profile}/description"},
+            {"id": "publications", "title": "Публикации", "link": "/profile/{profile}/publications"},
         ]}
     }
 
@@ -56,6 +62,11 @@ def app_processor(request):
         active_items = 'home'
     else:
         active_items = request.path.split('/')
+
+    profile = kwargs.get('profile')
+    if profile:
+        for nav_item in nav_items['profile']['subitems']:
+            nav_item['link'] = nav_item['link'].format(profile=profile)
 
     return {
         'APP_TITLE': BRAND,

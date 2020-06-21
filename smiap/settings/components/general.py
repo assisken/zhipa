@@ -154,6 +154,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(FILES_ROOT, 'media')
 FILE_UPLOAD_PERMISSIONS = 0o644
 DEFAULT_IMG = staticfiles_storage.url('default.png')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
