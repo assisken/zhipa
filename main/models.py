@@ -1,7 +1,8 @@
 import os
 import re
 import uuid
-from typing import Optional, List
+from collections import namedtuple
+from typing import Optional, List, Tuple, Dict
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -108,6 +109,9 @@ class Student(Profile):
     group_name = models.CharField(max_length=50)
 
 
+AuthorInfo = namedtuple('AuthorInfo', 'fio link')
+
+
 class Publication(models.Model):
     name = models.TextField(blank=False, null=False)
     place = models.TextField(blank=False, null=False)
@@ -132,3 +136,7 @@ class Publication(models.Model):
     def get_author_profiles(self) -> List[Profile]:
         authors = re.split(r', +', self.authors)
         return [profile for fio in authors for profile in Profile.objects.filter_by_fio(fio)]
+
+    def get_authors_with_profiles(self, profiles: Dict[str, str]) -> Tuple[AuthorInfo, ...]:
+        authors = re.split(r', +', self.authors)
+        return tuple(AuthorInfo(fio=fio, link=profiles[fio]) for fio in authors)
