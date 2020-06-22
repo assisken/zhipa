@@ -17,6 +17,7 @@ import random
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from smiap.settings import DEBUG
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -193,3 +194,4 @@ STATICFILES_FINDERS = [
     'sass_processor.finders.CssFinder',
     'compressor.finders.CompressorFinder',
 ]
+COMPRESS_ENABLED = not DEBUG
