@@ -22,8 +22,6 @@ def unify_names(sender: Profile, instance: Profile, **kwargs):
     instance.middlename = unify_fio(instance.middlename)
 
 
-@receiver(signals.pre_save, sender=Publication)
+@receiver(signals.post_save, sender=Publication)
 def add_links_to_author_profiles(sender: Publication, instance: Publication, **kwargs):
-    # When instance was created
-    if instance.pk is None:
-        instance.author_profiles.add(*instance.get_author_profiles())
+    instance.author_profiles.set(instance.get_author_profiles())

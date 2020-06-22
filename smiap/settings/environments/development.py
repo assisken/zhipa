@@ -10,6 +10,8 @@ ALLOWED_HOSTS = [
     'vl4dmati.mati.su'
 ]
 HTML_MINIFY = False
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = False
 REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
 
 development_components = [

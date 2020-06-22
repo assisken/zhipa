@@ -39,4 +39,3 @@ class ProfilePublicationsView(ListView):
         if self.profile.closed:
             raise Http404()
         return super().get(request, *args, **kwargs)
-
