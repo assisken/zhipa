@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'django_registration',
     'django_filters',
     'rest_framework',
+    'sass_processor',
+    'compressor',
     'colorfield',
     'djangoeditorwidgets',
     'django.contrib.sites',
@@ -184,3 +186,10 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ]
 }
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+    'compressor.finders.CompressorFinder',
+]

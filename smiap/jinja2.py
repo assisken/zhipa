@@ -7,6 +7,13 @@ from news.filters import markdown_to_html, news_text_to_html
 
 
 def environment(**options):
+    extensions = [] if 'extensions' not in options else options['extensions']
+    extensions += [
+        'sass_processor.jinja2.ext.SassSrc',
+        'compressor.contrib.jinja2ext.CompressorExtension',
+    ]
+    options['extensions'] = extensions
+
     env = Environment(**options)
     env.globals.update({
         'static': staticfiles_storage.url,

@@ -7,7 +7,11 @@
 	<meta name="description" content="{% block description %}Сайт кафедры Системное Моделирование и Автоматизированное проектирование (СМиАП МАИ){% endblock description %}">
 	<meta name="keywords" content="смиап smiap маи мати системное моделирование автоматизированное проектирование инженерная графика ИТ программирование autocad веб web php java c c++ расписание учебные пособия информационные технологии">
 	<meta name="yandex-verification" content="678be5b2a2c96adf" />
-	<link rel="stylesheet" href="{{ static('stylesheets/smiig-styles.css') }}">
+
+    {% compress css %}
+	    <link rel="stylesheet" href="{% sass_src 'stylesheets/smiig-styles.scss' %}">
+    {% endcompress %}
+
 	<link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
 	<link rel="icon" type="image/x-icon" href="http://smiap.ru/favicon.ico">
 
