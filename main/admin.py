@@ -67,6 +67,7 @@ class PublicationAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     list_filter = (PublicationYearFilter,)
     search_fields = ('id', 'name', 'place', 'authors')
+    readonly_fields = ('author_profiles',)
 
     def get_urls(self):
         urls = super().get_urls()

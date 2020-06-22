@@ -35,10 +35,13 @@ stages:
 test:
   stage: test
   services:
-    - postgres:9.4
+    - postgres:12.2
   script:
     - pip install -qr requirements.txt
     - pip install -qr requirements-test.txt
+    - mkdir -p "$FILES_ROOT/media"
+    - python manage.py collectstatic --no-input
+    - python manage.py compress --engine jinja2 --force
     - python manage.py test --noinput -k
 
 deploy:

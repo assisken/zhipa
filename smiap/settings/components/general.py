@@ -17,8 +17,6 @@ import random
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from smiap.settings import DEBUG
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
@@ -157,7 +155,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(FILES_ROOT, 'media')
 FILE_UPLOAD_PERMISSIONS = 0o644
 DEFAULT_IMG = staticfiles_storage.url('default.png')
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -194,4 +191,3 @@ STATICFILES_FINDERS = [
     'sass_processor.finders.CssFinder',
     'compressor.finders.CompressorFinder',
 ]
-COMPRESS_ENABLED = not DEBUG

@@ -113,8 +113,9 @@ class Publication(models.Model):
     place = models.TextField(blank=False, null=False)
     authors = models.TextField(blank=False, null=False)
 
-    author_profiles = models.ManyToManyField(Profile, blank=True,
-                                             help_text='При создании новой публикации заполняется автоматически.')
+    author_profiles = models.ManyToManyField(
+        Profile, blank=True, editable=False, help_text='При создании новой публикации заполняется автоматически.'
+    )
 
     class Meta:
         ordering = ('-pk',)
