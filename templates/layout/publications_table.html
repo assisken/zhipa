@@ -11,7 +11,7 @@
             <td>
                 {% for author in publication.authors %}
                     {% if author.link %}<a href="{{ author.link }}">{% endif %}
-                        {{ author.fio }}<br>
+                        {{ author.fio | no_break_space }}<br>
                     {% if author.link %}</a>{% endif %}
                 {% else %}
                     Авторы не найдены
