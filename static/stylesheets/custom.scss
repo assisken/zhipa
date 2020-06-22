@@ -1,0 +1,902 @@
+@import url(../fonts/open-sans.css);
+
+.about .about_box img, .about p {
+  transition: all .2s ease-in-out
+}
+
+.content .news-aside .compact h3, .content h2, .timetable th, h1 {
+  font-weight: 400
+}
+
+.news-title_link, .news-title_link:active, .news-title_link:focus, .news-title_link:hover, .news-title_link:visited {
+  text-decoration: none;
+  color: #444
+}
+
+.content h2:hover {
+  color: #AAA
+}
+
+.app .lastnews, .app .smallteaser p, .app .studyweeks, .button_danger, .button_default, .button_primary, .button_success, .font-light, .content .news-aside .compact h3, .content h2, .timetable td, h1 {
+  font-family: "Open Sans Light"
+}
+
+body {
+  background: url(../images/paper.png) center top repeat-y #f7f7f7;
+  max-width: 2000px
+}
+
+.container, .limit-1024, .logo {
+  max-width: 1024px
+}
+
+.container {
+  background: #fff;
+  margin: 30px auto;
+  border-radius: 4px;
+  border: 1px solid #dedede;
+  border-bottom: 3px solid #dedede;
+  box-shadow: 0 1px 2px 0 #e5e5e5
+}
+
+.picture-head {
+  border-radius: 3px 3px 0 0
+}
+
+.limit-1024 {
+  margin: 0 auto;
+  padding: 0
+}
+
+.mainmenu {
+  margin: 10px 0 0;
+  width: 100%;
+  background: 0 0
+}
+
+header {
+  background: #09F;
+  background: -moz-linear-gradient(-45deg, #0997ef 0, #006ddb 100%);
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #0997ef), color-stop(100%, #006ddb));
+  background: -webkit-linear-gradient(-45deg, #0997ef 0, #006ddb 100%);
+  background: -o-linear-gradient(-45deg, #0997ef 0, #006ddb 100%);
+  background: -ms-linear-gradient(-45deg, #0997ef 0, #006ddb 100%);
+  background: linear-gradient(135deg, #0997ef 0, #006ddb 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0997ef', endColorstr='#006ddb', GradientType=1);
+  background-size: cover;
+  border-bottom: 2px solid #2381b4;
+  box-shadow: 0 0 10px 0 #AAA
+}
+
+.logo {
+  height: 120px;
+  margin: 0 auto;
+  padding: 15px 0 10px
+}
+
+.mati_logo, .smiig_logo {
+  height: 100px;
+  margin: 10px;
+  border: 0
+}
+
+.smiig_logo {
+  float: left
+}
+
+.mati_logo {
+  float: right
+}
+
+.decorate_logo {
+  position: absolute;
+  top: 20px;
+  left: 39%;
+  z-index: 100
+}
+
+footer {
+  border-top: 1px solid #555;
+  background: #333;
+  padding: 10px
+}
+
+footer > div > div {
+  vertical-align: middle
+}
+
+footer p {
+  margin: 0;
+  font-size: 11px;
+  color: #EEE
+}
+
+.footer_logo {
+  display: inline-block;
+  height: 30px
+}
+
+.footer_box {
+  margin: 0 auto;
+  max-width: 1220px
+}
+
+.menustring {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subnav-horizontal {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee
+}
+
+.about .panel {
+  margin-bottom: 15px;
+  background: #fcfcfc
+}
+
+.about .about_box {
+  border-bottom: 1px solid #EEE;
+  border-top: 1px solid #EEE
+}
+
+.about .about_box img {
+  display: inline-block;
+  width: 35%;
+  max-width: 450px
+}
+
+.about .about_box p {
+  display: inline-block;
+  text-indent: 0;
+  width: 55%;
+  margin: 0
+}
+
+.about p {
+  color: #444;
+  padding: 10px 20px;
+  margin: 0
+}
+
+.about .panel:nth-of-type(2n) {
+  background: #f9f9f9
+}
+
+.lectures h2 {
+  font-size: 11pt;
+  margin: 0
+}
+
+.lectures .other {
+  margin: 10px auto 0;
+  padding: 2%
+}
+
+.lectures .column {
+  max-width: 400px;
+  text-align: center;
+  vertical-align: top;
+  margin: 5px 0 40px
+}
+
+.user-photo {
+  width: 60%;
+  border-radius: 50%;
+  padding: 0;
+  background: #fff;
+  border: 2px solid #f7f7f7;
+}
+
+.lectures .column p {
+  text-align: left;
+  text-indent: 0;
+  font-size: 10pt
+}
+
+.photo-caption {
+  padding: 0;
+  margin-bottom: 20px;
+  margin-top: 20px
+}
+
+.lectures .leader {
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  background: #f8f8f8
+}
+
+.lectures .leader img {
+  display: inline-block;
+  zoom: 1;
+  width: 30%;
+  margin: 0 10px;
+  border-radius: 0;
+  vertical-align: middle
+}
+
+.lectures .leader .text {
+  display: inline-block;
+  zoom: 1;
+  width: 60%;
+  padding: 10px 0;
+  vertical-align: middle
+}
+
+.lectures .leader .text p {
+  line-height: 1.2;
+  font-size: 11pt
+}
+
+.lectures .leader .text h2 {
+  text-align: center;
+  font-size: 14pt
+}
+
+.galery img {
+  margin-bottom: 5px
+}
+
+.searchbar {
+  position: relative;
+  z-index: 999;
+  top: 95px;
+  left: 15%
+}
+
+.timetable .odd {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.timetables .stageblock {
+  border-radius: 3px;
+  padding: 10px 10px 0
+}
+
+.timetables .stageblock h2 {
+  display: inline-block;
+  zoom: 1;
+  padding-right: 0;
+  font-family: 'Open Sans Light'
+}
+
+.timetables .stageblock .buttons {
+  text-align: right;
+  display: inline-block;
+  zoom: 1;
+  width: 85%;
+  vertical-align: middle
+}
+
+.timetables .stageblock .buttons a {
+  width: 20px;
+  text-align: center
+}
+
+.timetables .stageblock .buttons .download {
+  width: 80px
+}
+
+.timetable {
+  width: 98%
+}
+
+.timetable td {
+  padding: 5px;
+  text-align: center
+}
+
+.timetable th {
+  padding: 10px;
+  text-align: center
+}
+
+.timetable .newday {
+  border-top: 2px solid #6CF
+}
+
+.timetable .subhead th {
+  border: 1px solid #a4e2ff;
+  font-weight: 400;
+  background: #a4e2ff;
+  font-size: 10pt
+}
+
+.content {
+  line-height: 1.2
+}
+
+.content .eventbox {
+  padding: 10px;
+  margin: 5px 5px 20px
+}
+
+.content .eventbox:last-of-type {
+  margin-bottom: 5px
+}
+
+.content .eventbox h2 {
+  font-size: 18pt
+}
+
+.content .eventbox .with_image {
+  margin: 0;
+  padding: 0
+}
+
+.content .eventbox .with_image img {
+  display: inline-block;
+  zoom: 1;
+  width: 39%;
+  margin-right: 5px;
+  vertical-align: top;
+}
+
+.news-cover {
+  border-radius: 3px;
+}
+
+.content .eventbox .with_image .description {
+  display: inline-block;
+  zoom: 1;
+  width: 55%
+}
+
+.content .news-date {
+  color: #22a7ff;
+  font-size: 10pt
+}
+
+.content .category {
+  color: gray;
+  font-size: 11pt
+}
+
+.content .category:after {
+  content: "\bb"
+}
+
+.content p {
+  line-height: 1.5;
+}
+
+.widepanel {
+  background: #f5f5f5;
+  background: rgba(255, 255, 255, .5);
+  box-shadow: 0 0 2px 0 #e5e5e5;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  margin: 10px 0
+}
+
+#authorbox {
+  display: none;
+  position: fixed;
+  top: 40%;
+  right: 40%;
+  width: 250px;
+  background: #000;
+  opacity: .9;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 100px 10px #000
+}
+
+#authorbox:hover {
+  cursor: pointer
+}
+
+.present {
+  box-sizing: border-box;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.present .column {
+  padding: 15px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px 0 #d0d0d0
+}
+
+.present .full {
+  grid-column: 1/4;
+}
+
+.present .large {
+  grid-column: 2/4;
+}
+
+.present .column:first-child {
+  box-shadow: 0 1px 2px 0 #e8e8e8;
+  background: rgba(255, 255, 255, .5);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#4cffffff', endColorstr='#4cffffff')
+}
+
+.present .column:first-child + .column {
+  background: #3ec7f3
+}
+
+.present .column:first-child + .column .button_primary {
+  background: #fff;
+  color: #09f;
+}
+
+.present .column:first-child + .column + .column {
+  background: #b6e135
+}
+
+.present .column:first-child + .column + .column + .column {
+  background: #fcd135
+}
+
+.present .column:first-child + .column + .column + .column + .column {
+  background: #ff9d4b
+}
+
+.present .column:first-child + .column + .column + .column + .column + .column {
+  background: #56d9c9
+}
+
+.publications .column {
+  background: #0997ef
+}
+
+.app {
+  text-align: center
+}
+
+.app .studyweeks {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app .studyweeks .word {
+  display: block;
+  text-align: center;
+  color: #fff;
+  font-size: 2em;
+}
+
+.app .studyweeks .number {
+  display: block;
+  text-align: center;
+  color: #fff;
+  font-size: 7em;
+  padding: 0 5px 0 0
+}
+
+.app .studyweeks .word:last-of-type {
+  margin: -20px auto 5px;
+}
+
+.app .studyweeks .buttons {
+  margin-top: auto;
+}
+
+.app .lastnews {
+  overflow: auto;
+  font-size: 11pt
+}
+
+.app .lastnews h1 {
+  margin: -7px 0 0
+}
+
+.app .lastnews > ul {
+  text-align: left;
+}
+
+.app .lastnews ul a {
+  color: #055180
+}
+
+.app .lastnews .buttons {
+  padding-top: 10px
+}
+
+.app .teaser {
+  text-align: center;
+  vertical-align: middle
+}
+
+.app .teaser h1 {
+  margin: 10px 10px 20px;
+  color: #069;
+  font-size: 24pt
+}
+
+.app .teaser p {
+  text-align: center;
+  margin: 10px 10px 20px;
+  color: #444
+}
+
+.app .teaser .teaser-img {
+  width: 80%;
+  max-width: 400px;
+  padding: 0
+}
+
+@media screen and (max-width: 800px) {
+  .app .teaser .teaser-img {
+    display: none;
+  }
+
+  .app .teaser p {
+    display: inline-block;
+    text-align: left;
+    font-size: 12pt;
+    color: #000;
+    overflow-y: auto;
+    height: 60px
+  }
+}
+
+.flatbox_light {
+  background: #fcfcfc;
+  border-radius: 3px;
+  border: 1px solid #fafafa;
+  border-bottom: 2px solid #f9f9f9
+}
+
+.flatbox {
+  background: #fbfbfb;
+  border-radius: 3px;
+  box-shadow: 1px 2px 2px 0 #EFEFEF
+}
+
+.materialbox {
+  box-shadow: 0 2px 1px 0 #d2d2d2;
+  border-radius: 2px
+}
+
+.content p {
+  line-height: 1.5;
+}
+
+article p {
+  text-indent: 25px;
+  text-align: justify;
+}
+
+.sticky-week {
+  position: fixed;
+  top: 30px;
+}
+
+table.timetable td {
+  padding: 10px 0;
+}
+
+span.mark {
+  color: #006ddb;
+}
+
+article > ul > li, article > ol > li {
+  font-size: 11pt;
+}
+
+article > .figures.col3 > figure.column {
+  float: left;
+  width: 33.3%;
+}
+
+div.clear {
+  clear: both;
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+@media (max-width: 800px) {
+  .sticky-week {
+    position: static;
+    top: 30px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .smiig_logo {
+    float: none;
+    clear: both
+  }
+
+  .decorate_logo, .mati_logo {
+    display: none
+  }
+
+  .footer_logo {
+    height: 60px
+  }
+
+  footer [class*=width-] {
+    margin-bottom: 15px;
+    text-align: center
+  }
+
+  .about .about_box {
+    text-align: center;
+    padding: 15px 0
+  }
+
+  .about .about_box img {
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 5px
+  }
+
+  .about .about_box p {
+    width: 90%;
+    text-align: left;
+    margin: 10px 0;
+    padding: 0
+  }
+
+  .about p {
+    font-size: 12pt
+  }
+
+  .lectures .leader {
+    width: 100%;
+    text-align: center;
+    padding: 10px 20px
+  }
+
+  .lectures .leader h2 {
+    margin-bottom: 20px
+  }
+
+  .lectures .leader p {
+    text-align: left;
+    padding: 0
+  }
+
+  .lectures .leader img {
+    width: 50%;
+    max-width: 400px;
+    border-radius: 50%;
+    padding: 0;
+    border: 2px solid #f3f3f3;
+    margin: 30px 0;
+    box-sizing: border-box
+  }
+
+  .lectures .leader .text {
+    width: 100%
+  }
+
+  .searchbar {
+    position: static;
+    display: block;
+    margin: 0 auto
+  }
+
+  .present {
+    grid-template-columns: 1fr;
+    margin: 0;
+    padding: 0;
+  }
+
+  .present .full {
+    grid-column: 1;
+  }
+
+  .present .large {
+    grid-column: 1;
+  }
+
+  .widepanel {
+    padding: 0;
+    margin: 0
+  }
+
+  .content .news-aside {
+    padding: 15px
+  }
+
+  .app .studyweeks .number, .app .studyweeks .word {
+    display: inline;
+    vertical-align: middle
+  }
+
+  .app .teaser p {
+    width: auto
+  }
+
+  .app .teaser .teaser-img {
+    margin: 20px
+  }
+
+  .app .smallteaser img {
+    width: 20%;
+    vertical-align: middle
+  }
+
+  .app .smallteaser p {
+    margin: .8rem auto;
+    width: 70%;
+    vertical-align: middle;
+    overflow: hidden;
+    height: auto
+  }
+
+  #authorbox {
+    right: 5%;
+    width: 90%;
+    box-sizing: border-box
+  }
+}
+
+@media (max-width: 540px) {
+  .table_session td:nth-of-type(1):before {
+    content: "Преподаватель"
+  }
+
+  .table_session td:nth-of-type(2):before {
+    content: "Предмет"
+  }
+
+  .table_session td:nth-of-type(3):before {
+    content: "Форма контроля"
+  }
+
+  .table_session td:nth-of-type(4):before {
+    content: "Дата"
+  }
+
+  .table_session td:nth-of-type(5):before {
+    content: "Время"
+  }
+
+  .table_session td:nth-of-type(6):before {
+    content: "Аудитория"
+  }
+
+  .table_session tr {
+    border-bottom: 2px solid #ccc !important
+  }
+
+  .content section {
+    margin: 5px 0
+  }
+
+  .content .eventbox .with_image img {
+    display: block;
+    width: 100%;
+    margin: 0 0 15px
+  }
+
+  .content .eventbox .with_image .description {
+    display: block;
+    width: 100%
+  }
+
+  .decorate_logo {
+    display: none
+  }
+
+  .lectures .column .text {
+    padding: 0
+  }
+
+  .lectures {
+    text-align: center
+  }
+
+  .lectures .leader {
+    padding: 10px
+  }
+
+  .lectures .leader p {
+    font-size: 10pt
+  }
+
+  .lectures .leader img {
+    width: 80%;
+    max-width: 300px
+  }
+
+  .scrolltable {
+    width: 98%;
+    overflow-x: auto
+  }
+
+  .app .smallteaser p {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box
+  }
+
+  .app .smallteaser img {
+    box-sizing: border-box;
+    margin-top: 15px
+  }
+
+  .app .studyweeks .start {
+    display: block;
+  }
+
+  .table_publications td:nth-of-type(1):before {
+    content: "Название"
+  }
+
+  .table_publications td:nth-of-type(2):before {
+    content: "Мероприятие"
+  }
+
+  .table_publications td:nth-of-type(3):before {
+    content: "Авторы"
+  }
+
+  .table_tutorials td:nth-of-type(1):before {
+    content: "№"
+  }
+
+  .table_tutorials td:nth-of-type(2):before {
+    content: "Название"
+  }
+
+  .table_tutorials td:nth-of-type(3):before {
+    content: "Авторы"
+  }
+
+  .table_tutorials td:nth-of-type(4):before {
+    content: "Год издания"
+  }
+
+  .table_conferences td:nth-of-type(1):before {
+    content: "Название"
+  }
+
+  .table_conferences td:nth-of-type(2):before {
+    content: "Место проведения"
+  }
+}
+
+.video_container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%
+}
+
+.headerlink {
+  opacity: 0;
+  font-size: 0.8em;
+  position: relative;
+  top: -0.17em;
+  font-weight: 700;
+  text-decoration: none;
+  -webkit-transition: opacity 200ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
+}
+
+h1:hover > .headerlink,
+h2:hover > .headerlink,
+h3:hover > .headerlink,
+h4:hover > .headerlink,
+h5:hover > .headerlink,
+h6:hover > .headerlink,
+dl:hover > .headerlink,
+dt:hover > .headerlink,
+td:hover > .headerlink {
+  opacity: 1;
+}

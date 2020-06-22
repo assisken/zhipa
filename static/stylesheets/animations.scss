@@ -1,0 +1,248 @@
+@charset "utf-8";
+
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content
+  }
+  @-ms-keyframes #{$animation-name} {
+    @content
+  }
+  @-o-keyframes #{$animation-name} {
+    @content
+  }
+  @keyframes #{$animation-name} {
+    @content
+  }
+}
+
+@mixin animation($name, $duration: .2s, $timing: ease-out, $fill-mode: both) {
+  -webkit-animation-duration: $duration;
+  -moz-animation-duration: $duration;
+  animation-duration: $duration;
+
+  -webkit-animation-timing-function: $timing;
+  -moz-animation-timing-function: $timing;
+  animation-timing-function: $timing;
+
+  -webkit-animation-fill-mode: $fill-mode;
+  -moz-animation-fill-mode: $fill-mode;
+  animation-fill-mode: $fill-mode;
+
+  -webkit-animation-name: $name;
+  -moz-animation-name: $name;
+  animation-name: $name;
+}
+
+@mixin animation-delay($delay) {
+  -webkit-animation-delay: $delay;
+  -moz-animation-delay: $delay;
+  animation-delay: $delay;
+}
+
+.animation-delay-1 {
+  @include animation-delay(.1s);
+}
+
+.animation-delay-2 {
+  @include animation-delay(.2s);
+}
+
+.animation-delay-3 {
+  @include animation-delay(.3s);
+}
+
+.animation-delay-4 {
+  @include animation-delay(.4s);
+}
+
+.animation-delay-5 {
+  @include animation-delay(.5s);
+}
+
+.animation-delay-6 {
+  @include animation-delay(.6s);
+}
+
+.animation-delay-7 {
+  @include animation-delay(.7s);
+}
+
+.animation-delay-8 {
+  @include animation-delay(.8s);
+}
+
+.animation-delay-9 {
+  @include animation-delay(.9s);
+}
+
+.animation-delay-10 {
+  @include animation-delay(.10s);
+}
+
+.animation-fade {
+  @include animation(fade, $duration: .5s, $timing: linear);
+}
+
+.animation-scale-up {
+  @include animation(scale-up);
+}
+
+.animation-scale-down {
+  @include animation(scale-down);
+}
+
+.animation-slide-top {
+  @include animation(slide-top);
+}
+
+.animation-slide-bottom {
+  @include animation(slide-bottom);
+}
+
+.animation-slide-left {
+  @include animation(slide-left);
+}
+
+.animation-slide-right {
+  @include animation(slide-right);
+}
+
+.animation-shake {
+  @include animation(shake);
+}
+
+.animation-tiles {
+  @include animation(tiles-show);
+}
+
+.animation-reverse {
+  -webkit-animation-direction: reverse;
+  animation-direction: reverse
+}
+
+@include keyframes(slide-down) {
+  0% { opacity: 1; }
+  90% { opacity: 0; }
+}
+
+@include keyframes(fade) {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+@include keyframes(scale-up) {
+  0% {
+    opacity: 0;
+    transform: scale(0.2)
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1)
+  }
+}
+
+@include keyframes(scale-down) {
+  0% {
+    opacity: 0;
+    transform: scale(1.8)
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1)
+  }
+}
+
+@include keyframes(slide-top) {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@include keyframes(slide-bottom) {
+  0% {
+    opacity: 0;
+    transform: translateY(100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@include keyframes(slide-left) {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0)
+  }
+}
+
+@include keyframes(slide-right) {
+  0% {
+    opacity: 0;
+    transform: translateX(100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0)
+  }
+}
+@include keyframes(shake) {
+  0%, 100% { transform: translateX(0) }
+  10% { transform: translateX(-9px) }
+  20% { transform: translateX(8px) }
+  30% { transform: translateX(-7px) }
+  40% { transform: translateX(6px) }
+  50% { transform: translateX(-5px) }
+  60% { transform: translateX(4px) }
+  70% { transform: translateX(-3px) }
+  80% { transform: translateX(2px) }
+  90% { transform: translateX(-1px) }
+}
+
+@include keyframes(slide-top-fixed) {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@include keyframes(slide-bottom-fixed) {
+  0% {
+    opacity: 0;
+    transform: translateY(10px)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@include keyframes(spin) {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(359deg) }
+}
+
+@include keyframes(tiles-show) {
+  0% {
+    opacity: 0;
+    transform: scale(0.5)
+  }
+  30% { transform: scale(1) }
+  100% { opacity: 1 }
+}

@@ -11,7 +11,9 @@
                 </div>
             </div>
         </a>
-        {% include 'layout/news/news_description.html' %}
+        <div class="description">
+            {% include 'layout/news/news_description.html' %}
+        </div>
     </div>
 {% elif news.cover %}
     <div class="with_image">
