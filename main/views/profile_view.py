@@ -1,7 +1,8 @@
 from django.http import Http404
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 
-from main.models import Staff, Publication, Profile
+from main.models import Staff, Publication as PublicationModel, Profile
+from main.views import PublicationView
 
 
 class ProfileDescriptionView(DetailView):
@@ -17,8 +18,8 @@ class ProfileDescriptionView(DetailView):
         return super().get(request, *args, **kwargs)
 
 
-class ProfilePublicationsView(ListView):
-    model = Publication
+class ProfilePublicationsView(PublicationView):
+    model = PublicationModel
     context_object_name = 'publications'
     template_name = 'profile/publications.html'
 

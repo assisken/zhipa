@@ -8,7 +8,15 @@
         <tr id="{{ publication.id }}">
             <td>{{ publication.name }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
             <td>{{ publication.place }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
-            <td>{{ publication.authors }}</td>
+            <td>
+                {% for author in publication.authors %}
+                    {% if author.link %}<a href="{{ author.link }}">{% endif %}
+                        {{ author.fio }}<br>
+                    {% if author.link %}</a>{% endif %}
+                {% else %}
+                    Авторы не найдены
+                {% endfor %}
+            </td>
         </tr>
     {% else %}
         <tr><td colspan="3">Публикации отсутствуют</td></tr>
