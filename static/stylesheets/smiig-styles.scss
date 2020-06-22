@@ -1,10 +1,10 @@
 @charset "utf-8";
 
-/* import compressed styles */
-@import "animations-min.css";
+// @import "animations-min.css";
+@import "animations";
+
 @import "main.css";
-@import "custom.css";
+@import "custom";
 @import "share.css";
 @import "auth.css";
-/* @import "mediascreens-min.css"; */
 @import "mediascreens.css";
