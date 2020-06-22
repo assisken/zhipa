@@ -185,6 +185,9 @@ REST_FRAMEWORK = {
     ]
 }
 
+# Static files preprocessor
+SASS_PROCESSOR_ENABLED = True
+SASS_PROCESSOR_ROOT = os.path.join(STATIC_ROOT, 'stylesheets')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
