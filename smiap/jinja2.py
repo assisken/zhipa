@@ -23,6 +23,6 @@ def environment(**options):
         'date': date,
         'markdown': markdown_to_html,
         'news_text': news_text_to_html,
-        'no_break_space': lambda text: text.replace(' ', ' '),
+        'no_break_space': lambda text: text.replace(' ', '\xa0'),
     })
     return env
