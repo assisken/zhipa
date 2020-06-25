@@ -4,14 +4,18 @@ from django.apps import apps
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from schedule.serializers import FulltimeScheduleSerializer, ExtramuralScheduleSerializer
+from schedule.serializers import (
+    ExtramuralScheduleSerializer,
+    FulltimeScheduleSerializer,
+)
 from schedule.views import get_items
 
-
-Group = apps.get_model(app_label='schedule', model_name='Group')
-Schedule = apps.get_model(app_label='schedule', model_name='Schedule')
-FullTimeSchedule = apps.get_model(app_label='schedule', model_name='FullTimeSchedule')
-ExtramuralSchedule = apps.get_model(app_label='schedule', model_name='ExtramuralSchedule')
+Group = apps.get_model(app_label="schedule", model_name="Group")
+Schedule = apps.get_model(app_label="schedule", model_name="Schedule")
+FullTimeSchedule = apps.get_model(app_label="schedule", model_name="FullTimeSchedule")
+ExtramuralSchedule = apps.get_model(
+    app_label="schedule", model_name="ExtramuralSchedule"
+)
 
 
 class FullTimeScheduleAPI(APIView):
@@ -20,18 +24,15 @@ class FullTimeScheduleAPI(APIView):
 
     def get(self, request, group_id: int):
         group = Group.objects.get(id=group_id)
-        filter_cond = {
-            'schedule_type': self.schedule_type,
-            'group': group
-        }
+        filter_cond = {"schedule_type": self.schedule_type, "group": group}
         final_week = group.study_until_week
         if final_week and self.schedule_type == Schedule.STUDY:
-            filter_cond['day__week__in'] = range(1, final_week + 1)
+            filter_cond["day__week__in"] = range(1, final_week + 1)
 
         items = get_items(schedule=FullTimeSchedule, filter_cond=filter_cond)
         schedule = defaultdict(list)
         for item in items:
-            key = 'session' if self.schedule_type == Schedule.SESSION else item.day.week
+            key = "session" if self.schedule_type == Schedule.SESSION else item.day.week
             schedule[key].append(FulltimeScheduleSerializer(item).data)
 
         return Response(schedule)
@@ -44,7 +45,11 @@ class ExtramuralScheduleAPI(APIView):
     def get(self, request, group_id: int):
         group = Group.objects.get(id=group_id)
 
-        items = ExtramuralSchedule.objects.prefetch_related('places', 'teachers').filter(group=group).order_by('name')
+        items = (
+            ExtramuralSchedule.objects.prefetch_related("places", "teachers")
+            .filter(group=group)
+            .order_by("name")
+        )
         schedule = [ExtramuralScheduleSerializer(item).data for item in items]
 
         return Response(schedule)

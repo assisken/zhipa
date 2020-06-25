@@ -2,7 +2,7 @@ import os
 import re
 import uuid
 from collections import namedtuple
-from typing import Optional, List, Tuple, Dict
+from typing import Dict, List, Optional, Tuple
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -17,9 +17,9 @@ class User(AbstractUser):
     pass
 
 
-def get_files_path(instance: 'File', filename: str):
+def get_files_path(instance: "File", filename: str):
     _uuid = uuid.uuid4()
-    return os.path.join('files', str(_uuid), filename)
+    return os.path.join("files", str(_uuid), filename)
 
 
 def get_random_link():
@@ -28,8 +28,12 @@ def get_random_link():
 
 class File(models.Model):
     name = models.CharField(max_length=200)
-    link = models.CharField(max_length=200, unique=True, null=False, blank=False, default=get_random_link)
-    file = models.FileField(upload_to=get_files_path, max_length=200, null=True, blank=True)
+    link = models.CharField(
+        max_length=200, unique=True, null=False, blank=False, default=get_random_link
+    )
+    file = models.FileField(
+        upload_to=get_files_path, max_length=200, null=True, blank=True
+    )
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
     uploaded_date = models.DateTimeField(null=False, blank=False, auto_now=True)
 
@@ -43,19 +47,25 @@ class File(models.Model):
             os.removedirs(os.path.dirname(self.file.path))
 
     def get_absolute_url(self):
-        return reverse('short-file', kwargs={'link': self.link})
+        return reverse("short-file", kwargs={"link": self.link})
 
 
-def get_profile_image_path(instance: 'Profile', filename: str):
-    return os.path.join('profile', str(instance.pk), filename)
+def get_profile_image_path(instance: "Profile", filename: str):
+    return os.path.join("profile", str(instance.pk), filename)
 
 
 class ProfileManager(models.Manager):
     def filter_by_fio(self, fio: str):
-        lastname, abbreviation, *_ = unify_fio(fio).split(' ')
-        firstname_beg, middlename_beg, *_ = abbreviation.split('.')
-        return super().get_queryset().filter(
-            lastname=lastname, firstname__startswith=firstname_beg, middlename__startswith=middlename_beg
+        lastname, abbreviation, *_ = unify_fio(fio).split(" ")
+        firstname_beg, middlename_beg, *_ = abbreviation.split(".")
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                lastname=lastname,
+                firstname__startswith=firstname_beg,
+                middlename__startswith=middlename_beg,
+            )
         )
 
 
@@ -63,10 +73,18 @@ class Profile(models.Model):
     lastname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
     middlename = models.CharField(max_length=30)
-    img = models.ImageField(max_length=60, null=True,
-                            default=None, upload_to=get_profile_image_path, blank=True)
-    closed = models.BooleanField(default=True, verbose_name='Закрытый профиль',
-                                 help_text='Снимите галочку, чтобы открыть профиль')
+    img = models.ImageField(
+        max_length=60,
+        null=True,
+        default=None,
+        upload_to=get_profile_image_path,
+        blank=True,
+    )
+    closed = models.BooleanField(
+        default=True,
+        verbose_name="Закрытый профиль",
+        help_text="Снимите галочку, чтобы открыть профиль",
+    )
 
     objects = ProfileManager()
 
@@ -74,42 +92,50 @@ class Profile(models.Model):
         return self.get_fio()
 
     def get_absolute_url(self):
-        return reverse('profile-description', kwargs={'profile': self.id})
+        return reverse("profile-description", kwargs={"profile": self.id})
 
     def get_fio(self):
-        return f'{self.lastname} {self.firstname} {self.middlename}'
+        return f"{self.lastname} {self.firstname} {self.middlename}"
 
     def get_short_fio(self):
-        return f'{self.lastname} {self.firstname[0]}.{self.middlename[0]}.'
+        return f"{self.lastname} {self.firstname[0]}.{self.middlename[0]}."
 
     def get_kebab_fio(self):
-        trans = translit(self.get_fio(), 'ru', reversed=True).replace(' ', '')
-        return re.sub(r'(?<!^)(?=[A-Z])', '-', trans).lower()
+        trans = translit(self.get_fio(), "ru", reversed=True).replace(" ", "")
+        return re.sub(r"(?<!^)(?=[A-Z])", "-", trans).lower()
 
 
 class Staff(Profile):
     regalia = models.CharField(max_length=60)
-    description = models.TextField(null=False, default='', blank=True)
+    description = models.TextField(null=False, default="", blank=True)
     leader = models.BooleanField(default=False)
     lecturer = models.BooleanField(default=True)
     hide = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name_plural = 'Staff'
-        ordering = ('-leader', '-lecturer', 'hide', 'lastname', 'firstname', 'middlename', 'pk')
+        verbose_name_plural = "Staff"
+        ordering = (
+            "-leader",
+            "-lecturer",
+            "hide",
+            "lastname",
+            "firstname",
+            "middlename",
+            "pk",
+        )
 
     def get_profile_url(self):
         return super().get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse('staff') + f'#{self.get_kebab_fio()}'
+        return reverse("staff") + f"#{self.get_kebab_fio()}"
 
 
 class Student(Profile):
     group_name = models.CharField(max_length=50)
 
 
-AuthorInfo = namedtuple('AuthorInfo', 'fio link')
+AuthorInfo = namedtuple("AuthorInfo", "fio link")
 
 
 class Publication(models.Model):
@@ -118,25 +144,32 @@ class Publication(models.Model):
     authors = models.TextField(blank=False, null=False)
 
     author_profiles = models.ManyToManyField(
-        Profile, blank=True, editable=False, help_text='При создании новой публикации заполняется автоматически.'
+        Profile,
+        blank=True,
+        editable=False,
+        help_text="При создании новой публикации заполняется автоматически.",
     )
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('publications') + f'#{self.id}'
+        return reverse("publications") + f"#{self.id}"
 
     def year(self) -> Optional[str]:
         return get_year_from_string(self.place)
 
     def get_author_profiles(self) -> List[Profile]:
-        authors = re.split(r', +', self.authors)
-        return [profile for fio in authors for profile in Profile.objects.filter_by_fio(fio)]
+        authors = re.split(r", +", self.authors)
+        return [
+            profile for fio in authors for profile in Profile.objects.filter_by_fio(fio)
+        ]
 
-    def get_authors_with_profiles(self, profiles: Dict[str, str]) -> Tuple[AuthorInfo, ...]:
-        authors = re.split(r', +', self.authors)
+    def get_authors_with_profiles(
+        self, profiles: Dict[str, str]
+    ) -> Tuple[AuthorInfo, ...]:
+        authors = re.split(r", +", self.authors)
         return tuple(AuthorInfo(fio=fio, link=profiles[fio]) for fio in authors)

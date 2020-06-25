@@ -5,12 +5,12 @@ from main.models import Staff
 
 
 class MyTestCase(TestCase):
-    fixtures = ['staff.json']
+    fixtures = ["staff.json"]
 
     def test_staff_is_shown(self):
         """Петя должен видеть всех нескрытые сотрудники"""
 
-        url = reverse('staff')
+        url = reverse("staff")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -19,6 +19,4 @@ class MyTestCase(TestCase):
 
         staff = Staff.objects.filter(hide=False)
         for s in staff:
-            self.assertIn(str(s), response.content.decode('utf-8'))
-
-
+            self.assertIn(str(s), response.content.decode("utf-8"))

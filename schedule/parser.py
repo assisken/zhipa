@@ -23,9 +23,9 @@ class Table:
     items: List[Item]
 
 
-class ScheduleParser():
+class ScheduleParser:
     def __init__(self, group, week=None, **kwargs):
-        '''Constructor of ScheduleParser
+        """Constructor of ScheduleParser
 
         Parameters
         ----------
@@ -34,46 +34,40 @@ class ScheduleParser():
         week : int, optional
             Number of study week (the default is None, which means unused in request)
 
-        '''
-        self.params = {
-            'group': group
-        }
+        """
+        self.params = {"group": group}
         if week:
-            self.params['week'] = week
+            self.params["week"] = week
         self.group = group
-        self.__url = f'https://mai.ru/education/schedule/detail.php'
+        self.__url = "https://mai.ru/education/schedule/detail.php"
         self.__result = self.__parse_tables()
 
     def __response(self):
         try:
             return requests.get(self.__url, self.params, timeout=5).text
         except Timeout:
-            return ''
+            return ""
 
     def __parse_tables(self) -> List[Table]:
-        '''Parses tables of the extramural_schedule from `self.url`
+        """Parses tables of the extramural_schedule from `self.url`
 
         Returns
         -------
         List[Table]
             List of tables
-        '''
+        """
         tree = html.fromstring(self.__response())
         res = []
         for element in tree.xpath('//div[@class="sc-container"]'):
-            date = element.xpath(
-                './/div[contains(@class, "sc-day-header")]/text()')[0]
+            date = element.xpath('.//div[contains(@class, "sc-day-header")]/text()')[0]
             day = element.xpath('.//span[@class="sc-day"]/text()')[0]
-            items = element.xpath(
-                './/div[contains(@class, "sc-table-detail")]')[0]
-            res.append(
-                Table(day=day, date=date, items=self.__parse_items(items))
-            )
+            items = element.xpath('.//div[contains(@class, "sc-table-detail")]')[0]
+            res.append(Table(day=day, date=date, items=self.__parse_items(items)))
         return res
 
     @staticmethod
     def __parse_items(element: HtmlElement) -> List[Item]:
-        '''Parses items from given table
+        """Parses items from given table
 
         Parameters
         ----------
@@ -84,23 +78,26 @@ class ScheduleParser():
         -------
         List[Item]
             List of parsed `Item`s
-        '''
+        """
         res: List[Item] = []
         for item in element.xpath('.//div[@class="sc-table-row"]'):
-            time = item.xpath(
-                './/div[contains(@class, "sc-item-time")]/text()')[0]
-            item_type = item.xpath(
-                './/div[contains(@class, "sc-item-type")]/text()')[0]
-            place = item.xpath(
-                './/div[contains(@class, "sc-item-location")]/text()')[0]
+            time = item.xpath('.//div[contains(@class, "sc-item-time")]/text()')[0]
+            item_type = item.xpath('.//div[contains(@class, "sc-item-type")]/text()')[0]
+            place = item.xpath('.//div[contains(@class, "sc-item-location")]/text()')[0]
             name = item.xpath('.//*[@class="sc-title"]/text()')[0]
             try:
-                teachers = item.xpath(
-                    './/span[@class="sc-lecturer"]/text()')[0]
+                teachers = item.xpath('.//span[@class="sc-lecturer"]/text()')[0]
             except IndexError:
-                teachers = ''
-            res.append(Item(time=time, item_type=item_type,
-                            name=name, place=place, teachers=teachers))
+                teachers = ""
+            res.append(
+                Item(
+                    time=time,
+                    item_type=item_type,
+                    name=name,
+                    place=place,
+                    teachers=teachers,
+                )
+            )
         return res
 
     @property

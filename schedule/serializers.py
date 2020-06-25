@@ -1,24 +1,24 @@
 from rest_framework import serializers
 
-from .models import Group, Day, Teacher, FullTimeSchedule, ExtramuralSchedule
+from .models import Day, ExtramuralSchedule, FullTimeSchedule, Group, Teacher
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'name', 'course', 'degree', 'study_form', 'study_until_week')
+        fields = ("id", "name", "course", "degree", "study_form", "study_until_week")
 
 
 class DaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
-        fields = ('day', 'month', 'week_day')
+        fields = ("day", "month", "week_day")
 
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
-        fields = ('lastname', 'firstname', 'middlename')
+        fields = ("lastname", "firstname", "middlename")
 
 
 class FulltimeScheduleSerializer(serializers.ModelSerializer):
@@ -28,9 +28,18 @@ class FulltimeScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FullTimeSchedule
-        fields = ('day', 'starts_at', 'ends_at', 'item_type', 'schedule_type', 'name', 'teachers', 'places')
+        fields = (
+            "day",
+            "starts_at",
+            "ends_at",
+            "item_type",
+            "schedule_type",
+            "name",
+            "teachers",
+            "places",
+        )
 
-    def get_places(self, obj: Meta.model):
+    def get_places(self, obj: FullTimeSchedule):
         return [str(place) for place in obj.places.all()]
 
 
@@ -40,7 +49,7 @@ class ExtramuralScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExtramuralSchedule
-        fields = ('day', 'time', 'schedule_type', 'name', 'teachers', 'places')
+        fields = ("day", "time", "schedule_type", "name", "teachers", "places")
 
-    def get_places(self, obj: Meta.model):
+    def get_places(self, obj: ExtramuralSchedule):
         return [str(place) for place in obj.places.all()]

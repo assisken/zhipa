@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.forms import Form
 
-from .models import News, NewsCover, NewsContentImage
 from .forms import NewsForm
+from .models import News, NewsContentImage, NewsCover
 
 
 class InlineNewsCoverAdmin(admin.TabularInline):
@@ -17,12 +17,15 @@ class InlineNewsContentImageAdmin(admin.TabularInline):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'hidden', 'author', 'render_in')
-    list_display_links = ('title',)
-    list_filter = ('hidden',)
-    search_fields = ('title', 'description', 'text')
+    list_display = ("id", "title", "hidden", "author", "render_in")
+    list_display_links = ("title",)
+    list_filter = ("hidden",)
+    search_fields = ("title", "description", "text")
     form = NewsForm
-    inlines = (InlineNewsCoverAdmin, InlineNewsContentImageAdmin,)
+    inlines = (
+        InlineNewsCoverAdmin,
+        InlineNewsContentImageAdmin,
+    )
     view_on_site = True
 
     def save_model(self, request, obj: News, form: Form, change):

@@ -1,9 +1,9 @@
-from .models import NewsContentImage
-from .news_md_to_html import MD
 from django.conf import settings
 
+from .models import NewsContentImage
+from .news_md_to_html import MD
 
-DEFAULT_IMG = getattr(settings, 'DEFAULT_IMG', 'default.png')
+DEFAULT_IMG = getattr(settings, "DEFAULT_IMG", "default.png")
 
 
 def markdown_to_html(text: str):

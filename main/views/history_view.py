@@ -1,7 +1,7 @@
-from django.contrib.flatpages.models import FlatPage
 from django.contrib.auth.views import redirect_to_login
+from django.contrib.flatpages.models import FlatPage
 from django.http import HttpResponse
-from django.shortcuts import reverse
+from django.urls import reverse
 
 from main.views.flatpage_view import FlatPageView
 
@@ -13,7 +13,7 @@ class HistoryView(FlatPageView):
         try:
             super().setup(request, *args, **kwargs)
         except FlatPage.DoesNotExist:
-            url = reverse('history', kwargs={'number': 1})
+            url = reverse("history", kwargs={"number": 1})
             self.flatpage = FlatPage.objects.get(url=url)
 
     def get(self, request, number=1):
@@ -22,9 +22,8 @@ class HistoryView(FlatPageView):
         super()._mark_safe()
 
         template = super()._get_template()
-        content = template.render({
-            'flatpage': self.flatpage,
-            'current': number,
-            'available': self.available
-        }, request)
+        content = template.render(
+            {"flatpage": self.flatpage, "current": number, "available": self.available},
+            request,
+        )
         return HttpResponse(content)

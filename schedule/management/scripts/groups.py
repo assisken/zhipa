@@ -5,9 +5,9 @@ import os
 import requests
 from django.db import IntegrityError
 
+from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 from schedule.models import Group
 from smiap.settings import BASE_DIR
-from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 
 
 def fetch_groups(url_pattern: str, password: str, department: str) -> None:
@@ -17,7 +17,7 @@ def fetch_groups(url_pattern: str, password: str, department: str) -> None:
     if resp.status_code not in (200, 500):
         raise LmsDoesNotRespondError(url)
 
-    data = json.loads(resp.content.decode('utf8'))['data']
+    data = json.loads(resp.content.decode("utf8"))["data"]
     if not data:
         raise LmsRespondsAnEmptyListError(url)
 
@@ -25,22 +25,19 @@ def fetch_groups(url_pattern: str, password: str, department: str) -> None:
         try:
             Group.objects.create(
                 name=group,
-                semester=int(value['semester']),
-                study_form=value['study_form']
+                semester=int(value["semester"]),
+                study_form=value["study_form"],
             )
         except IntegrityError:
-            print('Group {} is already exist! Skipping...'.format(group))
+            print("Group {} is already exist! Skipping...".format(group))
 
 
 def fetch_groups_from_csv(file_name: str):
-    path = os.path.join(BASE_DIR, 'import', file_name)
-    with open(path, 'r', newline='\n') as file:
-        reader = csv.reader(file, delimiter=',')
+    path = os.path.join(BASE_DIR, "import", file_name)
+    with open(path, "r", newline="\n") as file:
+        reader = csv.reader(file, delimiter=",")
         for row in reader:
             try:
-                Group.objects.create(
-                    name=row[0],
-                    semester=int(row[1])
-                )
+                Group.objects.create(name=row[0], semester=int(row[1]))
             except IntegrityError:
-                print('Group {} is already exist! Skipping...'.format(row[0]))
+                print("Group {} is already exist! Skipping...".format(row[0]))

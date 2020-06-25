@@ -1,20 +1,26 @@
 import re
 from datetime import datetime
 from operator import attrgetter
-from typing import Tuple, List, Optional
+from typing import List, Optional, Tuple, Type
 
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages import add_message
 from django.db.models import QuerySet
-from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from .forms import ExtramuralScheduleForm, PLACE_FORMAT, GetTeacherSessionScheduleForm, GetGroupScheduleForm
 from schedule.management.scripts.generate import gen_groups_table, gen_teachers_table
 from smiap.settings.components.logging import log
-from .models import ExtramuralSchedule, Place, Teacher, FullTimeSchedule, Schedule
+
+from .forms import (
+    PLACE_FORMAT,
+    ExtramuralScheduleForm,
+    GetGroupScheduleForm,
+    GetTeacherSessionScheduleForm,
+)
+from .models import ExtramuralSchedule, FullTimeSchedule, Place, Schedule, Teacher
 
 
 class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
@@ -43,21 +49,22 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
     Можно вписывать год занятий, но он будет игнорироваться. Если нужно его добавить, запросите в Trello.
     DD.MM.YYYY || HH:MM || Предмет || Преподаватель И.О. || Площадка
     """
-    template_name = 'admin/extramural_schedule/add_extramural.html'
-    permission_required = 'add_schedule'
+
+    template_name = "admin/extramural_schedule/add_extramural.html"
+    permission_required = "add_schedule"
     render = {
-        'description': __doc__,
-        'form': ExtramuralScheduleForm(),
-        'opts': ExtramuralSchedule._meta,
-        'change': False,
-        'is_popup': False,
-        'save_as': True,
-        'has_delete_permission': False,
-        'has_add_permission': True,
-        'has_change_permission': False,
-        'add': True,
-        'has_view_permission': True,
-        'has_editable_inline_admin_formsets': True,
+        "description": __doc__,
+        "form": ExtramuralScheduleForm(),
+        "opts": ExtramuralSchedule._meta,
+        "change": False,
+        "is_popup": False,
+        "save_as": True,
+        "has_delete_permission": False,
+        "has_add_permission": True,
+        "has_change_permission": False,
+        "add": True,
+        "has_view_permission": True,
+        "has_editable_inline_admin_formsets": True,
     }
 
     def get(self, request, *args, **kwargs):
@@ -66,16 +73,14 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = ExtramuralScheduleForm(request.POST)
         if not form.is_valid():
-            self.render.update({
-                'form': form,
-                'errors': form.errors,
-                'opts': ExtramuralSchedule._meta,
-            })
+            self.render.update(
+                {"form": form, "errors": form.errors, "opts": ExtramuralSchedule._meta}
+            )
             return render(request, self.template_name, self.render)
 
         count = 0
-        group: QuerySet = form.cleaned_data['group']
-        schedule_type = form.cleaned_data['schedule_type']
+        group: QuerySet = form.cleaned_data["group"]
+        schedule_type = form.cleaned_data["schedule_type"]
 
         for date, time, item, teachers, place in form.schedule_fields():
             try:
@@ -87,20 +92,24 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
                     time=time,
                     schedule_type=schedule_type,
                     name=item,
-                    group=group
+                    group=group,
                 )
 
                 schedule.places.set((_place,))
                 schedule.teachers.set(_teachers)
             except Exception as e:
-                log.error(f'Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}')
+                log.error(
+                    f"Exception was raised. Data:\n{date}\n{time}\n{item}\n{teachers}\n{place}"
+                )
                 raise e
 
             count += 1
 
-        ending = 'ы' if count > 1 else ''
-        add_message(request, messages.INFO, f'Предмет{ending} успешно добавлены! ({count} шт.)')
-        return HttpResponseRedirect('../')
+        ending = "ы" if count > 1 else ""
+        add_message(
+            request, messages.INFO, f"Предмет{ending} успешно добавлены! ({count} шт.)"
+        )
+        return HttpResponseRedirect("../")
 
     @staticmethod
     def __get_place(place: Optional[str]) -> Optional[Place]:
@@ -109,10 +118,12 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
 
         regex = re.compile(PLACE_FORMAT)
         match = regex.match(place)
-        building = match.group('area') if len(match.groups()) == 2 else ''
+        if not match:
+            raise ValueError(f"Matches did not found at place: {place}")
+
+        building = match.group("area") if len(match.groups()) == 2 else ""
         _place, _ = Place.objects.get_or_create(
-            number=match.group('cabinet'),
-            building=building
+            number=match.group("cabinet"), building=building
         )
         return _place
 
@@ -122,37 +133,44 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
             return tuple()
 
         out: List[Teacher] = []
-        regex = re.compile(r'^(?P<lastname>[А-Яа-яЁё]+) (?P<firstname>[А-Яа-яЁё])\.(?P<middlename>[А-Яа-яЁё])\.$')
+        regex = re.compile(
+            r"^(?P<lastname>[А-Яа-яЁё]+) (?P<firstname>[А-Яа-яЁё])\.(?P<middlename>[А-Яа-яЁё])\.$"
+        )
         for teacher in teachers:
             match = regex.match(teacher)
-            _teacher, _ = Teacher.objects.get_or_create(lastname=match.group('lastname'),
-                                                        firstname=match.group('firstname'),
-                                                        middlename=match.group('middlename'))
+            if not match:
+                raise ValueError(f"Matches did not found at teacher: {teacher}")
+
+            _teacher, _ = Teacher.objects.get_or_create(
+                lastname=match.group("lastname"),
+                firstname=match.group("firstname"),
+                middlename=match.group("middlename"),
+            )
             out.append(_teacher)
         return tuple(out)
 
 
 class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
-    schedule = FullTimeSchedule
-    permission_required = 'add_schedule'
-    template_name = 'admin/schedule/get_schedule.html'
+    schedule: Type[Schedule] = FullTimeSchedule
+    permission_required = "add_schedule"
+    template_name = "admin/schedule/get_schedule.html"
     render = {
-        'form': GetGroupScheduleForm(),
-        'opts': FullTimeSchedule._meta,
-        'change': False,
-        'is_popup': False,
-        'save_as': True,
-        'has_delete_permission': False,
-        'has_add_permission': True,
-        'has_change_permission': False,
-        'add': True,
-        'has_view_permission': True,
-        'has_editable_inline_admin_formsets': True,
+        "form": GetGroupScheduleForm(),
+        "opts": FullTimeSchedule._meta,
+        "change": False,
+        "is_popup": False,
+        "save_as": True,
+        "has_delete_permission": False,
+        "has_add_permission": True,
+        "has_change_permission": False,
+        "add": True,
+        "has_view_permission": True,
+        "has_editable_inline_admin_formsets": True,
     }
 
     @classmethod
     def as_view(cls, **initkwargs):
-        cls.render['opts'] = cls.schedule._meta
+        cls.render["opts"] = cls.schedule._meta
         return super().as_view(**initkwargs)
 
     def get(self, request, *args, **kwargs):
@@ -161,37 +179,33 @@ class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form = GetGroupScheduleForm(request.POST)
         if not form.is_valid():
-            self.render.update({
-                'form': form,
-                'errors': form.errors,
-                'opts': FullTimeSchedule._meta,
-            })
+            self.render.update(
+                {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
+            )
             return render(request, self.template_name, self.render)
 
-        groups = form.cleaned_data['groups']
-        from_week = form.cleaned_data['from_week']
+        groups = form.cleaned_data["groups"]
+        from_week = form.cleaned_data["from_week"]
         try:
             filename = gen_groups_table(groups, from_week)
         except AttributeError:
-            form.add_error('groups', 'Превышен максимальный лимит групп')
-            self.render.update({
-                'form': form,
-                'errors': form.errors,
-            })
+            form.add_error("groups", "Превышен максимальный лимит групп")
+            self.render.update({"form": form, "errors": form.errors})
             return render(request, self.template_name, self.render)
         return self._send_xlsx(filename)
 
     def _send_xlsx(self, filename: str):
         try:
-            with open(f'{filename}.xlsx', 'rb') as f:
+            with open(f"{filename}.xlsx", "rb") as f:
                 file_data = f.read()
-            response = HttpResponse(file_data, content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="{filename}_{date}.xlsx"'.format(
-                filename=filename,
-                date=datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+            response = HttpResponse(file_data, content_type="application/vnd.ms-excel")
+            response[
+                "Content-Disposition"
+            ] = 'attachment; filename="{filename}_{date}.xlsx"'.format(
+                filename=filename, date=datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             )
         except IOError:
-            response = HttpResponseNotFound('<h1>File not exist</h1>')
+            response = HttpResponseNotFound("<h1>File not exist</h1>")
 
         return response
 
@@ -201,40 +215,38 @@ class GetGroupExtramuralScheduleXlsxView(GetGroupFulltimeScheduleXlsxView):
 
 
 class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
-    template_name = 'admin/schedule/get_schedule.html'
+    template_name = "admin/schedule/get_schedule.html"
     render = {
-        'form': GetTeacherSessionScheduleForm(),
-        'change': False,
-        'is_popup': False,
-        'save_as': True,
-        'has_delete_permission': False,
-        'has_add_permission': True,
-        'has_change_permission': False,
-        'add': True,
-        'has_view_permission': True,
-        'has_editable_inline_admin_formsets': True,
+        "form": GetTeacherSessionScheduleForm(),
+        "change": False,
+        "is_popup": False,
+        "save_as": True,
+        "has_delete_permission": False,
+        "has_add_permission": True,
+        "has_change_permission": False,
+        "add": True,
+        "has_view_permission": True,
+        "has_editable_inline_admin_formsets": True,
     }
 
     @classmethod
     def as_view(cls, **initkwargs):
-        cls.schedule = initkwargs.get('schedule')
+        cls.schedule = initkwargs.get("schedule")
         return super().as_view(**initkwargs)
 
     def get(self, request, *args, **kwargs):
-        self.render['opts'] = self.schedule._meta
+        self.render["opts"] = self.schedule._meta
         return render(request, self.template_name, self.render)
 
     def post(self, request, *args, **kwargs):
         form = GetTeacherSessionScheduleForm(request.POST)
         if not form.is_valid():
-            self.render.update({
-                'form': form,
-                'errors': form.errors,
-                'opts': FullTimeSchedule._meta,
-            })
+            self.render.update(
+                {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
+            )
             return render(request, self.template_name, self.render)
 
-        schedule_type = form.cleaned_data['schedule_type']
+        schedule_type = form.cleaned_data["schedule_type"]
         if schedule_type == Schedule.STUDY:
             return self.__post_study(request, form)
         else:
@@ -242,34 +254,35 @@ class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
 
     def __post_study(self, request, form: GetTeacherSessionScheduleForm):
         if not form.is_valid():
-            self.render.update({
-                'form': form,
-                'errors': form.errors,
-                'opts': FullTimeSchedule._meta,
-            })
+            self.render.update(
+                {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
+            )
             return render(request, self.template_name, self.render)
 
-        teachers = form.cleaned_data['teachers']
+        teachers = form.cleaned_data["teachers"]
         filename = gen_teachers_table(teachers)
         return super()._send_xlsx(filename)
 
     def __post_session(self, request, form: GetTeacherSessionScheduleForm):
-        teachers = form.cleaned_data['teachers']
-        items: QuerySet = Schedule.objects.prefetch_related('day', 'groups', 'teachers', 'places') \
-            .filter(teachers__in=teachers, schedule_type=Schedule.SESSION)
+        teachers = form.cleaned_data["teachers"]
+        items: QuerySet = Schedule.objects.prefetch_related(
+            "day", "groups", "teachers", "places"
+        ).filter(teachers__in=teachers, schedule_type=Schedule.SESSION)
         _dates = [item.day for item in items if item.day]
-        _dates.sort(key=attrgetter('month', 'day'))
+        _dates.sort(key=attrgetter("month", "day"))
         min_date, max_date = _dates[0], _dates[-1]
-        dates = ['{:02d}.{:02d}'.format(day, month)
-                 for month in range(min_date.month, max_date.month + 1)
-                 for day in range(min_date.day, max_date.day)]
+        dates = [
+            "{:02d}.{:02d}".format(day, month)
+            for month in range(min_date.month, max_date.month + 1)
+            for day in range(min_date.day, max_date.day)
+        ]
 
         schedule = {
             teacher: {
-                '{:02d}.{:02d}'.format(item.day.day, item.day.month): {
-                    'name': item.name,
-                    'groups': list(item.groups.all()),
-                    'place': list(item.places.all()),
+                "{:02d}.{:02d}".format(item.day.day, item.day.month): {
+                    "name": item.name,
+                    "groups": list(item.groups.all()),
+                    "place": list(item.places.all()),
                 }
             }
             for item in items
@@ -277,8 +290,8 @@ class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
             if item.day
         }
 
-        return render(request, 'django/admin/schedule/get_teacher_session_schedule.html', {
-            'teachers': teachers,
-            'dates': dates,
-            'schedule': schedule
-        })
+        return render(
+            request,
+            "django/admin/schedule/get_teacher_session_schedule.html",
+            {"teachers": teachers, "dates": dates, "schedule": schedule},
+        )

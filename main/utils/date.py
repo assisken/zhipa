@@ -1,6 +1,6 @@
 import re
 from datetime import date, timedelta
-from enum import Flag, auto, Enum
+from enum import Enum, Flag, auto
 from typing import Optional
 
 
@@ -31,16 +31,32 @@ class TeachTime:
     def __init__(self, now=date.today()):
         self.now = now
         if now.month >= self.month_start:
-            self.__autumn_start1 = self.__avoid_sunday(date(year=now.year, month=9, day=1))
-            self.__spring_start = self.__avoid_sunday(date(year=now.year + 1, month=2, day=9))
-            self.__autumn_start2 = self.__avoid_sunday(date(year=now.year + 1, month=9, day=1))
+            self.__autumn_start1 = self.__avoid_sunday(
+                date(year=now.year, month=9, day=1)
+            )
+            self.__spring_start = self.__avoid_sunday(
+                date(year=now.year + 1, month=2, day=9)
+            )
+            self.__autumn_start2 = self.__avoid_sunday(
+                date(year=now.year + 1, month=9, day=1)
+            )
         else:
-            self.__autumn_start1 = self.__avoid_sunday(date(year=now.year - 1, month=9, day=1))
-            self.__spring_start = self.__avoid_sunday(date(year=now.year, month=2, day=9))
-            self.__autumn_start2 = self.__avoid_sunday(date(year=now.year, month=9, day=1))
+            self.__autumn_start1 = self.__avoid_sunday(
+                date(year=now.year - 1, month=9, day=1)
+            )
+            self.__spring_start = self.__avoid_sunday(
+                date(year=now.year, month=2, day=9)
+            )
+            self.__autumn_start2 = self.__avoid_sunday(
+                date(year=now.year, month=9, day=1)
+            )
 
-        self.__autumn_end = self.__autumn_start1 + timedelta(days=7 * self.weeks_in_semester)
-        self.__spring_end = self.__spring_start + timedelta(days=7 * self.weeks_in_semester)
+        self.__autumn_end = self.__autumn_start1 + timedelta(
+            days=7 * self.weeks_in_semester
+        )
+        self.__spring_end = self.__spring_start + timedelta(
+            days=7 * self.weeks_in_semester
+        )
 
         self.teach_state = self.__teach_time(now)
 
@@ -50,7 +66,9 @@ class TeachTime:
             return self.__autumn_start1
         elif self.teach_state.it_is(TeachState.SPRING):
             return self.__spring_start
-        raise ValueError(f"Can't get current start with teach_time = {self.teach_state}")
+        raise ValueError(
+            f"Can't get current start with teach_time = {self.teach_state}"
+        )
 
     @property
     def end(self) -> date:
@@ -66,6 +84,7 @@ class TeachTime:
             return self.__spring_start
         elif self.teach_state.it_is(TeachState.SPRING):
             return self.__autumn_start2
+        raise ValueError("Got not provided teach state")
 
     @property
     def week(self) -> int:
@@ -88,7 +107,7 @@ class TeachTime:
         elif self.__spring_end <= now < self.__autumn_start2:
             return TeachState.SUMMER_HOLIDAYS
 
-        raise ValueError('Undefined type of TeachTime')
+        raise ValueError("Undefined type of TeachTime")
 
     @classmethod
     def __avoid_sunday(cls, date: date) -> date:
@@ -98,5 +117,5 @@ class TeachTime:
 
 
 def get_year_from_string(string: str) -> Optional[str]:
-    found = re.search(r'\b((19|20)\d{2})', string)
+    found = re.search(r"\b((19|20)\d{2})", string)
     return None if found is None else found.group(0)
