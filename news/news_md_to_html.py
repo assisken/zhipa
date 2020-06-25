@@ -1,25 +1,25 @@
 import re
-from typing import Match, Tuple, List
+from typing import List, Match, Tuple
 
 import mistune
 
 
 class NewsLexer(mistune.InlineLexer):
     several_images = re.compile(
-        r'!(grid\d+)?'   # !grid2[Title](Any link)(Any link)(Any link)
-        r'(\[(.+)\])?'   # or ![Title](Any link)(Any link)
-        r'(\((.+)\))+'   # or !grid100(Any link)
+        r"!(grid\d+)?"  # !grid2[Title](Any link)(Any link)(Any link)
+        r"(\[(.+)\])?"  # or ![Title](Any link)(Any link)
+        r"(\((.+)\))+"  # or !grid100(Any link)
     )
 
     def enable_several_images(self):
         self.rules.several_images = self.several_images
-        self.default_rules.insert(0, 'several_images')
+        self.default_rules.insert(0, "several_images")
 
     @staticmethod
     def get_items(m: Match[str]) -> Tuple[str, str, List[str]]:
-        grid = m.group(1) if m.group(1) else 'grid1'
-        title = m.group(3) if m.group(3) else ''
-        image_names = m.group(5).split(')(')
+        grid = m.group(1) if m.group(1) else "grid1"
+        title = m.group(3) if m.group(3) else ""
+        image_names = m.group(5).split(")(")
         return grid, title, image_names
 
     def output_several_images(self, m: Match[str]):
@@ -28,8 +28,8 @@ class NewsLexer(mistune.InlineLexer):
 
 class NewsRenderer(mistune.Renderer):
     def block_quote(self, text):
-        text = re.sub('</?p>', '', text)
-        content, author, _ = text.rsplit('\n', maxsplit=2)
+        text = re.sub("</?p>", "", text)
+        content, author, _ = text.rsplit("\n", maxsplit=2)
         return """
         <blockquote>
             <p><q>{text}</q></p>
@@ -40,7 +40,7 @@ class NewsRenderer(mistune.Renderer):
 
     def several_images(self, grid, title, image_names):
         figure_tmpl = """
-        <figure class="column"> 
+        <figure class="column">
                 <a href="{path}" data-lightbox="roadtrip" data-title="{title}">
                     <img src="{path}" alt="">
                 </a>
@@ -53,9 +53,12 @@ class NewsRenderer(mistune.Renderer):
             <figcaption>{title}</figcaption>
         </div>
         """.format(
-            figures=''.join(figure_tmpl.format(path=f'{{{name}}}', title=title) for name in image_names),
+            figures="".join(
+                figure_tmpl.format(path=f"{{{name}}}", title=title)
+                for name in image_names
+            ),
             grid=grid,
-            title=title
+            title=title,
         )
 
 

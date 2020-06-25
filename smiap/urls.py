@@ -22,21 +22,20 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(('api.urls', 'api'), namespace='api')),
-    path('materials/', include(('news.urls', 'news'), namespace='news')),
-    path('students/', include(('schedule.urls', 'schedule'), namespace='schedule')),
-    path('', include('main.urls', namespace='')),
-
+    path("admin/", admin.site.urls),
+    path("api/", include(("api.urls", "api"), namespace="api")),
+    path("materials/", include(("news.urls", "news"), namespace="news")),
+    path("students/", include(("schedule.urls", "schedule"), namespace="schedule")),
+    path("", include("main.urls", namespace="")),
     # Plugins
-    path('', include('django.contrib.flatpages.urls')),
+    path("", include("django.contrib.flatpages.urls")),
 ]
 
 if DEBUG:
     import debug_toolbar
 
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-        *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
-        *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        path("__debug__/", include(debug_toolbar.urls)),
+        *static(settings.STATIC_URL or "/static", document_root=settings.STATIC_ROOT),
+        *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
     ] + urlpatterns

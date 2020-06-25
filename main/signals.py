@@ -1,18 +1,18 @@
 from django.contrib.flatpages.models import FlatPage
-from django.db.models import ProtectedError
 from django.db.models import signals
+from django.db.models.deletion import ProtectedError
 from django.dispatch import receiver
 
-from main.urls import urlpatterns
 from main.models import Profile, Publication
+from main.urls import urlpatterns
 from main.utils.unify import unify_fio
 
 
 @receiver(signals.pre_delete, sender=FlatPage)
 def delete_is_available_returned(sender: FlatPage, instance: FlatPage, **kwargs):
-    url = instance.url[1:] if instance.url.startswith('/') else instance.url
+    url = instance.url[1:] if instance.url.startswith("/") else instance.url
     if any(url == str(urlpattern.pattern) for urlpattern in urlpatterns):
-        raise ProtectedError('This page cannot be deleted', instance)
+        raise ProtectedError("This page cannot be deleted", instance)
 
 
 @receiver(signals.pre_save, sender=Profile)

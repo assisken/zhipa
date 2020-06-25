@@ -13,8 +13,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Setting up packages
-COPY requirements.txt /app/requirements.txt
-RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
+RUN pip install -q pipenv
+COPY Pipfile /app/Pipfile
+COPY Pipfile.lock /app/Pipfile.lock
+RUN pipenv install
 
 WORKDIR /app
 COPY . /app

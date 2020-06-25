@@ -28,21 +28,30 @@ variables:
   ANSIBLE_STRATEGY: 'free'
   ANSIBLE_HOST_KEY_CHECKING: 'False'
 
+  # Pipenv settings
+  PIPENV_SYSTEM: 1
+
 stages:
+  - lint
   - test
   - deploy
+
+lint:
+  stage: lint
+  script:
+    - pip install -q pipenv
+    - pipenv install --dev
+    - make lint
 
 test:
   stage: test
   services:
     - postgres:12.2
   script:
-    - pip install -qr requirements.txt
-    - pip install -qr requirements-test.txt
+    - pip install -q pipenv
+    - pipenv install --dev
     - mkdir -p "$FILES_ROOT/media"
-    - python manage.py collectstatic --no-input
-    - python manage.py compress --engine jinja2 --force
-    - python manage.py test --noinput -k
+    - make test
 
 deploy:
   stage: deploy
