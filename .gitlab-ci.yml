@@ -32,16 +32,8 @@ variables:
   PIPENV_SYSTEM: 1
 
 stages:
-  - lint
   - test
   - deploy
-
-lint:
-  stage: lint
-  script:
-    - pip install -q pipenv
-    - pipenv install --dev
-    - make lint
 
 test:
   stage: test
@@ -51,6 +43,7 @@ test:
     - pip install -q pipenv
     - pipenv install --dev
     - mkdir -p "$FILES_ROOT/media"
+    - make lint
     - make test
 
 deploy:
