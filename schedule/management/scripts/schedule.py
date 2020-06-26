@@ -111,7 +111,7 @@ class ScheduleParser:
                     ends_at=end,
                     item_type=res_item_type,
                     name=name,
-                    day=day_str,
+                    day=day,
                     schedule_type=self.schedule_type,
                     group=group,
                 )
