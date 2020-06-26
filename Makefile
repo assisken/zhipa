@@ -1,14 +1,14 @@
-PYTHON=python
 BLACK_IGNORE=migrations
+PYTHON=python
 
 fmt:
-	black --exclude ${BLACK_IGNORE} .
+	black --exclude "${BLACK_IGNORE}" .
 	isort --recursive .
 
 lint:
 	flake8 .
 	mypy .
-	black --exclude ${BLACK_IGNORE} --check .
+	black --exclude "${BLACK_IGNORE}" --check .
 	isort --recursive --check-only .
 
 security:
@@ -16,6 +16,6 @@ security:
 	bandit -r .
 
 test:
-	${PYTHON} manage.py collectstatic --no-input
-	${PYTHON} manage.py compress --engine jinja2 --force
-	${PYTHON} manage.py test --noinput -k
+	"${PYTHON}" manage.py collectstatic --no-input
+	"${PYTHON}" manage.py compress --engine jinja2 --force
+	"${PYTHON}" manage.py test --noinput -k
