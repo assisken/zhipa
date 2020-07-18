@@ -1,5 +1,3 @@
-image: python:3.7.4
-
 variables:
   # App settings
   LMS_URL: example.com
@@ -36,17 +34,16 @@ stages:
   - deploy
 
 test:
+  image: registry.gitlab.com/assisken/zhipa
   stage: test
   services:
     - postgres:12.2
   script:
-    - pip install -q pipenv
-    - pipenv install --dev
-    - mkdir -p "$FILES_ROOT/media"
     - make lint
     - make test
 
 deploy:
+  image: willhallonline/ansible:alpine
   stage: deploy
   when: on_success
   only:
@@ -54,7 +51,6 @@ deploy:
   script:
     - cp "$DEPLOY_KEY" id_rsa
     - chmod 600 id_rsa
-    - pip install -q ansible
     - ansible-playbook --syntax-check ansible/playbook.yml -i ansible/hosts
     - ansible-vault decrypt ansible/vault.yml --vault-password-file="$VAULT_PASSWORD"
     - ansible-vault decrypt ansible/group_vars/*.yml --vault-password-file="$VAULT_PASSWORD"

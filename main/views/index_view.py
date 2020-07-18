@@ -4,11 +4,10 @@ from django.contrib.flatpages.models import FlatPage
 from django.http import HttpResponse
 from django.urls import reverse
 
-from main.utils.date import TeachTime
+from main.utils.date import TeachTime, date_block
 from main.views.flatpage_view import FlatPageView
 from news.models import News
 from schedule.models import Group
-from schedule.views import date_block
 
 
 class IndexView(FlatPageView):
@@ -24,7 +23,7 @@ class IndexView(FlatPageView):
 
         content = template.render(
             {
-                "flatpage": self.flatpage,
+                "index_blocks": self.flatpage,
                 "date_block": date_block(teach_time),
                 "groups": Group.objects.only("name"),
                 "latest_news": news.objects.filter(hidden=False).order_by("-date")[:4],

@@ -3,9 +3,54 @@ from datetime import date, timedelta
 from enum import Enum, Flag, auto
 from typing import Optional
 
+from constance import config
+
+MONTH_GENITIVE = {
+    1: "Января",
+    2: "Февраля",
+    3: "Марта",
+    4: "Апреля",
+    5: "Мая",
+    6: "Июня",
+    7: "Июля",
+    8: "Августа",
+    9: "Сентября",
+    10: "Октября",
+    11: "Ноября",
+    12: "Декабря",
+}
+
 
 def get_week(d: date) -> int:
     return d.isocalendar()[1]
+
+
+def get_semester_year(now=date.today()) -> int:
+    month_start = 9
+    if now.month >= month_start:
+        return now.year
+    else:
+        return now.year - 1
+
+
+def avoid_sunday(current_date: date) -> date:
+    if current_date.weekday() == 6:
+        current_date += timedelta(days=1)
+    return current_date
+
+
+def date_block(teach_time: "TeachTime"):
+    teach_state = teach_time.teach_state
+    if teach_state.it_is(TeachState.SEMESTER):
+        return {"text": "Учёба продолжается", "num": teach_time.week, "desc": "неделя"}
+    elif teach_state.it_is(TeachState.HOLIDAYS):
+        return {
+            "text": "Начало учёбы",
+            "num": teach_time.next_start.day,
+            "desc": MONTH_GENITIVE[teach_time.next_start.month],
+        }
+
+    return {"text": "", "num": "404", "desc": "Not Found"}
 
 
 class TeachState(Flag):
@@ -26,31 +71,13 @@ class TeachState(Flag):
 
 class TeachTime:
     month_start = 9
-    weeks_in_semester = 18
 
     def __init__(self, now=date.today()):
         self.now = now
-        if now.month >= self.month_start:
-            self.__autumn_start1 = self.__avoid_sunday(
-                date(year=now.year, month=9, day=1)
-            )
-            self.__spring_start = self.__avoid_sunday(
-                date(year=now.year + 1, month=2, day=9)
-            )
-            self.__autumn_start2 = self.__avoid_sunday(
-                date(year=now.year + 1, month=9, day=1)
-            )
-        else:
-            self.__autumn_start1 = self.__avoid_sunday(
-                date(year=now.year - 1, month=9, day=1)
-            )
-            self.__spring_start = self.__avoid_sunday(
-                date(year=now.year, month=2, day=9)
-            )
-            self.__autumn_start2 = self.__avoid_sunday(
-                date(year=now.year, month=9, day=1)
-            )
-
+        self.weeks_in_semester: int = config.WEEKS_IN_SEMESTER
+        self.__autumn_start1: date = config.AUTUMN_SEMESTER_START
+        self.__spring_start: date = config.SPRING_SEMESTER_START
+        self.__autumn_start2: date = config.NEW_YEAR_AUTUMN_SEMESTER_START
         self.__autumn_end = self.__autumn_start1 + timedelta(
             days=7 * self.weeks_in_semester
         )
@@ -108,12 +135,6 @@ class TeachTime:
             return TeachState.SUMMER_HOLIDAYS
 
         raise ValueError("Undefined type of TeachTime")
-
-    @classmethod
-    def __avoid_sunday(cls, date: date) -> date:
-        if date.weekday() == 6:
-            date += timedelta(days=1)
-        return date
 
 
 def get_year_from_string(string: str) -> Optional[str]:
