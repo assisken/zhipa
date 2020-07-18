@@ -124,7 +124,6 @@ static/news
 
 .vscode/launch.json
 
-config.ini
 *.sqlite3
 
 /*.json

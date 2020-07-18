@@ -18,4 +18,5 @@ security:
 test:
 	${PYTHON} manage.py collectstatic --no-input
 	${PYTHON} manage.py compress --engine jinja2 --force
+	${PYTHON} manage.py migrate --no-input
 	${PYTHON} manage.py test --noinput -k

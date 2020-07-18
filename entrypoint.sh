@@ -9,4 +9,4 @@ python manage.py collectstatic --no-input
 echo Compressing styles...
 python manage.py compress --engine jinja2 --force
 
-exec $@
+uwsgi --ini /app/config.ini
