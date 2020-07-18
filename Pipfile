@@ -19,6 +19,7 @@ django = "==2.2"
 django-editor-widgets = "==3.0"
 django-colorfield = "==0.3.0"
 django-compressor = "==2.4"
+django-constance = {extras = ["database"], version = "*"}
 django-debug-toolbar = "==1.11"
 django-extensions = "==2.2.1"
 django-filter = "==2.2.0"

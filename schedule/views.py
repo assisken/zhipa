@@ -4,7 +4,7 @@ from collections import defaultdict
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from main.utils.date import TeachState, TeachTime
+from main.utils.date import TeachTime, date_block
 
 from .models import ExtramuralSchedule, FullTimeSchedule, Group, Schedule, Teacher
 
@@ -115,20 +115,6 @@ class ExtramuralGroupTimetableView(TemplateView):
                 "is_fulltime": self.schedule == FullTimeSchedule,
             },
         )
-
-
-def date_block(teach_time: TeachTime):
-    teach_state = teach_time.teach_state
-    if teach_state.it_is(TeachState.SEMESTER):
-        return {"text": "Учёба продолжается", "num": teach_time.week, "desc": "неделя"}
-    elif teach_state.it_is(TeachState.HOLIDAYS):
-        return {
-            "text": "Начало учёбы",
-            "num": teach_time.next_start.day,
-            "desc": teach_time.next_start.strftime("%B"),
-        }
-
-    return {"text": "", "num": "404", "desc": "Not Found"}
 
 
 class TeacherTimetableView(TemplateView):

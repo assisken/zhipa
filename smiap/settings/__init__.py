@@ -18,6 +18,7 @@ base_settings = [
     "components/database.py",
     "components/logging.py",
     "components/flatpages.py",
+    "components/constance.py",
     # Select the environment
     f"environments/{ENV}.py",
 ]

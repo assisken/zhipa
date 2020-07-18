@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     "compressor",
     "colorfield",
     "djangoeditorwidgets",
+    "constance",
+    "constance.backends.database",
     "django.contrib.sites",
     "django.contrib.flatpages",
     "main.apps.SmiapConfig",

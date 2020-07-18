@@ -1,23 +1,29 @@
 version: '3'
 services:
-  postgres:
-    image: postgres:12
-#    ports:
-#      - "5432:5432"
-    volumes:
-      - ./preinit/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
   app:
-    build: .
+    container_name: smiap
+    image: registry.gitlab.com/assisken/zhipa
+    command: make test
+    tty: yes
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "smiap:172.17.0.1"
+    env_file:
+      - .env
     volumes:
       - ".:/app"
-    links:
-      - postgres
+      - "/tmp/static:/static"
     depends_on:
-      - postgres
-  migrations:
-    build: .
-    command: python manage.py init
-    depends_on:
-      - app
+    - db
+
+  db:
+    container_name: pg-smiap
+    image: postgres:12.3
+    restart: always
+    volumes:
+      - ~/smiap_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=smiap
+      - POSTGRES_DB=smiap
+      - POSTGRES_USER=smiap

@@ -16,6 +16,6 @@ security:
 	bandit -r .
 
 test:
-	"${PYTHON}" manage.py collectstatic --no-input
-	"${PYTHON}" manage.py compress --engine jinja2 --force
-	"${PYTHON}" manage.py test --noinput -k
+	${PYTHON} manage.py collectstatic --no-input
+	${PYTHON} manage.py compress --engine jinja2 --force
+	${PYTHON} manage.py test --noinput -k

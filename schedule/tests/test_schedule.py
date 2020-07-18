@@ -1,6 +1,6 @@
-import locale
 from datetime import date
 
+from constance.test import override_config
 from django.test import TestCase
 from django.urls import reverse
 
@@ -67,27 +67,48 @@ class ScheduleTest(TestCase):
                 self.assertContains(resp, teachers, msg_prefix=msg)
                 self.assertContains(resp, places, msg_prefix=msg)
 
-    def test_date_block(self):
+    @override_config(
+        AUTUMN_SEMESTER_START=date(2012, 9, 1), SPRING_SEMESTER_START=date(2013, 2, 4),
+    )
+    def test_date_block_beginning_of_autumn_semester(self):
         res = date_block(TeachTime(date(2012, 9, 3)))
         expected = {"text": "Учёба продолжается", "num": 2, "desc": "неделя"}
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
+    @override_config(
+        AUTUMN_SEMESTER_START=date(2016, 9, 1), SPRING_SEMESTER_START=date(2016, 2, 4),
+    )
+    def test_date_block_last_day_of_year(self):
         res = date_block(TeachTime(date(2016, 12, 31)))
         expected = {"text": "Учёба продолжается", "num": 18, "desc": "неделя"}
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
+    @override_config(
+        AUTUMN_SEMESTER_START=date(2015, 9, 1), SPRING_SEMESTER_START=date(2016, 2, 4),
+    )
+    def test_date_block_first_day_of_year(self):
         res = date_block(TeachTime(date(2016, 1, 1)))
         expected = {"text": "Учёба продолжается", "num": 18, "desc": "неделя"}
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
+    @override_config(
+        SPRING_SEMESTER_START=date(2019, 2, 4),
+        NEW_YEAR_AUTUMN_SEMESTER_START=date(2019, 5, 31),
+    )
+    def test_date_block_beginning_of_winter_semester(self):
         res = date_block(TeachTime(date(2019, 2, 14)))
         expected = {"text": "Учёба продолжается", "num": 2, "desc": "неделя"}
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
-        res = date_block(TeachTime(date(2027, 7, 1)))
+    @override_config(
+        SPRING_SEMESTER_START=date(2027, 2, 3),
+        NEW_YEAR_AUTUMN_SEMESTER_START=date(2027, 9, 1),
+    )
+    def test_date_block_beginning_of_autumn_semester_in_fart_future(self):
+        res = date_block(TeachTime(date(2027, 6, 30)))
         expected = {
             "text": "Начало учёбы",
             "num": 1,
-            "desc": locale.nl_langinfo(locale.MON_9),
+            "desc": "Сентября",
         }
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
