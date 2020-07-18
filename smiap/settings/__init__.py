@@ -8,14 +8,14 @@ BASE_DIR: str
 BRAND: str
 TIME_ZONE: str
 
-load_dotenv(verbose=True)
 ENV = os.getenv("ENV", "development")
 DEBUG = ENV == "development"
+if ENV != "testing":
+    load_dotenv(verbose=True)
 
 base_settings = [
     "components/general.py",
     "components/app.py",
-    "components/database.py",
     "components/logging.py",
     "components/flatpages.py",
     "components/constance.py",

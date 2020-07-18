@@ -45,7 +45,7 @@ class ScheduleTest(TestCase):
             ).filter(group=group)
             self.assertContains(
                 resp,
-                "&emsp; {} &emsp;".format(group.name),
+                group.name,
                 msg_prefix="Не отображается имя группы, либо не та страница",
             )
             self.assertGreater(len(schedule), 0)

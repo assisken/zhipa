@@ -15,7 +15,7 @@ services:
       - ".:/app"
       - "/tmp/static:/static"
     depends_on:
-    - db
+      - db
 
   db:
     container_name: pg-smiap
