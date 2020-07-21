@@ -1,4 +1,6 @@
-@media(max-width:1023px) {
+@import "variables";
+
+@include thin_screen {
     .grid4 .column {
         width: 31.2%
     }
@@ -13,7 +15,7 @@
     }
 }
 
-@media(max-width:800px) {
+@include tablet {
     .grid4 .column {
         width: 48.4%
     }

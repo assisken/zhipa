@@ -8,7 +8,7 @@
     {% include 'layout/extra_nav.html' %}
 
     <div class="content">
-  		<div class="width-70 top">
+  		<div class="top">
   		    <div style="margin: 0 5px 20px 10px;">
                 <h1 class="bottom-line" style="margin: 20px 10px">Новости</h1>
   				{% for news in news_list %}
@@ -23,20 +23,6 @@
   				{% else %}
   					<h1 class="bottom-line" style="margin: 20px 10px">На данный момент новостей нет...</h1>
   				{% endfor %}
-  		    </div>
-  		</div>
-  		<div class="width-30 top">
-  		    <div style="margin: 0 5px 20px 4px;">
-  		        <h1 class="bottom-line" style="margin: 20px 10px">Оповещения</h1>
-  		        <!--
-  		            <div class="eventbox flatbox_light" id="">
-  		            	<span class="news-date">23-45-6789</span>
-  		                <h2 class="bottom-line" style="font-size: 14pt;">Заголовок</h2>
-  		                <p class="font-small">item["preview"]</p>
-  		            </div>
-  		        -->
-  		        <h2 class="center">На сегодняшний день оповещений нет</h2>
-  		        <!-- <h2 class="center">На данной странице оповещений нет</h2> -->
   		    </div>
   		</div>
   		<div class="pagination center font-large padding-large">
