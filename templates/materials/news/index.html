@@ -12,7 +12,7 @@
     {% include 'layout/extra_nav.html' %}
 
     <div class="content">
-        <div class="width-80 top">
+        <div class="top {{ '' if news.hidden else ' width-80' }}">
             <div style="margin: 10px;">
                 <div class="eventbox flatbox">
                     {% if news.hidden %}
@@ -58,19 +58,21 @@
                 </div>
             </div>
         </div>
-        <div class="width-20 top">
-                <aside class="news-aside" style="margin: 5px;">
-                    {% if last_news %}
-                        <h2 class="bottom-line">Последние новости</h2>
-                        {% for n in last_news %}
-                        <div class="compact">
-                            <span class="news-date">{{ n.date.strftime('%-d %B %Y') | title }}</span>
-                            <a href="{{ n.get_absolute_url() }}"><h3>{{ n.title }}</h3></a>
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                </aside>
-        </div>
+        {% if not news.hidden %}
+            <div class="width-20 top">
+                    <aside class="news-aside" style="margin: 5px;">
+                        {% if last_news %}
+                            <h2 class="bottom-line">Последние новости</h2>
+                            {% for n in last_news %}
+                            <div class="compact">
+                                <span class="news-date">{{ n.date.strftime('%-d %B %Y') | title }}</span>
+                                <a href="{{ n.get_absolute_url() }}"><h3>{{ n.title }}</h3></a>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </aside>
+            </div>
+        {% endif %}
     </div>
     <script type="text/javascript" src="{{ static('scripts/lightbox.min.js') }}"></script>
 {% endblock content %}

@@ -1,9 +1,8 @@
 import os
 
-from django.contrib.staticfiles.storage import staticfiles_storage
 from split_settings.tools import include
 
-from smiap.settings.components.general import BASE_DIR, REST_FRAMEWORK
+from smiap.settings.components.general import REST_FRAMEWORK
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -42,23 +41,6 @@ DATABASES = {
         "TEST": {"NAME": "test_smiap"},
     }
 }
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-FILES_ROOT = "/tmp/static"
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(FILES_ROOT, "static")
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(FILES_ROOT, "media")
-FILE_UPLOAD_PERMISSIONS = 0o644
-DEFAULT_IMG = staticfiles_storage.url("default.png")
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    MEDIA_ROOT,
-)
-SASS_PROCESSOR_ROOT = os.path.join(STATIC_ROOT, "stylesheets")
 
 development_components = [
     "../components/debug_toolbar.py",

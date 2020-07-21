@@ -1,4 +1,5 @@
 @import url(../fonts/open-sans.css);
+@import "mobile";
 
 .about .about_box img, .about p {
   transition: all .2s ease-in-out
@@ -27,7 +28,7 @@ body {
 }
 
 .container, .limit-1024, .logo {
-  max-width: 1024px
+  max-width: $thin-screen-breakpoint;
 }
 
 .container {
@@ -312,6 +313,7 @@ footer p {
 }
 
 .content .eventbox {
+  min-height: 350px;
   padding: 10px;
   margin: 5px 5px 20px
 }
@@ -333,6 +335,7 @@ footer p {
   display: inline-block;
   zoom: 1;
   width: 39%;
+  min-width: 265px;
   margin-right: 5px;
   vertical-align: top;
 }
@@ -596,7 +599,13 @@ div.clear {
   visibility: hidden;
 }
 
-@media (max-width: 800px) {
+@include thin_screen {
+  .cover {
+    font-size: 3.1vw;
+  }
+}
+
+@include tablet {
   .sticky-week {
     position: static;
     top: 30px;
@@ -735,6 +744,34 @@ div.clear {
     width: 90%;
     box-sizing: border-box
   }
+
+  .cover {
+    font-size: 3.2vw;
+  }
+}
+
+@include mobile {
+  .content section {
+    margin: 5px 0
+  }
+
+  .cover {
+    width: 100%;
+    height: 40vw;
+    margin: 0 0 15px;
+    font-size: 7vw;
+  }
+
+  .content .eventbox .with_image img {
+    display: block;
+    width: 100%;
+    margin: 0 0 15px;
+  }
+
+  .content .eventbox .with_image .description {
+    display: block;
+    width: 100%
+  }
 }
 
 @media (max-width: 540px) {
@@ -764,21 +801,6 @@ div.clear {
 
   .table_session tr {
     border-bottom: 2px solid #ccc !important
-  }
-
-  .content section {
-    margin: 5px 0
-  }
-
-  .content .eventbox .with_image img {
-    display: block;
-    width: 100%;
-    margin: 0 0 15px
-  }
-
-  .content .eventbox .with_image .description {
-    display: block;
-    width: 100%
   }
 
   .decorate_logo {
