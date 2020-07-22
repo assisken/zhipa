@@ -747,6 +747,10 @@ div.clear {
   .cover {
     font-size: 3.2vw;
   }
+
+  .cover-img {
+    min-width: 267px;
+  }
 }
 
 @include mobile {
