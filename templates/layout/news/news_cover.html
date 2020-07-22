@@ -18,7 +18,7 @@
 {% elif news.cover %}
     <div class="with_image">
         <a href="{{ news.get_absolute_url() }}">
-            <img src="{{ news.cover.url }}" alt="" class="cover animation-fade animation-delay-2">
+            <img src="{{ news.cover.url }}" alt="" class="cover-img animation-fade animation-delay-2">
         </a>
         <div class="description">
             {% include 'layout/news/news_description.html' %}
