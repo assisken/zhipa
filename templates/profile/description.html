@@ -12,7 +12,7 @@
                 <div class="width-20 top">
                     {% if profile.img %}
                         <div class="padding-hz-large width-90">
-                            <img class="user-photo" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
+                            <img class="user-photo animation-fade animation-delay-2" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
                         </div>
                     {% else %}
                         <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}" style="width: 100%">

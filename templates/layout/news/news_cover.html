@@ -2,7 +2,7 @@
     {% set cover = news.newscover %}
     <div class="with_image">
         <a href="{{ news.get_absolute_url() }}">
-            <div class="cover" style="background-image: url({{ cover.img.url if cover.img else '' }})">
+            <div class="cover animation-fade animation-delay-2" style="background-image: url({{ cover.img.url if cover.img else '' }})">
                 <div class="cover-content" style="background-color: {{ cover.color }}aa">
                     <span>{{ cover.content|default('', True) }}</span>
                 </div>
@@ -18,7 +18,7 @@
 {% elif news.cover %}
     <div class="with_image">
         <a href="{{ news.get_absolute_url() }}">
-            <img src="{{ news.cover.url }}" alt="" class="animation-fade animation-delay-2">
+            <img src="{{ news.cover.url }}" alt="" class="cover animation-fade animation-delay-2">
         </a>
         <div class="description">
             {% include 'layout/news/news_description.html' %}
