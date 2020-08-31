@@ -160,7 +160,9 @@ def parse_items(
 ) -> Generator[Tuple[str, str, str, str, List[str]], None, None]:
     for item in element.xpath('.//div[@class="sc-table-row"]'):
         time = item.xpath('.//div[contains(@class, "sc-item-time")]/text()')[0]
-        item_type = item.xpath('.//div[contains(@class, "sc-item-type")]/text()')[0]
+        item_type = item.xpath('.//div[contains(@class, "sc-item-type")]/text()')[
+            0
+        ].strip()
         place_list = item.xpath('.//div[contains(@class, "sc-item-location")]/text()')
         name = item.xpath('.//*[@class="sc-title"]/text()')[0]
         try:
