@@ -98,13 +98,22 @@ class FullTimeGroupFilter(admin.SimpleListFilter):
 class FullTimeScheduleAdmin(admin.ModelAdmin):
     change_list_template = "admin/schedule/list.html"
     ordering = ("day", "starts_at", "ends_at")
-    list_display = ("day", "starts_at", "ends_at", "item_type", "schedule_type", "name")
+    list_display = (
+        "day",
+        "starts_at",
+        "ends_at",
+        "item_type",
+        "schedule_type",
+        "name",
+        "hidden",
+    )
     list_filter = (
         FullTimeGroupFilter,
         "item_type",
         "schedule_type",
         "starts_at",
         "ends_at",
+        "hidden",
     )
     filter_horizontal = ("teachers", "places")
 

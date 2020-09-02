@@ -21,7 +21,8 @@
             "teachers": [
                 1
             ],
-            "schedule_type": "Учебн."
+            "schedule_type": "Учебн.",
+            "hidden": false
         },
         "model": "schedule.schedule",
         "pk": 1
@@ -30,8 +31,34 @@
         "fields": {
             "day": 1,
             "ends_at": "13:13:13",
+            "starts_at": "18:15:00",
+            "item_type": "ЛК"
+        },
+        "model": "schedule.fulltimeschedule",
+        "pk": 1
+    },
+    {
+        "fields": {
             "group": 1,
-            "name": "Введение в методику жиповальни",
+            "name": "Методики использования порванной жепы в быту",
+            "places": [
+                1
+            ],
+            "teachers": [
+                1
+            ],
+            "schedule_type": "Учебн.",
+            "hidden": true
+        },
+        "model": "schedule.schedule",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "day": 2,
+            "ends_at": "13:13:13",
+            "group": 1,
+            "name": "Методики использования порванной жепы в быту",
             "places": [
                 1
             ],
@@ -43,7 +70,7 @@
             "schedule_type": "Учебн."
         },
         "model": "schedule.fulltimeschedule",
-        "pk": 1
+        "pk": 2
     },
     {
         "fields": {
@@ -54,6 +81,16 @@
         },
         "model": "schedule.day",
         "pk": 1
+    },
+    {
+        "fields": {
+            "day": 2,
+            "month": 1,
+            "week": 2,
+            "week_day": "Ад"
+        },
+        "model": "schedule.day",
+        "pk": 2
     },
     {
         "fields": {

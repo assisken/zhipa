@@ -48,6 +48,7 @@ class GroupTimetableView(TemplateView):
             "schedule_type": self.schedule_type,
             "day__week": week,
             "group": group,
+            "hidden": False,
         }
         items = get_items(schedule=self.schedule, filter_cond=filter_cond)
         schedule = defaultdict(list)

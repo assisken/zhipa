@@ -116,6 +116,7 @@ class Schedule(models.Model):
     places = models.ManyToManyField(Place)
     teachers = models.ManyToManyField(Teacher)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    hidden = models.BooleanField(default=True)
 
     def __repr__(self):
         return str(self)

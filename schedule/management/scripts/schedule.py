@@ -7,7 +7,6 @@ from urllib.parse import quote
 from lxml import html
 from lxml.html import HtmlElement
 from requests import HTTPError, get
-from termcolor import cprint
 
 from main.utils.exceptions import GroupListIsEmpty
 from schedule.models import Day, FullTimeSchedule, Group, Place, Schedule, Teacher
@@ -23,7 +22,9 @@ class ScheduleParser:
     teach_url = "https://mai.ru/education/schedule/detail.php?group={group}&week={week}"
     session_url = "https://mai.ru/education/schedule/session.php?group={group}"
 
-    def __init__(self, schedule_type: ScheduleType, force: bool = False):
+    def __init__(
+        self, schedule_type: ScheduleType, force: bool = False, hidden: bool = False
+    ):
         expected_types = [ScheduleType.TEACH, ScheduleType.SESSION]
         if schedule_type not in expected_types:
             raise KeyError(
@@ -32,6 +33,7 @@ class ScheduleParser:
 
         self.type = schedule_type
         self.force = force
+        self.hidden = hidden
 
         if schedule_type == ScheduleType.TEACH:
             self.schedule_type = Schedule.STUDY
@@ -41,7 +43,6 @@ class ScheduleParser:
             self.url = self.session_url
 
     def parse(self) -> None:
-        cprint("Parsing schedule for student groups...", attrs=["bold", "underline"])
         groups = Group.objects.filter(study_form=Group.FULL_TIME)
 
         if groups.count() == 0:
@@ -114,6 +115,7 @@ class ScheduleParser:
                     day=day,
                     schedule_type=self.schedule_type,
                     group=group,
+                    hidden=self.hidden,
                 )
 
                 for place in place_list:
