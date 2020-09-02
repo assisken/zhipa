@@ -1,14 +1,13 @@
-BLACK_IGNORE=migrations
 PYTHON=python
 
 fmt:
-	black --exclude "${BLACK_IGNORE}" .
+	black .
 	isort --recursive .
 
 lint:
 	flake8 .
 	mypy .
-	black --exclude "${BLACK_IGNORE}" --check .
+	black --check .
 	isort --recursive --check-only .
 
 security:

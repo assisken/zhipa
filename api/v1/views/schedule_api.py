@@ -24,7 +24,11 @@ class FullTimeScheduleAPI(APIView):
 
     def get(self, request, group_id: int):
         group = Group.objects.get(id=group_id)
-        filter_cond = {"schedule_type": self.schedule_type, "group": group}
+        filter_cond = {
+            "schedule_type": self.schedule_type,
+            "group": group,
+            "hidden": False,
+        }
         final_week = group.study_until_week
         if final_week and self.schedule_type == Schedule.STUDY:
             filter_cond["day__week__in"] = range(1, final_week + 1)

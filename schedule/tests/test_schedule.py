@@ -42,7 +42,7 @@ class ScheduleTest(TestCase):
             resp = self.client.get(url)
             schedule = FullTimeSchedule.objects.prefetch_related(
                 "day", "group", "teachers", "places"
-            ).filter(group=group)
+            ).filter(group=group, hidden=False)
             self.assertContains(
                 resp,
                 group.name,
@@ -112,3 +112,20 @@ class ScheduleTest(TestCase):
             "desc": "Сентября",
         }
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
+
+    def test_hidden_schedule_does_not_shows(self):
+        week_with_schedule = "2"
+        msg = "Спрятанный предмет не должен отображаться на страничке"
+
+        for group in self.groups:
+            url = self.url_pattern.format(
+                url=reverse("schedule:timetable"),
+                group=group.name,
+                week=week_with_schedule,
+            )
+            resp = self.client.get(url)
+            schedule = FullTimeSchedule.objects.prefetch_related(
+                "day", "group", "teachers", "places"
+            ).filter(group=group, hidden=True)
+            for item in schedule:
+                self.assertNotContains(resp, item.name, msg_prefix=msg)
