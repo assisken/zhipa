@@ -10,7 +10,16 @@
     </tr>
     {% for item in schedule %}
         <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
-            {% if item.day.startswith('По договоренности') %}
+            {% if not item.day and not item.time %}
+                <td>-</td>
+                <td>-</td>
+            {% elif not item.day %}
+                <td>-</td>
+                <td>{{ item.time }}</td>
+            {% elif not item.time %}
+                <td>{{ item.day }}</td>
+                <td>-</td>
+            {% elif item.day.startswith('По договоренности') %}
                 <td colspan="2">{{ item.day }}<br>{{ item.time }}</td>
             {% else %}
                 <td>{{ item.day }}</td>
