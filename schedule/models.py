@@ -73,7 +73,11 @@ class Teacher(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return "{} {}.{}.".format(self.lastname, self.firstname[0], self.middlename[0])
+        return "{} {}.{}.".format(
+            self.lastname,
+            self.firstname[0] if self.firstname else "",
+            self.middlename[0] if self.middlename else "",
+        )
 
 
 class Place(models.Model):
