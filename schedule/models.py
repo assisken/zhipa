@@ -140,7 +140,7 @@ class FullTimeSchedule(Schedule):
         (LABWORK, "ЛР"),
         (CONTROL, "КСР"),
         (EXAM, "Экзамен"),
-        (f"{PRACTICE} {LECTION}", "ПЗ и ЛК"),
+        (f"{PRACTICE} {LECTION}", "ПЗ ЛК"),
         (EMPTY, "Оставить пустым"),
     ]
 
