@@ -140,6 +140,7 @@ class FullTimeSchedule(Schedule):
         (LABWORK, "ЛР"),
         (CONTROL, "КСР"),
         (EXAM, "Экзамен"),
+        (f"{PRACTICE} {LECTION}", "ПЗ и ЛК"),
         (EMPTY, "Оставить пустым"),
     ]
 
@@ -147,7 +148,7 @@ class FullTimeSchedule(Schedule):
     starts_at = models.TimeField(null=True, blank=True)
     ends_at = models.TimeField(null=True, blank=True)
     item_type = models.CharField(
-        max_length=3, choices=ITEM_TYPES, default=EMPTY, blank=True
+        max_length=5, choices=ITEM_TYPES, default=EMPTY, blank=True
     )
 
     def key(self):
