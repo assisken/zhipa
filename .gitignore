@@ -128,4 +128,4 @@ static/news
 
 /*.json
 /import
-*.xlsx*
+/*.xlsx*

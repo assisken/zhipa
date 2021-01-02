@@ -4,7 +4,6 @@
             "course": 3,
             "degree": 1,
             "name": "М14О-33Б-99",
-            "schedule_version": "v9",
             "semester": 5,
             "study_form": "очная"
         },
@@ -13,11 +12,22 @@
     },
     {
         "fields": {
+            "course": 3,
+            "degree": 1,
+            "name": "М228З-33Бк-19",
+            "semester": 5,
+            "study_form": "заочная"
+        },
+        "model": "schedule.group",
+        "pk": 2
+    },
+    {
+        "fields": {
             "group": 1,
             "name": "Введение в методику жиповальни",
-            "places": [
-                1
-            ],
+            "place": "Орш.",
+            "time": "13:13 - 18:55",
+            "date": "21.07",
             "teachers": [
                 1
             ],
@@ -29,10 +39,10 @@
     },
     {
         "fields": {
-            "day": 1,
-            "ends_at": "13:13:13",
-            "starts_at": "18:15:00",
-            "item_type": "ЛК"
+            "date": "12.13",
+            "time": "13:13 - 18:55",
+            "item_type": "ЛК",
+            "week": 1
         },
         "model": "schedule.fulltimeschedule",
         "pk": 1
@@ -41,9 +51,8 @@
         "fields": {
             "group": 1,
             "name": "Методики использования порванной жепы в быту",
-            "places": [
-                1
-            ],
+            "place": "Орш.",
+            "date": "21.07",
             "teachers": [
                 1
             ],
@@ -55,14 +64,13 @@
     },
     {
         "fields": {
-            "day": 2,
-            "ends_at": "13:13:13",
+            "date": "12.13",
+            "week_day": "Ср.",
             "group": 1,
+            "week": 1,
             "name": "Методики использования порванной жепы в быту",
-            "places": [
-                1
-            ],
-            "starts_at": "18:15:00",
+            "place": "Орш.",
+            "time": "18:15 - 12:10",
             "teachers": [
                 1
             ],
@@ -74,40 +82,12 @@
     },
     {
         "fields": {
-            "day": 1,
-            "month": 1,
-            "week": 1,
-            "week_day": "Ср"
-        },
-        "model": "schedule.day",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "day": 2,
-            "month": 1,
-            "week": 2,
-            "week_day": "Ад"
-        },
-        "model": "schedule.day",
-        "pk": 2
-    },
-    {
-        "fields": {
             "firstname": "Авдеев",
             "lastname": "Илья",
             "middlename": "Михайлович",
             "staff": null
         },
         "model": "schedule.teacher",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "building": "Жип.",
-            "number": "Я-1031223"
-        },
-        "model": "schedule.place",
         "pk": 1
     }
 ]

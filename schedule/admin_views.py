@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-from operator import attrgetter
 from typing import List, Optional, Tuple, Type
 
 from django.contrib import messages
@@ -15,12 +14,12 @@ from schedule.management.scripts.generate import gen_groups_table, gen_teachers_
 from smiap.settings.components.logging import log
 
 from .forms import (
-    PLACE_FORMAT,
+    TEACHER_FORMAT,
     ExtramuralScheduleForm,
     GetGroupScheduleForm,
     GetTeacherSessionScheduleForm,
 )
-from .models import ExtramuralSchedule, FullTimeSchedule, Place, Schedule, Teacher
+from .models import ExtramuralSchedule, FullTimeSchedule, Schedule, Teacher
 
 
 class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
@@ -84,18 +83,17 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
 
         for date, time, item, teachers, place in form.schedule_fields():
             try:
-                _place = self.__get_place(place)
                 _teachers = self.__get_teachers(teachers)
 
                 schedule, _ = ExtramuralSchedule.objects.get_or_create(
-                    day=date,
+                    date=date,
                     time=time,
                     schedule_type=schedule_type,
                     name=item,
                     group=group,
+                    place=place,
                 )
 
-                schedule.places.set((_place,))
                 schedule.teachers.set(_teachers)
             except Exception as e:
                 log.error(
@@ -112,41 +110,32 @@ class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
         return HttpResponseRedirect("../")
 
     @staticmethod
-    def __get_place(place: Optional[str]) -> Optional[Place]:
-        if not place:
-            return None
-
-        regex = re.compile(PLACE_FORMAT)
-        match = regex.match(place)
-        if not match:
-            raise ValueError(f"Matches did not found at place: {place}")
-
-        building = match.group("area") if len(match.groups()) == 2 else ""
-        _place, _ = Place.objects.get_or_create(
-            number=match.group("cabinet"), building=building
-        )
-        return _place
-
-    @staticmethod
     def __get_teachers(teachers: Tuple[str, ...]) -> Tuple[Optional[Teacher], ...]:
         if not teachers:
             return tuple()
 
         out: List[Teacher] = []
-        regex = re.compile(
-            r"^(?P<lastname>[А-Яа-яЁё]+) (?P<firstname>[А-Яа-яЁё])\.(?P<middlename>[А-Яа-яЁё])\.$"
-        )
+        regex = re.compile(TEACHER_FORMAT)
         for teacher in teachers:
+            if not teacher:
+                continue
+
             match = regex.match(teacher)
             if not match:
                 raise ValueError(f"Matches did not found at teacher: {teacher}")
 
-            _teacher, _ = Teacher.objects.get_or_create(
+            db_teacher = Teacher.objects.filter(
                 lastname=match.group("lastname"),
-                firstname=match.group("firstname"),
-                middlename=match.group("middlename"),
-            )
-            out.append(_teacher)
+                firstname__startswith=match.group("firstname"),
+                middlename__startswith=match.group("middlename"),
+            ).first()
+            if db_teacher is None:
+                db_teacher = Teacher.objects.create(
+                    lastname=match.group("lastname"),
+                    firstname=match.group("firstname"),
+                    middlename=match.group("middlename"),
+                )
+            out.append(db_teacher)
         return tuple(out)
 
 
@@ -187,7 +176,7 @@ class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
         groups = form.cleaned_data["groups"]
         from_week = form.cleaned_data["from_week"]
         try:
-            filename = gen_groups_table(groups, from_week)
+            filename = gen_groups_table(groups, from_week, "group_template.xlsx")
         except AttributeError:
             form.add_error("groups", "Превышен максимальный лимит групп")
             self.render.update({"form": form, "errors": form.errors})
@@ -247,51 +236,6 @@ class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
             return render(request, self.template_name, self.render)
 
         schedule_type = form.cleaned_data["schedule_type"]
-        if schedule_type == Schedule.STUDY:
-            return self.__post_study(request, form)
-        else:
-            return self.__post_session(request, form)
-
-    def __post_study(self, request, form: GetTeacherSessionScheduleForm):
-        if not form.is_valid():
-            self.render.update(
-                {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
-            )
-            return render(request, self.template_name, self.render)
-
         teachers = form.cleaned_data["teachers"]
-        filename = gen_teachers_table(teachers)
+        filename = gen_teachers_table(teachers, schedule_type, "teacher_template.xlsx")
         return super()._send_xlsx(filename)
-
-    def __post_session(self, request, form: GetTeacherSessionScheduleForm):
-        teachers = form.cleaned_data["teachers"]
-        items: QuerySet = Schedule.objects.prefetch_related(
-            "day", "groups", "teachers", "places"
-        ).filter(teachers__in=teachers, schedule_type=Schedule.SESSION)
-        _dates = [item.day for item in items if item.day]
-        _dates.sort(key=attrgetter("month", "day"))
-        min_date, max_date = _dates[0], _dates[-1]
-        dates = [
-            "{:02d}.{:02d}".format(day, month)
-            for month in range(min_date.month, max_date.month + 1)
-            for day in range(min_date.day, max_date.day)
-        ]
-
-        schedule = {
-            teacher: {
-                "{:02d}.{:02d}".format(item.day.day, item.day.month): {
-                    "name": item.name,
-                    "groups": list(item.groups.all()),
-                    "place": list(item.places.all()),
-                }
-            }
-            for item in items
-            for teacher in item.teachers.all()
-            if item.day
-        }
-
-        return render(
-            request,
-            "django/admin/schedule/get_teacher_session_schedule.html",
-            {"teachers": teachers, "dates": dates, "schedule": schedule},
-        )

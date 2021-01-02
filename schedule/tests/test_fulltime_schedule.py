@@ -9,12 +9,12 @@ from schedule.models import FullTimeSchedule, Group
 from schedule.views import date_block
 
 
-class ScheduleTest(TestCase):
+class FulltimeScheduleTest(TestCase):
     fixtures = ["groups.json"]
 
     def setUp(self) -> None:
         self.url_pattern = "{url}?group={group}&week={week}"
-        self.groups = Group.objects.all()
+        self.groups = Group.objects.filter(study_form=Group.FULL_TIME)
 
     def test_empty_schedule(self):
         empty_week = "2"
@@ -41,7 +41,7 @@ class ScheduleTest(TestCase):
             )
             resp = self.client.get(url)
             schedule = FullTimeSchedule.objects.prefetch_related(
-                "day", "group", "teachers", "places"
+                "group", "teachers"
             ).filter(group=group, hidden=False)
             self.assertContains(
                 resp,
@@ -52,20 +52,14 @@ class ScheduleTest(TestCase):
 
             for item in schedule:
                 item: FullTimeSchedule
-                starts_at = item.starts_at.strftime("%H:%M")
-                ends_at = item.ends_at.strftime("%H:%M")
                 teachers = ", ".join(map(str, item.teachers.all()))
-                places = ", ".join(map(str, item.places.all()))
 
-                self.assertContains(resp, item.day.day, msg_prefix=msg)
-                self.assertContains(resp, item.day.month, msg_prefix=msg)
-                self.assertContains(resp, item.day.week_day, msg_prefix=msg)
-                self.assertContains(resp, starts_at, msg_prefix=msg)
-                self.assertContains(resp, ends_at, msg_prefix=msg)
+                self.assertContains(resp, item.date, msg_prefix=msg)
+                self.assertContains(resp, item.time, msg_prefix=msg)
                 self.assertContains(resp, item.name, msg_prefix=msg)
                 self.assertContains(resp, item.item_type, msg_prefix=msg)
+                self.assertContains(resp, item.place, msg_prefix=msg)
                 self.assertContains(resp, teachers, msg_prefix=msg)
-                self.assertContains(resp, places, msg_prefix=msg)
 
     @override_config(
         AUTUMN_SEMESTER_START=date(2012, 9, 1), SPRING_SEMESTER_START=date(2013, 2, 4),
@@ -125,7 +119,7 @@ class ScheduleTest(TestCase):
             )
             resp = self.client.get(url)
             schedule = FullTimeSchedule.objects.prefetch_related(
-                "day", "group", "teachers", "places"
+                "group", "teachers"
             ).filter(group=group, hidden=True)
             for item in schedule:
                 self.assertNotContains(resp, item.name, msg_prefix=msg)

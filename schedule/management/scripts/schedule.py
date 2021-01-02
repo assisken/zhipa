@@ -1,21 +1,38 @@
+from dataclasses import dataclass
 from enum import Enum, auto
+from functools import partial
 from logging import error
+from operator import attrgetter
 from time import sleep
-from typing import Generator, List, Optional, Tuple
+from typing import Callable, List, Optional, Tuple
 from urllib.parse import quote
 
+from constance import config
+from funcy import compose, first, lkeep, lmap, notnone, select
 from lxml import html
 from lxml.html import HtmlElement
+from progress.bar import IncrementalBar
 from requests import HTTPError, get
 
 from main.utils.exceptions import GroupListIsEmpty
-from schedule.models import Day, FullTimeSchedule, Group, Place, Schedule, Teacher
+from schedule.models import FullTimeSchedule, Group, Schedule, Teacher
 
 
-class ScheduleType(Enum):
+@dataclass(frozen=True)
+class Item:
+    date: str
+    week_day: str
+    time: str
+    type: str
+    title: str
+    place: str
+    teachers: List[str]
+
+
+class ScheduleType(str, Enum):
     NONE = auto()
-    TEACH = auto()
-    SESSION = auto()
+    TEACH = Schedule.STUDY
+    SESSION = Schedule.SESSION
 
 
 class ScheduleParser:
@@ -49,36 +66,40 @@ class ScheduleParser:
             raise GroupListIsEmpty()
 
         for group in groups:
-            if self.__version_is_equal(group):
-                continue
-            print("Parsing group {}...".format(group.name))
             if self.type == ScheduleType.TEACH:
                 self.__parse_teach(group)
             elif self.type == ScheduleType.SESSION:
                 self.__parse_session(group)
-        print("Done!")
-
-    def __version_is_equal(self, group: Group):
-        try:
-            version = get_version(self.url.format(group=quote(group.name), week=1))
-        except HTTPError as e:
-            error(f"Cant get version of schedule at {self.url}")
-            raise e
-
-        return not self.force and group.schedule_version == version
 
     def __parse_teach(self, group: Group) -> None:
-        for week in range(1, 19):
-            try:
-                self.__create_schedule_instance(group, week)
-            except HTTPError as e:
-                self.__handle_http_error(e, group=group.name, week=week)
+        with IncrementalBar(
+            f"{group.name} ",
+            max=config.WEEKS_IN_SEMESTER + 1,
+            suffix="%(index)d/%(max)d week, %(elapsed)ds",
+        ) as bar:
+            bar.next()  # Start progress bar with 1st week
+            for week in range(1, config.WEEKS_IN_SEMESTER + 1):
+                try:
+                    self.__create_schedule_instance(group, week)
+                except HTTPError as e:
+                    self.__handle_http_error(e, group=group.name, week=week)
+                bar.next()
+
+            item_count = FullTimeSchedule.objects.filter(
+                group=group, hidden=True, schedule_type=Schedule.STUDY
+            ).count()
+            bar.write(f"Parsed {item_count} items!")
 
     def __parse_session(self, group: Group):
+        print(f"Parsing group {group.name}...")
         try:
             self.__create_schedule_instance(group)
         except HTTPError as e:
             self.__handle_http_error(e, group=group.name)
+        item_count = FullTimeSchedule.objects.filter(
+            group=group, hidden=True, schedule_type=Schedule.SESSION
+        ).count()
+        print(f"Parsed {item_count} items!")
 
     @staticmethod
     def __handle_http_error(e: HTTPError, **context):
@@ -92,93 +113,70 @@ class ScheduleParser:
             resp.raise_for_status()
         body = resp.content.decode("utf8")
 
-        for day_str, month, week_day, items in parse_day(body):
-            day, _ = Day.objects.update_or_create(
-                day=day_str, month=month, week_day=week_day, week=week
+        for item in parse_schedule(body):
+            schedule, _ = FullTimeSchedule.objects.update_or_create(
+                date=item.date,
+                week_day=item.week_day,
+                week=week,
+                time=item.time,
+                item_type=item.type,
+                name=item.title,
+                place=item.place,
+                schedule_type=self.schedule_type,
+                group=group,
+                hidden=self.hidden,
             )
-            for time, item_type_resp, place_list, name, teachers in parse_items(items):
-                start, end = time.split(" – ")
 
-                res_item_type = None
-                for item_type_db, item_type_human in FullTimeSchedule.ITEM_TYPES:
-                    if item_type_human == item_type_resp:
-                        res_item_type = item_type_db
-                        break
-                if not res_item_type:
-                    raise KeyError(f"Item type not found for {item_type_resp}")
-
-                item, _ = FullTimeSchedule.objects.update_or_create(
-                    starts_at=start,
-                    ends_at=end,
-                    item_type=res_item_type,
-                    name=name,
-                    day=day,
-                    schedule_type=self.schedule_type,
-                    group=group,
-                    hidden=self.hidden,
+            for teacher in item.teachers:
+                if not teacher:
+                    continue
+                lastname, firstname, *_middlename = teacher.split(" ")
+                middlename = " ".join(_middlename)
+                t, _ = Teacher.objects.update_or_create(
+                    lastname=lastname, firstname=firstname, middlename=middlename
                 )
-
-                for place in place_list:
-                    building, number = normalize_place(place)
-                    p, _ = Place.objects.update_or_create(
-                        building=building, number=number
-                    )
-                    item.places.add(p.id)
-                for teacher in teachers:
-                    if not teacher:
-                        continue
-                    lastname, firstname, *_middlename = teacher.split(" ")
-                    middlename = " ".join(_middlename)
-                    t, _ = Teacher.objects.update_or_create(
-                        lastname=lastname, firstname=firstname, middlename=middlename
-                    )
-                    item.teachers.add(t.id)
+                schedule.teachers.add(t.id)
         sleep(1)
 
 
-def get_version(url: str) -> Optional[str]:
-    resp = get(url)
-    if not resp.ok:
-        resp.raise_for_status()
+def parse_schedule(body: str) -> Tuple[Item, ...]:
+    def selector(css_class: str) -> Callable:
+        return compose(
+            partial(lmap, str.strip),
+            partial(select, notnone),
+            partial(lmap, attrgetter("text")),
+            partial(HtmlElement.cssselect, expr=css_class),
+        )
 
-    tree = html.fromstring(resp.content)
-    sleep(1)
-    return tree.xpath('//*[@id="schedule-content"]/div[2]/text()')[0]
-
-
-def parse_day(body: str) -> Generator[Tuple[str, str, str, HtmlElement], None, None]:
-    tree = html.fromstring(body)
-    for element in tree.xpath('//div[@class="sc-container"]'):
-        date = element.xpath('.//div[contains(@class, "sc-day-header")]/text()')[0]
-        day, month = date.split(".", maxsplit=1)
-        week_day = element.xpath('.//span[@class="sc-day"]/text()')[0]
-        items = element.xpath('.//div[contains(@class, "sc-table-detail")]')[0]
-
-        yield day, month, week_day, items
-
-
-def parse_items(
-    element: HtmlElement,
-) -> Generator[Tuple[str, str, str, str, List[str]], None, None]:
-    for item in element.xpath('.//div[@class="sc-table-row"]'):
-        time = item.xpath('.//div[contains(@class, "sc-item-time")]/text()')[0]
-        item_type = item.xpath('.//div[contains(@class, "sc-item-type")]/text()')[
-            0
-        ].strip()
-        place_list = item.xpath('.//div[contains(@class, "sc-item-location")]/text()')
-        name = item.xpath('.//*[@class="sc-title"]/text()')[0]
-        try:
-            teachers = item.xpath('.//span[@class="sc-lecturer"]/text()')[0].split(", ")
-        except IndexError:
-            teachers = []
-
-        yield time, item_type, place_list, name, teachers
-
-
-def normalize_place(place_list: str) -> Tuple[str, Optional[str]]:
-    place_list = place_list.replace("--", "")
-    place = place_list.split(" ", maxsplit=1)
-    try:
-        return place[0], place[1]
-    except IndexError:
-        return place[0], None
+    tree: HtmlElement = html.fromstring(body)
+    select_day_containers = partial(
+        HtmlElement.cssselect, expr=config.MAI_DAY_CONTAINER_SELECTOR
+    )
+    select_item_containers = partial(
+        HtmlElement.cssselect, expr=config.MAI_ITEM_CONTAINER_SELECTOR
+    )
+    select_dates = selector(config.MAI_DATE_SELECTOR)
+    select_days_of_week = selector(config.MAI_DAY_OF_WEEK_SELECTOR)
+    select_times = selector(config.MAI_TIME_SELECTOR)
+    select_types = selector(config.MAI_TYPE_SELECTOR)
+    select_titles = selector(config.MAI_TITLE_SELECTOR)
+    select_teachers = selector(config.MAI_TEACHER_SELECTOR)
+    select_places = compose(
+        lkeep,
+        partial(lmap, str.strip),
+        partial(select, notnone),
+        partial(HtmlElement.xpath, _path=config.MAI_PLACE_XPATH_SELECTOR),
+    )
+    return tuple(
+        Item(
+            date=first(select_dates(day_container)) or "",
+            week_day=first(select_days_of_week(day_container)) or "",
+            time=first(select_times(item_container)) or "",
+            type=first(select_types(item_container)) or "",
+            title=first(select_titles(item_container)) or "",
+            place=first(select_places(item_container)) or "",
+            teachers=select_teachers(item_container),
+        )
+        for day_container in select_day_containers(tree)
+        for item_container in select_item_containers(day_container)
+    )
