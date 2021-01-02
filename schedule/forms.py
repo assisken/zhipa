@@ -13,10 +13,7 @@ class GeneralForm(forms.Form):
     required_css_class = "required"
 
 
-TEACHER_FORMAT = (
-    r"^[А-Яа-яЁё]+ [А-Яа-яЁё]\.[А-Яа-яЁё]\.(, [А-Яа-яёЁ]+ [А-Яа-яЁё]\.[А-Яа-яЁё]\.)*$"
-)
-PLACE_FORMAT = r"^(?P<cabinet>[\S]+) ?(?P<area>.*)$"
+TEACHER_FORMAT = r"^(?P<lastname>[А-Яа-яЁё]+) (?P<firstname>[А-Яа-яЁё])\.(?P<middlename>[А-Яа-яЁё])\.$"
 
 
 def check_columns_count(value: str):
@@ -63,21 +60,6 @@ def check_teacher_abbreviation_format(teachers, **kwargs):
             )
 
 
-@parse_columns
-def check_place_abbreviation_format(places, **kwargs):
-    for line, place in enumerate(places):
-        if not re.match(PLACE_FORMAT, place) and place != "":
-            raise ValidationError(
-                'Информация о месте проведения занятия должна быть в формате "Кабинет Площадка" '
-                'или "Место". Например:\n'
-                "507В Орш.\n"
-                "стадион\n"
-                "Б-448 ГУК\n"
-                "Также возможно опустить данный столбец (оставить пустым)\n"
-                f'Строка {line + 1}, значение: "{place}"'
-            )
-
-
 class ExtramuralScheduleForm(GeneralForm):
     group = forms.ModelChoiceField(
         queryset=Group.objects.filter(study_form=Group.EXTRAMURAL), required=True,
@@ -86,11 +68,7 @@ class ExtramuralScheduleForm(GeneralForm):
     separator = forms.CharField(initial="||", disabled=True)
     schedule = forms.CharField(
         widget=forms.Textarea(attrs={"class": "vLargeTextField"}),
-        validators=(
-            check_columns_count,
-            check_teacher_abbreviation_format,
-            check_place_abbreviation_format,
-        ),
+        validators=(check_columns_count, check_teacher_abbreviation_format,),
     )
 
     def schedule_fields(self):
@@ -104,16 +82,6 @@ class ExtramuralScheduleForm(GeneralForm):
             _teachers = tuple(teacher.strip() for teacher in teachers.split(", "))
             place = place.strip()
 
-            if date == "":
-                date = None
-            if time == "":
-                time = None
-            if item == "":
-                item = None
-            if _teachers == ("",):
-                _teachers = None
-            if place == "":
-                place = None
             yield date, time, item, _teachers, place
 
 

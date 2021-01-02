@@ -73,7 +73,11 @@ class Command(BaseCommand):
 
         if options["clean"]:
             print("Removing unhidden schedule items...")
-            FullTimeSchedule.objects.filter(hidden=False).delete()
+            FullTimeSchedule.objects.filter(
+                hidden=False, schedule_type=schedule_type
+            ).delete()
         if options["reveal"]:
             print("Revealing schedule...")
-            FullTimeSchedule.objects.filter(hidden=True).update(hidden=False)
+            FullTimeSchedule.objects.filter(
+                hidden=True, schedule_type=schedule_type
+            ).update(hidden=False)

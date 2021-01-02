@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from dataclasses import dataclass
 
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -14,11 +15,17 @@ def get_items(**kwargs):
     filter_cond = kwargs.get("filter_cond")
 
     items = (
-        schedule.objects.prefetch_related("day", "places", "teachers")
+        schedule.objects.prefetch_related("teachers")
         .filter(**filter_cond)
-        .order_by("day__month", "day__day", "starts_at")
+        .order_by("date", "time")
     )
     return items
+
+
+@dataclass(frozen=True)
+class Date:
+    date: str
+    week_day: str
 
 
 class GroupTimetableView(TemplateView):
@@ -46,14 +53,15 @@ class GroupTimetableView(TemplateView):
         group = Group.objects.get(name=group_name)
         filter_cond = {
             "schedule_type": self.schedule_type,
-            "day__week": week,
+            "week": week,
             "group": group,
             "hidden": False,
         }
         items = get_items(schedule=self.schedule, filter_cond=filter_cond)
         schedule = defaultdict(list)
         for item in items:
-            schedule[item.day].append(item)
+            date = Date(date=item.date, week_day=item.week_day)
+            schedule[date].append(item)
         weeks = teach_time.weeks_in_semester if len(groups) > 0 else 0
 
         return render(
@@ -91,7 +99,7 @@ class ExtramuralGroupTimetableView(TemplateView):
 
         group = Group.objects.get(name=group_name)
         items = (
-            self.schedule.objects.prefetch_related("places", "teachers")
+            self.schedule.objects.prefetch_related("teachers")
             .filter(group=group)
             .order_by("name")
         )
@@ -141,15 +149,13 @@ class TeacherTimetableView(TemplateView):
             else teach_time.week,
         )
         items = (
-            FullTimeSchedule.objects.prefetch_related(
-                "day", "group", "teachers", "places"
-            )
-            .filter(day__week=week, teachers__exact=teacher)
-            .order_by("day__date", "starts_at")
+            FullTimeSchedule.objects.prefetch_related("group", "teachers")
+            .filter(week=week, teachers__exact=teacher)
+            .order_by("date", "time")
         )
         schedule = defaultdict(list)
         for item in items:
-            schedule[item.day].append(item)
+            schedule[item.date].append(item)
 
         if len(teachers) > 0:
             weeks = teach_time.weeks_in_semester

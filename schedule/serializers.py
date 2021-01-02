@@ -1,18 +1,12 @@
 from rest_framework import serializers
 
-from .models import Day, ExtramuralSchedule, FullTimeSchedule, Group, Teacher
+from .models import ExtramuralSchedule, FullTimeSchedule, Group, Teacher
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("id", "name", "course", "degree", "study_form", "study_until_week")
-
-
-class DaySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Day
-        fields = ("day", "month", "week_day")
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -22,34 +16,24 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class FulltimeScheduleSerializer(serializers.ModelSerializer):
-    places = serializers.SerializerMethodField()
-    day = DaySerializer(many=False, read_only=True)
     teachers = TeacherSerializer(many=True, read_only=True)
 
     class Meta:
         model = FullTimeSchedule
         fields = (
-            "day",
-            "starts_at",
-            "ends_at",
+            "date",
+            "time",
             "item_type",
             "schedule_type",
             "name",
             "teachers",
-            "places",
+            "place",
         )
-
-    def get_places(self, obj: FullTimeSchedule):
-        return [str(place) for place in obj.places.all()]
 
 
 class ExtramuralScheduleSerializer(serializers.ModelSerializer):
-    places = serializers.SerializerMethodField()
     teachers = TeacherSerializer(many=True, read_only=True)
 
     class Meta:
         model = ExtramuralSchedule
-        fields = ("day", "time", "schedule_type", "name", "teachers", "places")
-
-    def get_places(self, obj: ExtramuralSchedule):
-        return [str(place) for place in obj.places.all()]
+        fields = ("date", "time", "schedule_type", "name", "teachers", "place")

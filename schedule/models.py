@@ -27,7 +27,6 @@ class Group(models.Model):
     study_form = models.CharField(
         max_length=12, choices=STUDY_FORMS, null=False, blank=False
     )
-    schedule_version = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -46,7 +45,7 @@ class Group(models.Model):
     @property
     def study_until_week(self) -> Optional[int]:
         try:
-            return self.schedule_set.aggregate(Max("day__week"))["day__week__max"]
+            return self.schedule_set.aggregate(Max("week"))["week__max"]
         except FieldError:
             return None
 
@@ -58,10 +57,14 @@ class Teacher(models.Model):
     lastname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
     middlename = models.CharField(max_length=30)
-    staff = models.OneToOneField("main.Staff", on_delete=models.SET_NULL, null=True)
+    staff = models.ForeignKey("main.Staff", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ("lastname", "firstname", "middlename")
+
+    def get_absolute_url(self):
+        if self.staff:
+            return self.staff.get_absolute_url()
 
     def save(self, *args, **kwargs):
         Staff = apps.get_model(app_label="main", model_name="Staff")
@@ -80,33 +83,6 @@ class Teacher(models.Model):
         )
 
 
-class Place(models.Model):
-    building = models.TextField()
-    number = models.TextField(null=True)
-
-    def __str__(self):
-        if self.number:
-            return "{} {}".format(self.building, self.number)
-        else:
-            return self.building
-
-    class Meta:
-        ordering = ("building", "number", "pk")
-
-
-class Day(models.Model):
-    day = models.PositiveSmallIntegerField()
-    month = models.PositiveSmallIntegerField()
-    week_day = models.CharField(max_length=2, blank=True)
-    week = models.IntegerField(null=True, blank=True)
-
-    def __str__(self):
-        return "{} ({:02d}.{:02d})".format(self.week_day, self.day, self.month)
-
-    class Meta:
-        ordering = ("month", "day")
-
-
 class Schedule(models.Model):
     STUDY = "Учебн."
     SESSION = "Сессия"
@@ -116,8 +92,10 @@ class Schedule(models.Model):
     schedule_type = models.CharField(
         max_length=6, choices=SCHEDULE_TYPES, default=STUDY, null=True
     )
-    name = models.TextField(null=True)
-    places = models.ManyToManyField(Place)
+    date = models.TextField(null=False, blank=True, default="")
+    time = models.TextField(null=False, blank=True, default="")
+    name = models.TextField(null=False, blank=True, default="")
+    place = models.TextField(null=False, blank=True)
     teachers = models.ManyToManyField(Teacher)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     hidden = models.BooleanField(default=True)
@@ -125,46 +103,26 @@ class Schedule(models.Model):
     def __repr__(self):
         return str(self)
 
+    def __str__(self):
+        return f"[{self.schedule_type}] ({self.date}, {self.time}) {self.group.name} - {self.name}"
+
 
 class FullTimeSchedule(Schedule):
-    LECTION = "ЛК"
-    PRACTICE = "ПЗ"
-    LABWORK = "ЛР"
-    CONTROL = "КСР"
-    EXAM = "Экз"
-    EMPTY = ""
-
-    ITEM_TYPES = [
-        (LECTION, "ЛК"),
-        (PRACTICE, "ПЗ"),
-        (LABWORK, "ЛР"),
-        (CONTROL, "КСР"),
-        (EXAM, "Экзамен"),
-        (f"{PRACTICE} {LECTION}", "ПЗ ЛК"),
-        (EMPTY, "Оставить пустым"),
-    ]
-
-    day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True, blank=True)
-    starts_at = models.TimeField(null=True, blank=True)
-    ends_at = models.TimeField(null=True, blank=True)
-    item_type = models.CharField(
-        max_length=5, choices=ITEM_TYPES, default=EMPTY, blank=True
-    )
+    week_day = models.TextField(null=False, blank=True)
+    week = models.IntegerField(null=True, blank=True)
+    item_type = models.CharField(max_length=10, blank=True, null=False)
 
     def key(self):
-        return f"{self.starts_at.isoformat()} {self.ends_at.isoformat()} {str(self.day)} {self.name} {self.item_type}"
+        return f"{self.time} {str(self.date)} {self.name} {self.item_type}"
 
     def __str__(self):
-        return f"{self.name} ({self.get_item_type_display()} [Очное])"
+        return f"{self.name} ({self.item_type} [Очное])"
 
     class Meta:
         verbose_name_plural = "Fulltime Schedule"
 
 
 class ExtramuralSchedule(Schedule):
-    day = models.TextField(null=True, blank=True)
-    time = models.TextField(null=True, blank=True)
-
     def __str__(self):
         return f"{self.name} [Заочное]"
 
