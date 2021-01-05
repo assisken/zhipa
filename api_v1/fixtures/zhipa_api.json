@@ -1,0 +1,65 @@
+[
+    {
+        "fields": {
+            "course": 3,
+            "degree": 1,
+            "name": "М14О-33Б-99",
+            "semester": 5,
+            "study_form": "очная"
+        },
+        "model": "schedule.group",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "group": 1
+        },
+        "model": "main.student",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "firstname": "Не самый",
+            "img": "",
+            "lastname": "умный",
+            "middlename": "Студент",
+             "closed": true
+       },
+        "model": "main.profile",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "group": 1,
+            "name": "Введение в методику жиповальни",
+            "place": "Орш.",
+            "time": "13:13 - 18:55",
+            "date": "21.07",
+            "teachers": [
+                1
+            ],
+            "schedule_type": "Учебн.",
+            "hidden": false
+        },
+        "model": "schedule.schedule",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "item_type": "ЛК",
+            "week": 1
+        },
+        "model": "schedule.fulltimeschedule",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "firstname": "Авдеев",
+            "lastname": "Илья",
+            "middlename": "Михайлович",
+            "staff": null
+        },
+        "model": "schedule.teacher",
+        "pk": 1
+    }
+]

@@ -67,8 +67,7 @@ INSTALLED_APPS = [
     "main.apps.SmiapConfig",
     "schedule.apps.ScheduleConfig",
     "news.apps.NewsConfig",
-    "api.apps.ApiConfig",
-    "api.v1.apps.ApiV1Config",
+    "api_v1.apps.ApiV1Config",
 ]
 
 MIDDLEWARE = (

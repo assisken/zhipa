@@ -23,7 +23,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(("api.urls", "api"), namespace="api")),
+    path("api/v1/", include(("api_v1.urls", "api_v1"), namespace="api-v1")),
     path("materials/", include(("news.urls", "news"), namespace="news")),
     path("students/", include(("schedule.urls", "schedule"), namespace="schedule")),
     path("", include("main.urls", namespace="")),
