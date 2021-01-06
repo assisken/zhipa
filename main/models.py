@@ -11,6 +11,7 @@ from transliterate import translit
 
 from main.utils.date import get_year_from_string
 from main.utils.unify import unify_fio
+from schedule.models import Group
 
 
 class User(AbstractUser):
@@ -132,7 +133,7 @@ class Staff(Profile):
 
 
 class Student(Profile):
-    group_name = models.CharField(max_length=50)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 AuthorInfo = namedtuple("AuthorInfo", "fio link")
