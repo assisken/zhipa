@@ -38,7 +38,7 @@ class News(models.Model):
     description = models.TextField()
     text = models.TextField()
     render_in = models.CharField(
-        max_length=8, choices=RENDERS, null=False, blank=False, default=HTML
+        max_length=8, choices=RENDERS, null=False, blank=False, default=MARKDOWN
     )
     hidden = models.BooleanField(default=True)
 
