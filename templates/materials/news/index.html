@@ -8,6 +8,16 @@
     {{ news.description }}
 {% endblock description %}
 
+{% block thumbnail %}
+    {% if news.newscover %}
+        {{ SCHEME }}://{{ DOMAIN }}{{ news.newscover.img.url if news.newscover.img else '' }}
+    {% elif news.cover %}
+        {{ SCHEME }}://{{ DOMAIN }}{{ news.cover.url }}
+    {% else %}
+        {{ SCHEME }}://{{ DOMAIN }}{{ static('favicon.ico') }}
+    {% endif %}
+{% endblock thumbnail %}
+
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 

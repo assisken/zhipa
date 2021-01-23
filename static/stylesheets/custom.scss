@@ -313,7 +313,6 @@ footer p {
 }
 
 .content .eventbox {
-  min-height: 350px;
   padding: 10px;
   margin: 5px 5px 20px
 }
@@ -345,6 +344,7 @@ footer p {
 
 .content .eventbox .with_image .description {
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   width: 55%
 }

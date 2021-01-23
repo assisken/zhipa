@@ -2,15 +2,26 @@ version: '3'
 services:
   app:
     container_name: smiap
-    image: registry.gitlab.com/assisken/zhipa
-    command: make test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "
+      cat < /dev/null > /dev/tcp/db/5432 || sleep 5;
+      ./manage.py migrate;
+      ./manage.py runserver 0.0.0.0:8000"
     tty: yes
     ports:
       - "8000:8000"
-    extra_hosts:
-      - "smiap:172.17.0.1"
-    env_file:
-      - .env
+    environment:
+      - ENV=development
+      - SECRET_KEY=in_development...
+      - FILES_ROOT=/static
+      - POSTGRES_PASSWORD=smiap
+      - POSTGRES_DB=smiap
+      - POSTGRES_USER=smiap
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+
     volumes:
       - ".:/app"
       - "/tmp/static:/static"
@@ -19,7 +30,7 @@ services:
 
   db:
     container_name: pg-smiap
-    image: postgres:12.3
+    image: postgres:11
     restart: always
     volumes:
       - ~/smiap_data:/var/lib/postgresql/data

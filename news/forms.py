@@ -9,6 +9,7 @@ from .news_md_to_html import NewsLexer
 
 MARKDOWN_HELP = """
     <h3>Небольшой экскурс по markdown. Пригодится при написании новости<h3>
+    <h3>Помните! Если хотите новую строку — добавьте две в редакторе. Это не баг. Это Markdown</h3>
     <h2>Стандартный синтаксис Markdown</h2>
     <table>
         <thead>

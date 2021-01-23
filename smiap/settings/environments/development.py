@@ -8,8 +8,6 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "10.8.0.0/24",
-    "duck.nepnep.ru",
-    "vl4dmati.mati.su",
 ]
 HTML_MINIFY = False
 COMPRESS_ENABLED = True

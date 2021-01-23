@@ -1,3 +1,5 @@
+from django.contrib.sites.models import Site
+
 from main.utils.date import TeachState, TeachTime
 from smiap.settings.components.app import BRAND
 
@@ -132,4 +134,10 @@ def app_processor(request):
         for nav_item in nav_items["profile"]["subitems"]:
             nav_item["link"] = nav_item["link"].format(profile=profile)
 
-    return {"APP_TITLE": BRAND, "NAV_ITEMS": nav_items, "ACTIVE_ITEMS": active_items}
+    return {
+        "ACTIVE_ITEMS": active_items,
+        "APP_TITLE": BRAND,
+        "NAV_ITEMS": nav_items,
+        "SCHEME": request.scheme,
+        "DOMAIN": Site.objects.get_current().domain,
+    }
