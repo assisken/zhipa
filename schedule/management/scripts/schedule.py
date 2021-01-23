@@ -4,14 +4,14 @@ from functools import partial
 from logging import error
 from operator import attrgetter
 from time import sleep
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, Generator, List, Optional, Tuple
 from urllib.parse import quote
 
+from chroniker.models import Job
 from constance import config
 from funcy import compose, first, lkeep, lmap, notnone, select
 from lxml import html
 from lxml.html import HtmlElement
-from progress.bar import IncrementalBar
 from requests import HTTPError, get
 
 from main.utils.exceptions import GroupListIsEmpty
@@ -33,6 +33,14 @@ class ScheduleType(str, Enum):
     NONE = auto()
     TEACH = Schedule.STUDY
     SESSION = Schedule.SESSION
+
+
+def job_counter(total: int):
+    index = 0
+    while True:
+        index += 1
+        Job.update_progress(total_parts_complete=index, total_parts=total)
+        yield
 
 
 class ScheduleParser:
@@ -61,34 +69,37 @@ class ScheduleParser:
 
     def parse(self) -> None:
         groups = Group.objects.filter(study_form=Group.FULL_TIME)
+        groups_count = groups.count()
 
-        if groups.count() == 0:
+        if groups_count == 0:
             raise GroupListIsEmpty()
 
-        for group in groups:
+        weeks_per_group = config.WEEKS_IN_SEMESTER
+        maximum = groups_count * weeks_per_group
+
+        for group_num, group in enumerate(groups):
             if self.type == ScheduleType.TEACH:
-                self.__parse_teach(group)
+                for week in self.__parse_teach(group):
+                    Job.update_progress(
+                        total_parts_complete=group_num * weeks_per_group + week,
+                        total_parts=maximum,
+                    )
             elif self.type == ScheduleType.SESSION:
                 self.__parse_session(group)
+                Job.update_progress(
+                    total_parts_complete=group_num, total_parts=groups_count
+                )
 
-    def __parse_teach(self, group: Group) -> None:
-        with IncrementalBar(
-            f"{group.name} ",
-            max=config.WEEKS_IN_SEMESTER + 1,
-            suffix="%(index)d/%(max)d week, %(elapsed)ds",
-        ) as bar:
-            bar.next()  # Start progress bar with 1st week
-            for week in range(1, config.WEEKS_IN_SEMESTER + 1):
-                try:
-                    self.__create_schedule_instance(group, week)
-                except HTTPError as e:
-                    self.__handle_http_error(e, group=group.name, week=week)
-                bar.next()
-
-            item_count = FullTimeSchedule.objects.filter(
-                group=group, hidden=True, schedule_type=Schedule.STUDY
-            ).count()
-            bar.write(f"Parsed {item_count} items!")
+    def __parse_teach(self, group: Group) -> Generator[int, None, None]:
+        print(f"Parsing group {group.name}... Week num: ", end=" ")
+        for week in range(1, config.WEEKS_IN_SEMESTER + 1):
+            yield week
+            print(f"{week}", end=" ")
+            try:
+                self.__create_schedule_instance(group, week)
+            except HTTPError as e:
+                self.__handle_http_error(e, group=group.name, week=week)
+        print()
 
     def __parse_session(self, group: Group):
         print(f"Parsing group {group.name}...")

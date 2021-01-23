@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "djangoeditorwidgets",
     "constance",
     "constance.backends.database",
+    "chroniker",
     "django.contrib.sites",
     "django.contrib.flatpages",
     "main.apps.SmiapConfig",
