@@ -2,12 +2,13 @@ import re
 from typing import List, Match, Tuple
 
 import mistune
+from funcy import last
 
 
 class NewsLexer(mistune.InlineLexer):
     several_images = re.compile(
         r"!(grid\d+)?"  # !grid2[Title](Any link)(Any link)(Any link)
-        r"(\[(.+)\])?"  # or ![Title](Any link)(Any link)
+        r"(\[(.*)\])?"  # or ![Title](Any link)(Any link)
         r"(\((.+)\))+"  # or !grid100(Any link)
     )
 
@@ -27,16 +28,18 @@ class NewsLexer(mistune.InlineLexer):
 
 
 class NewsRenderer(mistune.Renderer):
-    def block_quote(self, text):
+    def block_quote(self, text: str):
+        if text.endswith("\n"):
+            text = text[:-1]
         text = re.sub("</?p>", "", text)
-        content, author, _ = text.rsplit("\n", maxsplit=2)
-        return """
-        <blockquote>
-            <p><q>{text}</q></p>
-            <footer>{author}</footer>
-        </blockquote>""".format(
-            text=content, author=author
-        ).strip()
+        quote = text.rsplit("\n", maxsplit=2)
+        if len(quote) == 1:
+            template = "<blockquote><p><q>{text}</q></p></blockquote>"
+        else:
+            template = (
+                "<blockquote><p><q>{text}</q></p><footer>{author}</footer></blockquote>"
+            )
+        return template.format(text=" ".join(quote[:-1]), author=last(quote)).strip()
 
     def several_images(self, grid, title, image_names):
         figure_tmpl = """

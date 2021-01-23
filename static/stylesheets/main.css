@@ -5,7 +5,7 @@
   min-width: 265px;
   height: 0;
   padding-bottom: 27%;
-  float: left;
+  display: inline-block;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -16,7 +16,7 @@
 
   /* Text in cover */
   text-shadow: #000 0 0 1px,   #000 0 0 1px,   #000 0 0 1px,
-               #000 0 0 1px,   #000 0 0 1px,   #000 0 0 1px;
+  #000 0 0 1px,   #000 0 0 1px,   #000 0 0 1px;
   font-family: "PT Sans", sans-serif;
   font-size: 24pt;
   color: white;
@@ -72,7 +72,7 @@ blockquote p {
   font-size: 12pt;
   line-height: 1.4;
   font-family: "PT Serif", Cambria, "Hoefler Text", Utopia, "Liberation Serif",
-    "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
+  "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
 }
 
 blockquote footer {
