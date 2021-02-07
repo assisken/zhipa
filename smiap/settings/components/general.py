@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "main.apps.SmiapConfig",
     "schedule.apps.ScheduleConfig",
     "news.apps.NewsConfig",
+    "containers.apps.ContainersConfig",
     "api_v1.apps.ApiV1Config",
 ]
 
