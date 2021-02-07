@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
+from containers.serializers import ContainerSerializer
 from main.serializers import StudentSerializer
 from schedule.serializers import GroupSerializer, SubjectSerializer, TeacherSerializer
 
@@ -10,6 +11,7 @@ Student = apps.get_model(app_label="main", model_name="Student")
 Group = apps.get_model(app_label="schedule", model_name="Group")
 Teacher = apps.get_model(app_label="schedule", model_name="Teacher")
 Subject = apps.get_model(app_label="schedule", model_name="Schedule")
+Container = apps.get_model(app_label="containers", model_name="Container")
 
 
 class StudentList(ListAPIView):
@@ -53,3 +55,13 @@ class SubjectList(ListAPIView):
 class SubjectRetrieve(RetrieveAPIView):
     queryset = Subject.objects.prefetch_related("teachers").all()
     serializer_class = SubjectSerializer
+
+
+class ContainersList(ListAPIView):
+    queryset = Container.objects.prefetch_related("group").all()
+    serializer_class = ContainerSerializer
+
+
+class ContainersRetrieve(RetrieveAPIView):
+    queryset = Container.objects.prefetch_related("group").all()
+    serializer_class = ContainerSerializer

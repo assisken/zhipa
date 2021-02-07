@@ -1,7 +1,7 @@
 from django.apps import apps
 from rest_framework import serializers
 
-from .models import Group, Schedule, Teacher
+from .models import ExtramuralSchedule, FullTimeSchedule, Group, Schedule, Teacher
 
 Student = apps.get_model(app_label="main", model_name="Student")
 
@@ -34,12 +34,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class TeacherSerializer(serializers.ModelSerializer):
-    subjects = StudentIdSerializer(source="schedule_set", many=True, read_only=True)
-
     class Meta:
         model = Teacher
-        fields = ("id", "lastname", "firstname", "middlename", "subjects")
-        read_only_fields = ("id", "lastname", "firstname", "middlename", "subjects")
+        fields = ("id", "lastname", "firstname", "middlename")
+        read_only_fields = ("id", "lastname", "firstname", "middlename")
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -47,3 +45,34 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = ("id", "name", "group", "teachers")
         read_only_fields = ("id", "name", "group", "teachers")
+
+
+class FulltimeScheduleSerializer(serializers.ModelSerializer):
+    teachers = TeacherSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = FullTimeSchedule
+        fields = (
+            "date",
+            "time",
+            "item_type",
+            "schedule_type",
+            "name",
+            "teachers",
+            "place",
+        )
+
+
+class ExtramuralScheduleSerializer(serializers.ModelSerializer):
+    teachers = TeacherSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ExtramuralSchedule
+        fields = (
+            "date",
+            "time",
+            "name",
+            "place",
+            "teachers",
+            "schedule_type",
+        )

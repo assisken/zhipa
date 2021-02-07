@@ -1,7 +1,10 @@
 from django.apps import apps
 from django.urls import path
 
+from .views.schedule_api import ExtramuralScheduleAPI, FullTimeScheduleAPI
 from .views.vzhipa_api import (
+    ContainersList,
+    ContainersRetrieve,
     GroupList,
     GroupRetrieve,
     StudentList,
@@ -23,4 +26,26 @@ urlpatterns = [
     path("teachers/<int:pk>", TeacherRetrieve.as_view(), name="teachers"),
     path("subjects/", SubjectList.as_view(), name="subjects"),
     path("subjects/<int:pk>", SubjectRetrieve.as_view(), name="subjects"),
+    path("containers/", ContainersList.as_view(), name="containers"),
+    path("containers/<int:pk>", ContainersRetrieve.as_view(), name="containers"),
+    path(
+        "schedule/fulltime/study/<int:group_id>",
+        FullTimeScheduleAPI.as_view(schedule_type=Schedule.STUDY),
+        name="schedule-study",
+    ),
+    path(
+        "schedule/fulltime/session/<int:group_id>",
+        FullTimeScheduleAPI.as_view(schedule_type=Schedule.SESSION),
+        name="schedule-session",
+    ),
+    path(
+        "schedule/extramural/study/<int:group_id>",
+        ExtramuralScheduleAPI.as_view(schedule_type=Schedule.STUDY),
+        name="schedule-study",
+    ),
+    path(
+        "schedule/extramural/session/<int:group_id>",
+        ExtramuralScheduleAPI.as_view(schedule_type=Schedule.SESSION),
+        name="schedule-session",
+    ),
 ]

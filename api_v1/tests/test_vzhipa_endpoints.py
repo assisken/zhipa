@@ -4,6 +4,8 @@ from django.urls import reverse
 from funcy import compose, first, partial, where
 from parameterized import parameterized
 
+from containers.models import Container
+
 Student = apps.get_model(app_label="main", model_name="Student")
 Group = apps.get_model(app_label="schedule", model_name="Group")
 Teacher = apps.get_model(app_label="schedule", model_name="Teacher")
@@ -35,7 +37,6 @@ def get_teacher(teacher):
         "firstname": teacher.firstname,
         "middlename": teacher.middlename,
         "lastname": teacher.lastname,
-        "subjects": list(teacher.schedule_set.all().values_list("pk", flat=True)),
     }
 
 
@@ -45,6 +46,18 @@ def get_subject(subject):
         "name": subject.name,
         "teachers": list(subject.teachers.all().values_list("pk", flat=True)),
         "group": subject.group.pk,
+    }
+
+
+def get_container(container):
+    return {
+        "id": 1,
+        "name": container.name,
+        "group": container.group.id,
+        "do_not_remove": False,
+        "cores": container.cores,
+        "memory_gb": container.memory_gb,
+        "partition_size_gb": container.partition_size_gb,
     }
 
 
@@ -78,6 +91,12 @@ class TestVzhipaEndpoints(TestCase):
                 compose(first, partial(where, id=1)),
             ),
             (
+                reverse("api-v1:containers"),
+                Container,
+                get_container,
+                compose(first, partial(where, id=1)),
+            ),
+            (
                 reverse("api-v1:students", kwargs={"pk": 1}),
                 Student,
                 get_student,
@@ -100,6 +119,12 @@ class TestVzhipaEndpoints(TestCase):
                 Subject,
                 get_subject,
                 lambda subject: subject,
+            ),
+            (
+                reverse("api-v1:containers", kwargs={"pk": 1}),
+                Container,
+                get_container,
+                lambda container: container,
             ),
         ]
     )
