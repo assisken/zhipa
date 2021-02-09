@@ -57,8 +57,8 @@ def get_profile_image_path(instance: "Profile", filename: str):
 
 class ProfileManager(models.Manager):
     def filter_by_fio(self, fio: str):
-        lastname, abbreviation, *_ = unify_fio(fio).split(" ")
-        firstname_beg, middlename_beg, *_ = abbreviation.split(".")
+        lastname, abbreviation = unify_fio(fio).split(" ", maxsplit=1)
+        firstname_beg, middlename_beg, *_ = re.split(r"[. ]", abbreviation)
         return (
             super()
             .get_queryset()

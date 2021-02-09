@@ -1,4 +1,3 @@
-from constance.signals import config_updated
 from django.contrib.flatpages.models import FlatPage
 from django.db.models import signals
 from django.db.models.deletion import ProtectedError
@@ -26,8 +25,3 @@ def unify_names(sender: Profile, instance: Profile, **kwargs):
 @receiver(signals.post_save, sender=Publication)
 def add_links_to_author_profiles(sender: Publication, instance: Publication, **kwargs):
     instance.author_profiles.set(instance.get_author_profiles())
-
-
-@receiver(config_updated)
-def constance_updated(sender, key, old_value, new_value, **kwargs):
-    print(sender, key, old_value, new_value)
