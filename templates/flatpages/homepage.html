@@ -18,7 +18,7 @@
             </div>
             <div class="app column large animation-fade animation-tiles animation-delay-2">
                 <div class="lastnews">
-                    <h1>Последние публикации</h1>
+                    <h1>Последние новости</h1>
                     <ul>
                         {% for news in latest_news %}
                             <li>
@@ -26,7 +26,7 @@
                                 <a href="{{ news.get_absolute_url() }}">{{ news.title }}</a>
                             </li>
                         {% else %}
-                            Последних публикаций нет...
+                            Последних новостей нет...
                         {% endfor %}
                     </ul>
                     <div class="buttons">
