@@ -7,8 +7,7 @@ services:
       dockerfile: Dockerfile
     command: bash -c "
       cat < /dev/null > /dev/tcp/db/5432 || sleep 5;
-      ./manage.py migrate;
-      ./manage.py runserver 0.0.0.0:8000"
+      /app/entrypoint.sh"
     tty: yes
     ports:
       - "8000:8000"
@@ -21,10 +20,8 @@ services:
       - POSTGRES_USER=smiap
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
-
     volumes:
       - ".:/app"
-      - "/tmp/static:/static"
     depends_on:
       - db
 
@@ -32,8 +29,6 @@ services:
     container_name: pg-smiap
     image: postgres:11
     restart: always
-    volumes:
-      - ~/smiap_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=smiap
       - POSTGRES_DB=smiap

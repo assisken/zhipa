@@ -4,6 +4,7 @@ from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from funcy import ignore
 
 from main.validators import validate_news_content_image_begin_name_with_a_letter
 
@@ -33,7 +34,11 @@ class News(models.Model):
         max_length=60, blank=True, default=None, null=True, unique=True
     )
     cover = models.ImageField(
-        max_length=120, blank=True, default="", upload_to=get_news_cover_path,
+        max_length=120,
+        null=True,
+        blank=True,
+        default=None,
+        upload_to=get_news_cover_path,
     )
     description = models.TextField()
     text = models.TextField()
@@ -57,12 +62,21 @@ class News(models.Model):
         kwargs = {"url": self.url} if self.url else {"pk": self.id}
         return reverse("news:news", kwargs=kwargs)
 
+    @property  # type: ignore
+    @ignore(ValueError, default="")
+    def cover_url(self) -> str:
+        if self.newscover:
+            return self.newscover.img.url
+        elif self.cover:
+            return self.cover.url
+        return ""
+
 
 class NewsCover(models.Model):
     img = models.ImageField(
         max_length=120, blank=True, default="", upload_to=get_news_cover_path
     )
-    content = models.CharField(max_length=60, null=True, blank=True, default=None)
+    content = models.CharField(max_length=60, null=False, blank=True, default="")
     color = ColorField(default="#0997ef")
     news = models.OneToOneField(News, on_delete=models.CASCADE, null=False, blank=False)
 
@@ -78,7 +92,11 @@ class NewsContentImage(models.Model):
         validators=(validate_news_content_image_begin_name_with_a_letter,),
     )
     img = models.ImageField(
-        max_length=120, blank=True, default="", upload_to=get_news_content_image_path
+        max_length=120,
+        null=True,
+        blank=True,
+        default=None,
+        upload_to=get_news_content_image_path,
     )
     news = models.ForeignKey(News, on_delete=models.SET_NULL, null=True, blank=False)
 

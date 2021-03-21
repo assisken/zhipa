@@ -117,7 +117,6 @@ dmypy.json
 
 # User specific
 .idea/
-static/images
 static/media
 static/files
 static/news
@@ -128,3 +127,4 @@ static/news
 
 /*.json
 /import
+*.sql.gz
