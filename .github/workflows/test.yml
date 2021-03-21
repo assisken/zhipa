@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install build packages
-        run: sudo apt-get install -y locales libsass-dev libc-bin libjpeg-dev libxslt1-dev libpq-dev gcc g++ linux-headers-amd64 postgresql
+        run: sudo apt-get install -y locales libsass-dev libc-bin libjpeg-dev libxslt1-dev libpq-dev gcc g++ linux-headers-$(uname -r) postgresql
 
       - name: Install dependecies
         uses: VaultVulp/action-pipenv@v2.0.1
