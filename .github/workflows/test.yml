@@ -14,11 +14,12 @@ jobs:
         with:
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/zhipa
+          tags: ${{ github.sha }}
           push: no
           pull: yes
 
       - name: Run lint
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make lint
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make lint
 
       - name: Run test
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make test
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make test
