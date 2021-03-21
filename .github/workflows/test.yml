@@ -9,12 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build the Docker image
         uses: docker/build-push-action@v2
         with:
-          registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/zhipa
-          tags: ${{ github.sha }}
+          cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:latest
+          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
           push: no
           pull: yes
 
@@ -23,3 +29,9 @@ jobs:
 
       - name: Run test
         run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make test
+
+      - name: Push the Successful image
+        uses: docker/build-push-action@v2
+        with:
+          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
+          push: yes
