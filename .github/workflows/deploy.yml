@@ -1,0 +1,25 @@
+name: Test and Push the Docker image
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - $default-branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}/zhipa
+          tags: latest,${{ github.sha }}

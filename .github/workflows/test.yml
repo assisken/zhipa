@@ -9,20 +9,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build the Docker image
-        run: docker build -t docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest .
+      - name: Install dependecies
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: install --dev
 
-      - name: Run lint
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make lint
+      - name: Lint code
+        run: make lint
 
       - name: Run test
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make test
-
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/zhipa
-          tag_with_ref: true
+        run: make test
