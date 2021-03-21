@@ -9,4 +9,10 @@ python manage.py collectstatic --no-input
 echo Compressing styles...
 python manage.py compress --engine jinja2 --force
 
-uwsgi --ini /app/config.ini
+if [[ "$ENV" == "development" ]]; then
+    mkdir -p /static/media
+    ./manage.py loaddata ./init/*
+    ./manage.py runserver 0.0.0.0:8000
+else
+    uwsgi --ini /app/config.ini
+fi

@@ -1,29 +1,21 @@
-{% if news.newscover %}
-    {% set cover = news.newscover %}
-    <div class="with_image">
-        <a href="{{ news.get_absolute_url() }}">
-            <div class="cover animation-fade animation-delay-2" style="background-image: url({{ cover.img.url if cover.img else '' }})">
-                <div class="cover-content" style="background-color: {{ cover.color }}aa">
-                    <span>{{ cover.content|default('', True) }}</span>
+{% set default_cover = static('default_cover.png') %}
+
+<div class="with_image">
+    <a href="{{ news.get_absolute_url() }}">
+        {% if news.newscover %}
+            <div class="cover animation-fade animation-delay-2" style="background-image: url({{ news.cover_url | default(default_cover, True) }})">
+                <div class="cover-content" style="background-color: {{ news.newscover.color }}aa">
+                    <span>{{ news.newscover.content }}</span>
                 </div>
-                <div class="cover-year" style="background-color: {{ cover.color }}aa">
+                <div class="cover-year" style="background-color: {{ news.newscover.color }}aa">
                     <span>{{ news.date.strftime('%Y') }}</span>
                 </div>
             </div>
-        </a>
-        <div class="description">
-            {% include 'layout/news/news_description.html' %}
-        </div>
+        {% else %}
+            <img src="{{ news.cover_url | default(default_cover, True) }}" alt="" class="cover-img animation-fade animation-delay-2">
+        {% endif %}
+    </a>
+    <div class="description">
+        {% include 'layout/news/news_description.html' %}
     </div>
-{% elif news.cover %}
-    <div class="with_image">
-        <a href="{{ news.get_absolute_url() }}">
-            <img src="{{ news.cover.url }}" alt="" class="cover-img animation-fade animation-delay-2">
-        </a>
-        <div class="description">
-            {% include 'layout/news/news_description.html' %}
-        </div>
-    </div>
-{% else %}
-    {% include 'layout/news/news_description.html' %}
-{% endif %}
+</div>
