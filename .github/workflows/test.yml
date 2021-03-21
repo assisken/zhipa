@@ -1,28 +1,37 @@
-name: Test and Push the Docker image
+name: Test the project
 
 on:
   - push
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build the Docker image
-        run: docker build -t docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest .
-
-      - name: Run lint
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make lint
-
-      - name: Run test
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make test
-
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: ${{ github.repository }}/zhipa
-          tag_with_ref: true
+
+      - name: Build the Docker image
+        uses: docker/build-push-action@v2
+        with:
+          cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:latest
+          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
+          push: no
+          pull: yes
+
+      - name: Run lint
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make lint
+
+      - name: Run test
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make test
+
+      - name: Push the Successful image
+        uses: docker/build-push-action@v2
+        with:
+          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
+          push: yes
