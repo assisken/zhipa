@@ -9,16 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install build packages
-        run: sudo apt-get install -y locales libsass-dev libc-bin libjpeg-dev libxslt1-dev libpq-dev gcc g++ linux-headers-$(uname -r) postgresql
-
-      - name: Install dependecies
-        uses: VaultVulp/action-pipenv@v2.0.1
+      - name: Build the Docker image
+        uses: docker/build-push-action@v2
         with:
-          command: install --dev
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}/zhipa
+          push: no
+          pull: yes
 
-      - name: Lint code
-        run: make lint
+      - name: Run lint
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make lint
 
       - name: Run test
-        run: make test
+        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:latest make test

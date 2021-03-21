@@ -22,4 +22,4 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
           repository: ${{ github.repository }}/zhipa
-          tags: latest,${{ github.sha }}
+          tags: latest
