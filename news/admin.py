@@ -17,10 +17,10 @@ class InlineNewsContentImageAdmin(admin.TabularInline):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "hidden", "author", "render_in")
-    list_display_links = ("title",)
+    list_display = ("id", "title", "newscover", "date", "url", "hidden", "author")
+    list_display_links = ("title", "url")
     list_filter = ("hidden",)
-    search_fields = ("title", "description", "text")
+    search_fields = ("title", "description", "text", "date", "url")
     form = NewsForm
     inlines = (
         InlineNewsCoverAdmin,
