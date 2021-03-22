@@ -25,5 +25,5 @@ jobs:
         with:
           cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
           tags: docker.pkg.github.com/${{ github.repository }}/zhipa:latest
-          pull: yes
-          push: yes
+          pull: true
+          push: true

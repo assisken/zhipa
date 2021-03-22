@@ -21,8 +21,8 @@ jobs:
         with:
           cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:latest
           tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
-          push: no
-          pull: yes
+          push: false
+          pull: true
 
       - name: Run lint
         run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make lint
@@ -34,4 +34,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
-          push: yes
+          push: true
