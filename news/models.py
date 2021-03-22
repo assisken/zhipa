@@ -33,13 +33,6 @@ class News(models.Model):
     url = models.CharField(
         max_length=60, blank=True, default=None, null=True, unique=True
     )
-    cover = models.ImageField(
-        max_length=120,
-        null=True,
-        blank=True,
-        default=None,
-        upload_to=get_news_cover_path,
-    )
     description = models.TextField()
     text = models.TextField()
     render_in = models.CharField(
@@ -67,8 +60,6 @@ class News(models.Model):
     def cover_url(self) -> str:
         if self.newscover:
             return self.newscover.img.url
-        elif self.cover:
-            return self.cover.url
         return ""
 
 
@@ -79,6 +70,7 @@ class NewsCover(models.Model):
     content = models.CharField(max_length=60, null=False, blank=True, default="")
     color = ColorField(default="#0997ef")
     news = models.OneToOneField(News, on_delete=models.CASCADE, null=False, blank=False)
+    show_content = models.BooleanField(null=False, default=True, blank=False)
 
     def __str__(self):
         return self.content if self.content else "Empty content"
