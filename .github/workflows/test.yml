@@ -19,19 +19,19 @@ jobs:
       - name: Build the Docker image
         uses: docker/build-push-action@v2
         with:
-          cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:latest
-          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
-          push: no
-          pull: yes
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          push: false
+          pull: true
 
       - name: Run lint
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make lint
+        run: docker run -e ENV=testing ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA make lint
 
       - name: Run test
-        run: docker run -e ENV=testing docker.pkg.github.com/$GITHUB_REPOSITORY/zhipa:$GITHUB_SHA make test
+        run: docker run -e ENV=testing ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA make test
 
       - name: Push the Successful image
         uses: docker/build-push-action@v2
         with:
-          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
-          push: yes
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          push: true
