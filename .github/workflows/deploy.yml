@@ -23,7 +23,7 @@ jobs:
       - name: Build and Push to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-          cache-from: type=registry,ref=docker.pkg.github.com/${{ github.repository }}/zhipa:${{ github.sha }}
-          tags: docker.pkg.github.com/${{ github.repository }}/zhipa:latest
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}:latest
           pull: true
           push: true
