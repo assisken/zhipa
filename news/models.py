@@ -23,11 +23,6 @@ def get_news_content_image_path(instance: "NewsContentImage", filename: str):
 
 
 class News(models.Model):
-    HTML = "html"
-    MARKDOWN = "md"
-
-    RENDERS = [(HTML, "html"), (MARKDOWN, "markdown")]
-
     title = models.CharField(max_length=200)
     date = models.DateTimeField()
     url = models.CharField(
@@ -35,9 +30,6 @@ class News(models.Model):
     )
     description = models.TextField()
     text = models.TextField()
-    render_in = models.CharField(
-        max_length=8, choices=RENDERS, null=False, blank=False, default=MARKDOWN
-    )
     hidden = models.BooleanField(default=True)
 
     author = models.ForeignKey(

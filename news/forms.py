@@ -232,15 +232,12 @@ MARKDOWN_HELP = """
 class NewsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        language = (
-            "markdown" if self.instance.render_in == "md" else self.instance.render_in
-        )
         self.fields["description"].widget = MonacoEditorWidget(
-            attrs={"data-language": language, "data-wordwrap": "on"}
+            attrs={"data-language": "md", "data-wordwrap": "on"}
         )
         self.fields["text"].help_text = MARKDOWN_HELP
         self.fields["text"].widget = MonacoEditorWidget(
-            attrs={"data-language": language, "data-wordwrap": "on"}
+            attrs={"data-language": "md", "data-wordwrap": "on"}
         )
 
     class Meta:

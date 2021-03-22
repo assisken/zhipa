@@ -14,6 +14,6 @@
         </div>
     </a>
     <div class="description">
-        {% include 'layout/news/news_description.html' %}
+        {{ news.description | markdown | safe }}
     </div>
 </div>

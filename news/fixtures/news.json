@@ -8,8 +8,7 @@
       "hidden": "0",
       "text": "test text",
       "title": "На ярмарке продалась шиншила",
-      "url": "test_url",
-      "render_in": "html"
+      "url": "test_url"
     }
   },
   {
@@ -21,8 +20,7 @@
       "hidden": "1",
       "text": "test text",
       "title": "О, нет!",
-      "url": null,
-      "render_in": "html"
+      "url": null
     }
   },
   {
@@ -34,8 +32,7 @@
       "hidden": "0",
       "text": "test text",
       "title": "Опознан шиншило-генератор!",
-      "url": null,
-      "render_in": "html"
+      "url": null
     }
   },
   {
@@ -47,8 +44,7 @@
       "hidden": "1",
       "text": "test text",
       "title": "Самая секретная новость на свете!",
-      "url": null,
-      "render_in": "html"
+      "url": null
     }
   }
 ]

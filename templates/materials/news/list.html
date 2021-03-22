@@ -21,7 +21,7 @@
                         <a href="{{ news.get_absolute_url() }}" class="news-title_link">
                             <h2 class="bottom-line">{{ news.title }}</h2>
                         </a>
-                        {% include 'layout/news/news_cover.html' %}
+                        {% include 'layout/news_cover.html' %}
                         <p class="right"><a href="{{ news.get_absolute_url() }}" class="button_primary">Подробнее</a></p>
                     </div>
   				{% else %}

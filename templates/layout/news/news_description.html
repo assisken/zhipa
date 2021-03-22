@@ -1,7 +1,0 @@
-{% if news.render_in == 'md' %}
-    {{ news.description | markdown | safe }}
-{% elif news.render_in == 'html' %}
-    {{ news.description | safe }}
-{% else %}
-    <p>{{ news.description }}</p>
-{% endif %}
