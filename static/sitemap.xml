@@ -1,0 +1,928 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>https://smiap.ru/</loc>
+	<lastmod>2021-03-23T19:04:39+01:00</lastmod>
+	<priority>1.0</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/intro</loc>
+	<lastmod>2021-03-23T19:04:40+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/history</loc>
+	<lastmod>2021-03-23T19:04:42+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/staff</loc>
+	<lastmod>2021-03-23T19:04:42+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/conferences</loc>
+	<lastmod>2021-03-23T19:04:43+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/contacts</loc>
+	<lastmod>2021-03-23T19:04:43+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news</loc>
+	<lastmod>2021-03-23T19:04:43+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/publications</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/tutorials</loc>
+	<lastmod>2021-03-23T19:04:43+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/abiturients/info</loc>
+	<lastmod>2021-03-23T19:04:44+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/abiturients/programs</loc>
+	<lastmod>2021-03-23T19:04:44+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/students/timetable</loc>
+	<lastmod>2021-03-23T19:04:44+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/students/timetable/extramural</loc>
+	<lastmod>2021-03-23T19:04:45+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/47</loc>
+	<lastmod>2021-03-23T19:04:45+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/46</loc>
+	<lastmod>2021-03-23T19:04:45+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/45</loc>
+	<lastmod>2021-03-23T19:04:45+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/44</loc>
+	<lastmod>2021-03-23T19:04:45+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/history/page1</loc>
+	<lastmod>2021-03-23T19:04:46+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/history/page2</loc>
+	<lastmod>2021-03-23T19:04:46+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/history/page3</loc>
+	<lastmod>2021-03-23T19:04:46+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/about/history/page4</loc>
+	<lastmod>2021-03-23T19:04:49+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/profile/5/description</loc>
+	<lastmod>2021-03-23T19:04:46+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/43</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page1</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page2</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page3</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page4</loc>
+	<lastmod>2021-03-23T19:04:47+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page5</loc>
+	<lastmod>2021-03-23T19:04:48+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page6</loc>
+	<lastmod>2021-03-23T19:04:48+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page7</loc>
+	<lastmod>2021-03-23T19:04:48+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page8</loc>
+	<lastmod>2021-03-23T19:04:48+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/page9</loc>
+	<lastmod>2021-03-23T19:04:49+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/1.doc</loc>
+	<lastmod>2021-03-23T19:04:48+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/2.doc</loc>
+	<lastmod>2021-03-23T19:04:51+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/8.2.doc</loc>
+	<lastmod>2021-03-23T19:04:49+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/9.doc</loc>
+	<lastmod>2021-03-23T19:04:51+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/RS_Lebedev_V.M..docx</loc>
+	<lastmod>2021-03-23T19:04:50+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/RS_Lebedev_V.M..pdf</loc>
+	<lastmod>2021-03-23T19:04:53+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/13.doc</loc>
+	<lastmod>2021-03-23T19:04:53+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/14.doc</loc>
+	<lastmod>2021-03-23T19:04:53+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/16.doc</loc>
+	<lastmod>2021-03-23T19:04:55+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/17.1.doc</loc>
+	<lastmod>2021-03-23T19:04:56+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/38.pdf</loc>
+	<lastmod>2021-03-23T19:04:55+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/Metod_Ukazaniya_Proekcionnoe_Cherchenie.docx</loc>
+	<lastmod>2021-03-23T19:04:59+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/Metod_Ukazaniya_Proekcionnoe_Cherchenie.pdf</loc>
+	<lastmod>2021-03-23T19:05:00+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/49.doc</loc>
+	<lastmod>2021-03-23T19:05:00+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/60.doc</loc>
+	<lastmod>2021-03-23T19:05:02+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/SMIIG_uchebnaya_praktika.doc</loc>
+	<lastmod>2021-03-23T19:05:02+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/SMIIG_proizvodstvennaya_praktika.doc</loc>
+	<lastmod>2021-03-23T19:05:04+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/bilet_0.doc</loc>
+	<lastmod>2021-03-23T19:05:04+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/64.pdf</loc>
+	<lastmod>2021-03-23T19:05:05+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/65.pdf</loc>
+	<lastmod>2021-03-23T19:05:07+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/66.doc</loc>
+	<lastmod>2021-03-23T19:05:07+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/67.pdf</loc>
+	<lastmod>2021-03-23T19:05:07+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/static/files/tutorials/68.doc</loc>
+	<lastmod>2021-03-23T19:05:09+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2021</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2021/02</loc>
+	<lastmod>2021-03-23T19:05:09+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2021/02/04</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/12</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/12/31</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/12/15</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/09</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/09/17</loc>
+	<lastmod>2021-03-23T19:05:10+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/profile/5/publications</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/07</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/07/17</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/profile/29/publications</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/42</loc>
+	<lastmod>2021-03-23T19:05:11+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/41</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/39</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/38</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/37</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/36</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/35</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/34</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/33</loc>
+	<lastmod>2021-03-23T19:05:12+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/31</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/30</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/29</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/28</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/27</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/26</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/25</loc>
+	<lastmod>2021-03-23T19:05:13+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/24</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/22</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/21</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/20</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/19</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/18</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/17</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/16</loc>
+	<lastmod>2021-03-23T19:05:14+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/15</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/14</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/13</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/12</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/11</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/10</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/9</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/8</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/7</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/6</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/5</loc>
+	<lastmod>2021-03-23T19:05:15+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/4</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/3</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/2</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/1</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/profile/29/description</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/07/03</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/04</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/04/06</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/12</loc>
+	<lastmod>2021-03-23T19:05:16+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/12/09</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/06</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2020/06/23</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/11</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/11/05</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/10</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/10/25</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/04</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/04/14</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/04/17</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/05</loc>
+	<lastmod>2021-03-23T19:05:17+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/05/29</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/03</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/03/01</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/02</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/02/06</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/01</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/01/14</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/12</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/12/24</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/11</loc>
+	<lastmod>2021-03-23T19:05:18+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/11/28</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/12/05</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2019/01/30</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/11/26</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/09</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/09/25</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/09/05</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/09</loc>
+	<lastmod>2021-03-23T19:05:19+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/09/03</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/04</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/04/24</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2018/09/11</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/04/11</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2017/04/09</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/12</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/12/16</loc>
+	<lastmod>2021-03-23T19:05:20+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/06</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/06/17</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/09</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/09/20</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/04</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/04/13</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/04/12</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/01</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2016/01/28</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015</loc>
+	<lastmod>2021-03-23T19:05:21+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/11</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/11/20</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/09</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/09/01</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2014</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2014/11</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2014/11/20</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2014/11/26</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/res/files/extra/olymp.doc</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/05</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2015/05/15</loc>
+	<lastmod>2021-03-23T19:05:22+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2013</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2013/09</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2013/09/01</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2011</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2011/03</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2011/03/22</loc>
+	<lastmod>2021-03-23T19:05:23+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2010</loc>
+	<lastmod>2021-03-23T19:05:24+01:00</lastmod>
+	<priority>0.8</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2010/12</loc>
+	<lastmod>2021-03-23T19:05:24+01:00</lastmod>
+	<priority>0.6</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2010/12/24</loc>
+	<lastmod>2021-03-23T19:05:24+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/2010/12/30</loc>
+	<lastmod>2021-03-23T19:05:24+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+<url>
+	<loc>https://smiap.ru/materials/news/id/0</loc>
+	<lastmod>2021-03-23T19:05:24+01:00</lastmod>
+	<priority>0.4</priority>
+</url>
+</urlset>
