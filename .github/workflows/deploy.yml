@@ -27,3 +27,13 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
           pull: true
           push: true
+
+      - name: Trigger repo dispatch
+        run: |
+          curl \
+            --request POST \
+            --user    "${{ secrets.CR_PAT }}" \
+            --header  "Accept: application/vnd.github.everest-preview+json" \
+            --header  "Content-Type: application/json" \
+            --data    '{"event_type": "${{ secrets.EVENT_TYPE }}"}'
+            https://api.github.com/repos/${{ secrets.TARGET_REPOSITORY }}/dispatches
