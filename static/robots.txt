@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow:
+Host: smiap.ru
+Sitemap: https://smiap.ru/sitemap.xml
