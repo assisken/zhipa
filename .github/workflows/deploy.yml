@@ -35,5 +35,5 @@ jobs:
             --user    "${{ secrets.CR_PAT }}" \
             --header  "Accept: application/vnd.github.everest-preview+json" \
             --header  "Content-Type: application/json" \
-            --data    '{"event_type": "${{ secrets.EVENT_TYPE }}"}'
+            --data    '{"event_type": "${{ secrets.EVENT_TYPE }}"}' \
             https://api.github.com/repos/${{ secrets.TARGET_REPOSITORY }}/dispatches
