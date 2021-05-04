@@ -24,7 +24,9 @@ class Command(BaseCommand):
             help="Refreshes the schedule",
         )
         parser.add_argument(
-            "--clean", action="store_true", help="Clears the unhidden schedule",
+            "--clean",
+            action="store_true",
+            help="Clears the unhidden schedule",
         )
         parser.add_argument(
             "--reveal", action="store_true", help="Reveals all schedule"

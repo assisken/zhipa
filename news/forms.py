@@ -233,11 +233,11 @@ class NewsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["description"].widget = MonacoEditorWidget(
-            attrs={"data-language": "md", "data-wordwrap": "on"}
+            attrs={"data-language": "markdown", "data-wordwrap": "on"}
         )
         self.fields["text"].help_text = MARKDOWN_HELP
         self.fields["text"].widget = MonacoEditorWidget(
-            attrs={"data-language": "md", "data-wordwrap": "on"}
+            attrs={"data-language": "markdown", "data-wordwrap": "on"}
         )
 
     class Meta:

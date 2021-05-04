@@ -1,40 +1,33 @@
 PYTHON=python
-CI_REGISTRY_IMAGE=registry.gitlab.com/assisken/zhipa
+CI_REGISTRY_IMAGE=ghcr.io/assisken/zhipa
 USER=$(shell id -u)
 GROUP=$(shell id -g)
+DOCKER_TEST=docker run -v "${PWD}:/app" --rm -it -e ENV="testing" "${CI_REGISTRY_IMAGE}":latest
 
 docker-pull:
 	docker pull "${CI_REGISTRY_IMAGE}"
 
-docker-build: pull
+docker-build: docker-pull
 	docker build --cache-from "${CI_REGISTRY_IMAGE}":latest --tag "${CI_REGISTRY_IMAGE}":latest .
 
-docker-fmt:
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest black .
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest isort --recursive .
-
-docker-lint:
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest flake8 .
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest mypy .
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest black --check .
-	docker run -v "${PWD}:/app" -u "${USER}:${GROUP}" --rm -it "${CI_REGISTRY_IMAGE}":latest isort --recursive --check-only .
+docker-test:
+	${DOCKER_TEST} ./manage.py collectstatic --no-input
+	${DOCKER_TEST} ./manage.py compress --engine jinja2 --force
+	${DOCKER_TEST} ./manage.py migrate --no-input
+	${DOCKER_TEST} ./manage.py test --noinput
 
 fmt:
 	black .
-	isort --recursive .
+	isort .
 
 lint:
 	flake8 .
 	mypy .
 	black --check .
-	isort --recursive --check-only .
-
-security:
-	safety check
-	bandit -r .
+	isort --check-only .
 
 test:
-	${PYTHON} manage.py collectstatic --no-input
-	${PYTHON} manage.py compress --engine jinja2 --force
-	${PYTHON} manage.py migrate --no-input
-	${PYTHON} manage.py test --noinput -k
+	${PYTHON} ./manage.py collectstatic --no-input
+	${PYTHON} ./manage.py compress --engine jinja2 --force
+	${PYTHON} ./manage.py migrate --no-input
+	${PYTHON} ./manage.py test --noinput

@@ -1,5 +1,3 @@
-from typing import Optional, Sequence, Union
-
 from django.core.validators import MaxValueValidator as Max
 from django.core.validators import MinValueValidator as Min
 from django.db import models
@@ -39,12 +37,8 @@ class Container(models.Model):
     )
 
     def save(
-        self,
-        force_insert: bool = False,
-        force_update: bool = False,
-        using: Optional[str] = None,
-        update_fields: Optional[Union[Sequence[str], str]] = None,
-    ) -> None:
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
         if self.group is not None:
             self.name = normalize_group_name(self.group.name)
         super().save(force_insert, force_update, using, update_fields)
