@@ -162,10 +162,12 @@ class TestParser(TestCase):
 
     def test_parse_schedule(self):
         self.assertSequenceEqual(
-            self.schedule, parse_schedule(self.schedule_body),
+            self.schedule,
+            parse_schedule(self.schedule_body),
         )
 
     def test_parse_session_schedule(self):
         self.assertSequenceEqual(
-            self.session, parse_schedule(self.session_body),
+            self.session,
+            parse_schedule(self.session_body),
         )

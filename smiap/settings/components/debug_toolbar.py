@@ -1,3 +1,5 @@
+from django.conf import settings
+
 DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.versions.VersionsPanel",
     "debug_toolbar.panels.timer.TimerPanel",
@@ -13,4 +15,12 @@ DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.redirects.RedirectsPanel",
 ]
 
-DEBUG_TOOLBAR_CONFIG = {"RENDER_PANELS": True}
+
+def render_toolbar_when_debug(request) -> bool:
+    return settings.DEBUG
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    "RENDER_PANELS": True,
+    "SHOW_TOOLBAR_CALLBACK": render_toolbar_when_debug,
+}

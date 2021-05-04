@@ -110,12 +110,9 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
-                # list if you haven't customized them:
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # 'board.context_processors.global_settings',
-                # 'django.core.context_processors.request',
+                "django.template.context_processors.request",
                 "main.context_processors.app_processor",
             ],
         },
@@ -136,6 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -146,8 +145,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 locale.setlocale(locale.LC_ALL, LOCALE)
-
-INTERNAL_IPS = ["127.0.0.1", "10.8.0.2", "10.8.0.9"]
 
 FIXTURE_DIRS = (
     # os.path.join(BASE_DIR, 'main', 'fixtures'),

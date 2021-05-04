@@ -62,7 +62,8 @@ class FulltimeScheduleTest(TestCase):
                 self.assertContains(resp, teachers, msg_prefix=msg)
 
     @override_config(
-        AUTUMN_SEMESTER_START=date(2012, 9, 1), SPRING_SEMESTER_START=date(2013, 2, 4),
+        AUTUMN_SEMESTER_START=date(2012, 9, 1),
+        SPRING_SEMESTER_START=date(2013, 2, 4),
     )
     def test_date_block_beginning_of_autumn_semester(self):
         res = date_block(TeachTime(date(2012, 9, 3)))
@@ -70,7 +71,8 @@ class FulltimeScheduleTest(TestCase):
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
     @override_config(
-        AUTUMN_SEMESTER_START=date(2016, 9, 1), SPRING_SEMESTER_START=date(2016, 2, 4),
+        AUTUMN_SEMESTER_START=date(2016, 9, 1),
+        SPRING_SEMESTER_START=date(2016, 2, 4),
     )
     def test_date_block_last_day_of_year(self):
         res = date_block(TeachTime(date(2016, 12, 31)))
@@ -78,7 +80,8 @@ class FulltimeScheduleTest(TestCase):
         self.assertDictEqual(expected, res, msg="Dicts not equal. ")
 
     @override_config(
-        AUTUMN_SEMESTER_START=date(2015, 9, 1), SPRING_SEMESTER_START=date(2016, 2, 4),
+        AUTUMN_SEMESTER_START=date(2015, 9, 1),
+        SPRING_SEMESTER_START=date(2016, 2, 4),
     )
     def test_date_block_first_day_of_year(self):
         res = date_block(TeachTime(date(2016, 1, 1)))

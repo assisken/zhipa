@@ -62,13 +62,17 @@ def check_teacher_abbreviation_format(teachers, **kwargs):
 
 class ExtramuralScheduleForm(GeneralForm):
     group = forms.ModelChoiceField(
-        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL), required=True,
+        queryset=Group.objects.filter(study_form=Group.EXTRAMURAL),
+        required=True,
     )
     schedule_type = forms.ChoiceField(choices=ExtramuralSchedule.SCHEDULE_TYPES)
     separator = forms.CharField(initial="||", disabled=True)
     schedule = forms.CharField(
         widget=forms.Textarea(attrs={"class": "vLargeTextField"}),
-        validators=(check_columns_count, check_teacher_abbreviation_format,),
+        validators=(
+            check_columns_count,
+            check_teacher_abbreviation_format,
+        ),
     )
 
     def schedule_fields(self):
