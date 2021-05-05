@@ -15,7 +15,9 @@ class NewsForm(forms.ModelForm):
         self.fields["description"].widget = MonacoEditorWidget(
             attrs={"data-language": "markdown", "data-wordwrap": "on"}
         )
-        self.fields["text"].help_text = render_to_string('layout/markdown_introduction.html')
+        self.fields["text"].help_text = render_to_string(
+            "layout/markdown_introduction.html"
+        )
         self.fields["text"].widget = MonacoEditorWidget(
             attrs={"data-language": "markdown", "data-wordwrap": "on"}
         )
