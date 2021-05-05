@@ -1,43 +1,95 @@
+from typing import Dict, List, Optional, TypedDict
+
 from django.contrib.sites.models import Site
 
 from main.utils.date import TeachState, TeachTime
 from smiap.settings.components.app import BRAND
 
 
+class NavigationSubItem(TypedDict):
+    id: str
+    title: str
+    hidden: bool
+    link: Optional[str]
+
+
+class NavigationItem(NavigationSubItem):
+    subitems: List[NavigationSubItem]
+
+
+NavigationItems = Dict[str, NavigationItem]
+
+
 def app_processor(request):
     kwargs = request.resolver_match.kwargs
-    nav_items = {
-        "home": {"id": "home", "title": "Главная", "link": "/", "subitems": []},
+    nav_items: NavigationItems = {
+        "home": {
+            "id": "home",
+            "title": "Главная",
+            "hidden": False,
+            "link": "/",
+            "subitems": [],
+        },
         "about": {
             "id": "about",
             "title": "О кафедре",
+            "hidden": False,
             "link": "/about/intro",
             "subitems": [
-                {"id": "intro", "title": "Введение", "link": "/about/intro"},
-                {"id": "history", "title": "История кафедры", "link": "/about/history"},
-                {"id": "staff", "title": "Сотрудники кафедры", "link": "/about/staff"},
+                {
+                    "id": "intro",
+                    "title": "Введение",
+                    "hidden": False,
+                    "link": "/about/intro",
+                },
+                {
+                    "id": "history",
+                    "title": "История кафедры",
+                    "hidden": False,
+                    "link": "/about/history",
+                },
+                {
+                    "id": "staff",
+                    "title": "Сотрудники кафедры",
+                    "hidden": False,
+                    "link": "/about/staff",
+                },
                 {
                     "id": "conferences",
                     "title": "Участие в конференциях",
+                    "hidden": False,
                     "link": "/about/conferences",
                 },
-                {"id": "contacts", "title": "Контакты", "link": "/about/contacts"},
+                {
+                    "id": "contacts",
+                    "title": "Контакты",
+                    "hidden": False,
+                    "link": "/about/contacts",
+                },
             ],
         },
         "materials": {
             "id": "materials",
             "title": "Материалы",
+            "hidden": False,
             "link": "/materials/news",
             "subitems": [
-                {"id": "news", "title": "Новости", "link": "/materials/news"},
+                {
+                    "id": "news",
+                    "title": "Новости",
+                    "hidden": False,
+                    "link": "/materials/news",
+                },
                 {
                     "id": "publications",
                     "title": "Публикации",
+                    "hidden": False,
                     "link": "/materials/publications",
                 },
                 {
                     "id": "tutorials",
                     "title": "Учебные пособия",
+                    "hidden": False,
                     "link": "/materials/tutorials",
                 },
                 # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
@@ -46,16 +98,19 @@ def app_processor(request):
         "abiturients": {
             "id": "abiturients",
             "title": "Абитуриентам",
+            "hidden": False,
             "link": "/abiturients/info",
             "subitems": [
                 {
                     "id": "info",
                     "title": "Информация для абитуриентов",
+                    "hidden": False,
                     "link": "/abiturients/info",
                 },
                 {
                     "id": "programs",
                     "title": "Программа обучения",
+                    "hidden": False,
                     "link": "/abiturients/programs",
                 },
             ],
@@ -63,47 +118,70 @@ def app_processor(request):
         "students": {
             "id": "students",
             "title": "Студентам",
+            "hidden": False,
             "link": "/students/timetable",
             "subitems": [
                 {
                     "id": "timetable",
                     "title": "Расписания очных занятий",
+                    "hidden": False,
                     "link": "/students/timetable",
                 },
                 {
                     "id": "extramural",
                     "title": "Расписания заочных занятий",
+                    "hidden": False,
                     "link": "/students/timetable/extramural",
                 },
             ],
         },
         "profile": {
             "id": "profile",
+            "title": "Профиль",
             "hidden": True,
+            "link": "",
             "subitems": [
                 {
                     "id": "description",
                     "title": "Описание",
+                    "hidden": False,
                     "link": "/profile/{profile}/description",
                 },
                 {
                     "id": "publications",
                     "title": "Публикации",
+                    "hidden": False,
                     "link": "/profile/{profile}/publications",
                 },
             ],
         },
     }
 
-    # TODO
-    # if request.user and request.user.is_authenticated:
-    #     last_item = {"id": "username", "title": request.user.username, "link": None, "subitems": [
-    #         {"id": "logout", "title": "Выйти", "link": "/auth/logout?next={}".format(request.path), "subitems": []}
-    #     ]}
-    # else:
-    #     last_item = {"id": "login", "title": "Войти",
-    #                  "link": "/auth/login?next={}".format(request.path), "subitems": []}
-    # nav_items.append(last_item)
+    last_item: NavigationItem
+    if request.user and request.user.is_authenticated:
+        last_item = {
+            "id": "username",
+            "title": "Мой аккаунт",
+            "hidden": False,
+            "link": None,
+            "subitems": [
+                {
+                    "id": "logout",
+                    "title": "Выйти",
+                    "hidden": False,
+                    "link": "/account/logout?next={}".format(request.path),
+                }
+            ],
+        }
+    else:
+        last_item = {
+            "id": "login",
+            "title": "Войти",
+            "hidden": False,
+            "link": "/account/login?next={}".format(request.path),
+            "subitems": [],
+        }
+    nav_items["login"] = last_item
 
     teach_time = TeachTime()
     teach_state = teach_time.teach_state

@@ -8,8 +8,6 @@ from django.contrib.flatpages.models import FlatPage
 from django.core.exceptions import ValidationError
 from djangoeditorwidgets.widgets import MonacoEditorWidget
 
-from main.models import User
-
 
 def check_items(value: str):
     items = value.split("\n")
@@ -22,21 +20,10 @@ def check_items(value: str):
             )
 
 
-class GeneralForm(forms.Form):
+class SeveralPublicationsForm(forms.Form):
     error_css_class = "errors"
     required_css_class = "required"
 
-
-class SmiapRegistrationForm(GeneralForm):
-    class Meta:
-        model = User
-        fields = (
-            "email",
-            "username",
-        )
-
-
-class SeveralPublicationsForm(GeneralForm):
     couple_items = forms.CharField(
         widget=forms.Textarea(attrs={"class": "vLargeTextField"}),
         validators=(check_items,),

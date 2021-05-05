@@ -23,7 +23,7 @@
 
     
     <div class="auth-input-group animation-delay-2 animation-fade">
-        <form method="post" action="{{ url('login') }}">
+        <form method="post" action="{{ url('account:login') }}">
             {{ csrf_input }}
             <label class="auth-label" for="id_username">Имя пользователя:</label>
             <input class="auth-input" type="text" name="username" autofocus="" required="" id="id_username" autocomplete="username">

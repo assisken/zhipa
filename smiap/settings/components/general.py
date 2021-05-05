@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "containers.apps.ContainersConfig",
     "api_v1.apps.ApiV1Config",
+    "account.apps.AccountConfig",
 ]
 
 MIDDLEWARE = (
