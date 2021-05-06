@@ -49417,6 +49417,7 @@
       "email": "admin@smiap.ru",
       "is_staff": true,
       "is_active": true,
+      "profile": 1,
       "date_joined": "2021-03-21T15:11:02.256Z",
       "groups": [],
       "user_permissions": []

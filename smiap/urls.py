@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("account/", include(("account.urls", "account"), namespace="account")),
+    path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("admin/", admin.site.urls),
     path("api/v1/", include(("api_v1.urls", "api_v1"), namespace="api-v1")),
     path("materials/", include(("news.urls", "news"), namespace="news")),

@@ -1,7 +1,6 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-
     <div class="about">
         <h2 class="center auth-heading animation-fade">Вход на сайт</h2>
 		<div class="">
@@ -17,25 +16,31 @@
                     </p>
                 {% endif %}
             {% endif %}
-
         </div>
 	</div>
-
     
     <div class="auth-input-group animation-delay-2 animation-fade">
-        <form method="post" action="{{ url('account:login') }}">
+        <form method="post" action="{{ url('accounts:login') }}">
             {{ csrf_input }}
-            <label class="auth-label" for="id_username">Имя пользователя:</label>
-            <input class="auth-input" type="text" name="username" autofocus="" required="" id="id_username" autocomplete="username">
-            <label class="auth-label" for="id_password">Пароль:</label>
-            <input class="auth-input" type="password" name="password" required="" id="id_password" autocomplete="current-password">
-            <input class="auth-button" type="submit" value="войти">
+
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+
+                <label for="id_{{ field.html_name }}" class="auth-label">{{ field.label }}</label>
+                {{ field }}
+            {% endfor %}
+
             <input type="hidden" name="next" value="{{ next }}">
+            <input class="auth-button" type="submit" value="войти">
         </form>
-        <a class="auth-link" href="/auth/register"><button class="auth-button auth-button-outline">регистрация</button></a>
+        <a class="auth-link" href="{{ url('accounts:registration') }}">
+            <button class="auth-button auth-button-outline">регистрация</button>
+        </a>
     </div>
-    
-    
 
     {# Assumes you setup the password_reset view in your URLconf #}
 {#    <p><a href="{{ url('password_reset') }}">Lost password?</a></p>#}

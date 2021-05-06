@@ -1,11 +1,9 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-
     <div class="about">
         <h2 class="center auth-heading animation-fade">Регистрация</h2>
     </div>
-
 
     <div class="auth-input-group animation-delay-2 animation-fade">
         {% for error in form.non_field_errors() %}
@@ -13,7 +11,7 @@
                 <strong>{{ error|escape }}</strong>
             </div>
         {% endfor %}
-        <form method="post" action="">
+        <form method="post">
             {{ csrf_input }}
             {% for field in form %}
                 {% for error in field.errors %}
@@ -22,7 +20,7 @@
                     </div>
                 {% endfor %}
 
-                {{ field.label_tag() }}
+                <label for="id_{{ field.html_name }}" class="auth-label">{{ field.label }}</label>
                 {{ field }}
             {% endfor %}
             <input class="auth-button" type="submit" value="зарегистрироваться">

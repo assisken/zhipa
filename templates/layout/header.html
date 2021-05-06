@@ -45,7 +45,9 @@
 
                 <div class="menustring_item{{ activeitem }}{{ parent }}">
                     {% if item['link'] %}
-                        <a href="{{ item['link'] }}" class="menustring_item_a">{{ item['title'] }}</a>
+                        <a href="{{ item['link'] | default('#', True) }}" class="menustring_item_a">
+                            {{ item['title'] }}
+                        </a>
                     {% else %}
                         <span class="">{{ item['title'] }}</span>
                     {% endif %}
@@ -54,7 +56,9 @@
     	    			<div class="menustring_subitem">
     	    				<div class="menustring_linksbox">
     	    				{% for subitem in item['subitems'] %}
-    	    					<a href="{{ subitem['link'] }}">{{ subitem['title'] }}</a>
+    	    					<a href="{{ subitem['link'] | default('#', True) }}">
+                                    {{ subitem['title'] }}
+                                </a>
     	    				{% endfor %}
     	    				</div>
     	    			</div>

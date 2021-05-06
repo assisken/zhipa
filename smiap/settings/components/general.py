@@ -18,7 +18,14 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from djangoeditorwidgets.config import WEB_EDITOR_STATICFILES  # noqa
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from funcy import compose
+
+BASE_DIR = compose(
+    os.path.dirname,
+    os.path.dirname,
+    os.path.dirname,
+    os.path.abspath,
+)(__file__)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -70,7 +77,7 @@ INSTALLED_APPS = [
     "news.apps.NewsConfig",
     "containers.apps.ContainersConfig",
     "api_v1.apps.ApiV1Config",
-    "account.apps.AccountConfig",
+    "accounts.apps.AccountConfig",
 ]
 
 MIDDLEWARE = (

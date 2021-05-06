@@ -160,17 +160,29 @@ def app_processor(request):
     last_item: NavigationItem
     if request.user and request.user.is_authenticated:
         last_item = {
-            "id": "username",
-            "title": "Мой аккаунт",
+            "id": "accounts",
+            "title": request.user.username,
             "hidden": False,
-            "link": None,
+            "link": "/accounts/info",
             "subitems": [
+                {
+                    "id": "info",
+                    "title": "Мой аккаунт",
+                    "hidden": False,
+                    "link": "/accounts/info",
+                },
+                {
+                    "id": "profile",
+                    "title": "Мой профиль",
+                    "hidden": False,
+                    "link": "/accounts/profile",
+                },
                 {
                     "id": "logout",
                     "title": "Выйти",
                     "hidden": False,
-                    "link": "/account/logout?next={}".format(request.path),
-                }
+                    "link": "/accounts/logout?next={}".format(request.path),
+                },
             ],
         }
     else:
@@ -178,8 +190,15 @@ def app_processor(request):
             "id": "login",
             "title": "Войти",
             "hidden": False,
-            "link": "/account/login?next={}".format(request.path),
-            "subitems": [],
+            "link": "/accounts/login?next={}".format(request.path),
+            "subitems": [
+                {
+                    "id": "registration",
+                    "title": "Регистрация",
+                    "hidden": False,
+                    "link": "/accounts/register/",
+                }
+            ],
         }
     nav_items["login"] = last_item
 

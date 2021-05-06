@@ -1,29 +1,40 @@
 {% extends 'layout/base.html' %}
 
 {% block title %}
-    {{ profile.get_short_fio() }} :: {{ APP_TITLE }}
+    {{ profile | default('Профиль') }} :: {{ APP_TITLE }}
 {% endblock title %}
 
 {% block content %}
     <div class="content">
         {% include 'layout/extra_nav.html' %}
-		<div class="eventbox">
-            <div class="with_image">
-                <div class="width-20 top">
-                    {% if profile.img %}
-                        <div class="padding-hz-large width-90">
-                            <img class="user-photo animation-fade animation-delay-2" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
-                        </div>
-                    {% else %}
-                        <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}" style="width: 100%">
-                    {% endif %}
-                </div>
-                <div class="width-80">
-                    <h1 class="bottom-line">{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}</h1>
-                    <p><b>{{ profile.regalia }}</b></p>
-                    <p>{{ profile.description }}</p>
+
+        {% if profile is defined %}
+            <div class="eventbox">
+                <div class="with_image">
+                    <div class="width-20 top">
+                        {% if profile.img %}
+                            <div class="padding-hz-large width-90">
+                                <img class="user-photo animation-fade animation-delay-2" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
+                            </div>
+                        {% else %}
+                            <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}" style="width: 100%">
+                        {% endif %}
+                    </div>
+                    <div class="width-80">
+                        <h1 class="bottom-line">{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}</h1>
+                        {% if profile.staff %}
+                            {{ self.staff() }}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            Профиль не найден. Пожалуйста, обратитесь к администратору, чтобы создать его
+        {% endif %}
     </div>
 {% endblock content %}
+
+{% block staff %}
+    <p><b>{{ profile.staff.regalia }}</b></p>
+    <p>{{ profile.staff.description }}</p>
+{% endblock staff %}

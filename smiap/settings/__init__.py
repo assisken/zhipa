@@ -16,6 +16,7 @@ if ENV != "testing":
 base_settings = [
     "components/general.py",
     "components/app.py",
+    "components/authentication.py",
     "components/logging.py",
     "components/flatpages.py",
     "components/constance.py",

@@ -2,6 +2,7 @@ from typing import Optional
 
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
 from django.contrib.flatpages.models import FlatPage
 from django.db.models import QuerySet
@@ -147,3 +148,15 @@ class FlatPageAdmin(FlatPageAdminOld):
                 current_app=self.admin_site.name,
             )
             return HttpResponseRedirect(return_url)
+
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    fieldsets = (
+        BaseUserAdmin.fieldsets[:2]
+        + (("Профиль", {"fields": ("profile",)}),)
+        + BaseUserAdmin.fieldsets[2:]
+    )

@@ -15,7 +15,9 @@ from schedule.models import Group
 
 
 class User(AbstractUser):
-    pass
+    profile = models.OneToOneField(
+        "Profile", on_delete=models.SET_NULL, null=True, blank=True, default=None
+    )
 
 
 def get_files_path(instance: "File", filename: str):
