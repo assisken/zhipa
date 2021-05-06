@@ -1,7 +1,12 @@
 {% extends 'layout/base.html' %}
 
+{% block head %}
+    <meta http-equiv="refresh" content="3;url={{ url('accounts:login') }}" />
+{% endblock head %}
+
 {% block content %}
     <div class="about">
-        Активация аккаунта успешно пройдена!
+        <p>Активация аккаунта успешно пройдена!</p>
+        <p><a href="{{ url('accounts:login') }}">Нажмите</a>, чтобы войти</p>
     </div>
 {% endblock content %}

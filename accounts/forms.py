@@ -43,7 +43,19 @@ class RegistrationForm(ErrorCssClassMixin, OldRegistrationForm):
 
     class Meta(OldRegistrationForm.Meta):
         model = User
+        fields = [
+            User.USERNAME_FIELD,
+            "password1",
+            "password2",
+            User.get_email_field_name(),
+            "last_name",
+            "first_name",
+            "middle_name",
+        ]
         widgets = {
-            "email": forms.EmailInput(attrs={"class": "auth-input"}),
             "username": forms.TextInput(attrs={"autofocus": True, **CSS_CLASS}),
+            "email": forms.EmailInput(attrs=CSS_CLASS),
+            "last_name": forms.TextInput(attrs=CSS_CLASS),
+            "first_name": forms.TextInput(attrs=CSS_CLASS),
+            "middle_name": forms.TextInput(attrs=CSS_CLASS),
         }

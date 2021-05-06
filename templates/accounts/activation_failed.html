@@ -2,7 +2,10 @@
 
 {% block content %}
     <div class="about">
-        {# Имхо, это должно быть 302 (Moved Temporarily) ответом. #}
-        <p>Не удалось пройти активацию.</p>
+        <p>Не удалось пройти активацию. {{ activation_error.message }}</p>
+        <p>
+            Сообщите об этом администратору, либо попробуйте ещё раз пройти
+            <a href="{{ url('accounts:registration') }}">регистрацию</a>.
+        </p>
     </div>
 {% endblock content %}

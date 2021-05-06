@@ -5,7 +5,7 @@ from accounts.views import (
     ActivationView,
     LoginView,
     LogoutView,
-    ProfileDescriptionView,
+    MyProfileView,
     RegistrationView,
 )
 
@@ -27,5 +27,5 @@ urlpatterns = [
     path(
         "info", TemplateView.as_view(template_name="accounts/index.html"), name="index"
     ),
-    path("profile", ProfileDescriptionView.as_view(), name="profile"),
+    path("profile", MyProfileView.as_view(), name="profile"),
 ]

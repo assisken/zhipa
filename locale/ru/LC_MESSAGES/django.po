@@ -1,0 +1,57 @@
+# Smiap russian translation
+# Copyright (C) 2021
+# This file is distributed under the same license as the smiap package.
+# Nikita Zhiga <nvzhiga@gmail.com>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-05-06 21:17+0300\n"
+"PO-Revision-Date: 2021-05-06 21:01+0300\n"
+"Last-Translator: Nikita Zhiga <nvzhiga@gmail.com>\n"
+"Language-Team: LANGUAGE <RU@li.org>\n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: accounts/forms.py:22 accounts/forms.py:32
+msgid "Password"
+msgstr "Пароль"
+
+#: accounts/forms.py:38
+msgid "Password confirmation"
+msgstr "Подтверждение пароля"
+
+#: accounts/forms.py:41
+msgid "Enter the same password as before, for verification."
+msgstr "Введите такой же пароль для подтверждения"
+
+#: accounts/views.py:41
+msgid "The account you tried to activate has already been activated."
+msgstr "Ваш аккаунт уже активирован."
+
+#: accounts/views.py:43
+msgid "The account you attempted to activate is invalid."
+msgstr "Вы пытаетесь активировать невалидный аккаунт"
+
+#: accounts/views.py:44
+msgid "This account has expired."
+msgstr "Время действия аккаунта истекло."
+
+#: accounts/views.py:45
+msgid "The activation key you provided is invalid."
+msgstr "Ключ активации неверен."
+
+#: main/models.py:22
+msgid "first name"
+msgstr "Имя"
+
+#: main/models.py:23
+msgid "last name"
+msgstr "Фамилия"

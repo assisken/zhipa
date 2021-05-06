@@ -12,12 +12,16 @@ from transliterate import translit
 from main.utils.date import get_year_from_string
 from main.utils.unify import unify_fio
 from schedule.models import Group
+from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
     profile = models.OneToOneField(
         "Profile", on_delete=models.SET_NULL, null=True, blank=True, default=None
     )
+    first_name = models.CharField(_('first name'), max_length=150, blank=False)
+    last_name = models.CharField(_('last name'), max_length=150, blank=False)
+    middle_name = models.CharField(max_length=30, blank=False, verbose_name='Отчество')
 
 
 def get_files_path(instance: "File", filename: str):
@@ -69,6 +73,13 @@ class ProfileManager(models.Manager):
                 firstname__startswith=firstname_beg,
                 middlename__startswith=middlename_beg,
             )
+        )
+
+    def create_from_user(self, user: User):
+        return super().create(
+            lastname=user.last_name,
+            firstname=user.first_name,
+            middlename=user.middle_name,
         )
 
 

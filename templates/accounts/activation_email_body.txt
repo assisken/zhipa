@@ -1,4 +1,4 @@
 Регистрация на сайте
 Для активации вашего аккаунта необходимо перейти по ссылке:
-{{ site }}/auth/activate/{{ activation_key }}/
+{{ site }}/accounts/activate/{{ activation_key }}/
 Спасибо!
