@@ -23,7 +23,7 @@
     color: #666;
 }
 
-.auth-input {
+.auth-input-group input {
     display: block;
     box-sizing: border-box;
     -moz-box-sizing: border-box;

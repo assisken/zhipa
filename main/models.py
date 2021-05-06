@@ -7,21 +7,24 @@ from typing import Dict, List, Optional, Tuple
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from transliterate import translit
 
 from main.utils.date import get_year_from_string
 from main.utils.unify import unify_fio
 from schedule.models import Group
-from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
     profile = models.OneToOneField(
         "Profile", on_delete=models.SET_NULL, null=True, blank=True, default=None
     )
-    first_name = models.CharField(_('first name'), max_length=150, blank=False)
-    last_name = models.CharField(_('last name'), max_length=150, blank=False)
-    middle_name = models.CharField(max_length=30, blank=False, verbose_name='Отчество')
+    first_name = models.CharField(_("first name"), max_length=150, blank=False)
+    last_name = models.CharField(_("last name"), max_length=150, blank=False)
+    middle_name = models.CharField(max_length=30, blank=False, verbose_name="Отчество")
+    # TODO: user group (Teacher or Student)
+    # TODO: that user group can be selected only once, then it can't be undone except in admin page
+    # TODO: using this field we can create profile for Student. Staff can be linked only by the administrator
 
 
 def get_files_path(instance: "File", filename: str):

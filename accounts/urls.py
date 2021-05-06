@@ -1,12 +1,13 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from django.views.generic import TemplateView
 
 from accounts.views import (
     ActivationView,
     LoginView,
-    LogoutView,
     MyProfileView,
     RegistrationView,
+    SettingsView,
 )
 
 urlpatterns = [
@@ -28,4 +29,5 @@ urlpatterns = [
         "info", TemplateView.as_view(template_name="accounts/index.html"), name="index"
     ),
     path("profile", MyProfileView.as_view(), name="profile"),
+    path("settings", SettingsView.as_view(), name="settings"),
 ]

@@ -1,31 +1,29 @@
+from typing import Optional
+
 from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as OldLoginView
 from django.contrib.auth.views import LogoutView as OldLogoutView
+from django.db import models
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView, UpdateView
 from django_registration.backends.activation.views import (
     ActivationView as OldActivationView,
 )
 from django_registration.backends.activation.views import (
     RegistrationView as OldRegistrationView,
 )
-from django.utils.translation import gettext_lazy as _
 
-from .forms import LoginForm, RegistrationForm
-
+from .forms import RegistrationForm
 
 Profile = apps.get_model(app_label="main", model_name="Profile")
+User = apps.get_model(app_label="main", model_name="User")
 
 
 class LoginView(OldLoginView):
-    form_class = LoginForm
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
-
-
-class LogoutView(OldLogoutView):
-    pass
 
 
 class RegistrationView(OldRegistrationView):
@@ -53,11 +51,18 @@ class MyProfileView(LoginRequiredMixin, DetailView):
     template_name = "profile/description.html"
     context_object_name = "profile"
 
-    def get(self, request, *args, **kwargs):
-        profile = self.request.user.profile
-        if profile is None:
-            profile = Profile.objects.create_from_user(self.request.user)
+    def get_object(
+        self, queryset: Optional[models.query.QuerySet] = ...
+    ) -> models.Model:
+        return self.request.user.profile
 
-        self.object = profile
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+
+class SettingsView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = "accounts/settings.html"
+    fields = ("last_name", "first_name", "middle_name")
+
+    def get_object(
+        self, queryset: Optional[models.query.QuerySet] = ...
+    ) -> models.Model:
+        return self.request.user

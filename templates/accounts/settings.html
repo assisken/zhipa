@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+
+{% import 'macros/forms.html' as forms %}
+
+{% block title %}
+    Настройки :: {{ APP_TITLE }}
+{% endblock title %}
+
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="content">
+        <div class="auth-input-group animation-delay-2 animation-fade">
+            {{ forms.generic_form(form, csrf_input) }}
+        </div>
+    </div>
+
+{% endblock content %}

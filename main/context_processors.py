@@ -178,6 +178,12 @@ def app_processor(request):
                     "link": "/accounts/profile",
                 },
                 {
+                    "id": "settings",
+                    "title": "Настройки",
+                    "hidden": False,
+                    "link": "/accounts/settings",
+                },
+                {
                     "id": "logout",
                     "title": "Выйти",
                     "hidden": False,

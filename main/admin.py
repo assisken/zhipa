@@ -11,6 +11,7 @@ from django.forms import Form
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 
 from main.forms import FlatpageForm
 from main.models import File, Profile, Publication, Staff, Student, User
@@ -156,7 +157,13 @@ admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        BaseUserAdmin.fieldsets[:2]
-        + (("Профиль", {"fields": ("profile",)}),)
+        BaseUserAdmin.fieldsets[:1]
+        + (
+            (
+                _("Personal info"),
+                {"fields": ("last_name", "first_name", "middle_name", "email")},
+            ),
+            ("Профиль", {"fields": ("profile",)}),
+        )
         + BaseUserAdmin.fieldsets[2:]
     )
