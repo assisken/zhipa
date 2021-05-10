@@ -1,9 +1,11 @@
+import os
+
 from django.contrib.flatpages.models import FlatPage
 from django.db.models import signals
 from django.db.models.deletion import ProtectedError
 from django.dispatch import receiver
 
-from main.models import Profile, Publication
+from main.models import *
 from main.urls import urlpatterns
 from main.utils.unify import unify_fio
 
@@ -25,3 +27,10 @@ def unify_names(sender: Profile, instance: Profile, **kwargs):
 @receiver(signals.post_save, sender=Publication)
 def add_links_to_author_profiles(sender: Publication, instance: Publication, **kwargs):
     instance.author_profiles.set(instance.get_author_profiles())
+
+
+@receiver(signals.pre_delete, sender=File)
+def unlink(sender: File, instance: File, **kwargs):
+    if instance.file:
+        os.remove(instance.file.path)
+        os.removedirs(os.path.dirname(instance.file.path))
