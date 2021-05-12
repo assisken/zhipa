@@ -25,9 +25,7 @@ urlpatterns = [
         TemplateView.as_view(template_name="accounts/activation_complete.html"),
         name="activation_complete",
     ),
-    path(
-        "info", TemplateView.as_view(template_name="accounts/index.html"), name="index"
-    ),
+
     path("profile", MyProfileView.as_view(), name="profile"),
     path("settings", SettingsView.as_view(), name="settings"),
 ]

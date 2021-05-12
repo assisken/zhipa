@@ -166,12 +166,6 @@ def app_processor(request):
             "link": "/accounts/info",
             "subitems": [
                 {
-                    "id": "info",
-                    "title": "Мой аккаунт",
-                    "hidden": False,
-                    "link": "/accounts/info",
-                },
-                {
                     "id": "profile",
                     "title": "Мой профиль",
                     "hidden": False,
