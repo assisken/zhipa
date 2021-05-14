@@ -41,6 +41,12 @@ class File(models.Model):
     def __str__(self):
         return self.name
 
+    def delete(self, using=None, keep_parents=False):
+        super().delete()
+        if self.file:
+            os.remove(self.file.path)
+            os.removedirs(os.path.dirname(self.file.path))
+
     def get_absolute_url(self):
         return reverse("short-file", kwargs={"link": self.link})
 
