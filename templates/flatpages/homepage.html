@@ -1,24 +1,31 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-    <section class="homepage center">
-        <div class="present limit-1024">
-            <div class="app column full animation-fade animation-tiles" style="/*background-color: #fcd135;*/">
-                {{ important_message | safe }}
-            </div>
-            <div class="app column small center animation-fade animation-tiles animation-delay-1">
-                <div class="studyweeks">
-                    <span class="word start" style="font-size: 1.5em">{{ date_block.text }}</span>
-                    <span class="number" style="font-size: 6em">{{ date_block.num }}</span>
-                    <span class="word">{{ date_block.desc }}</span>
-                    <div class="buttons">
-                        <a href="{{ url('schedule:timetable') }}" class="button_primary">Расписание занятий</a>
-                    </div>
+    <div class="row row-cols-1 mb-2">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    {{ important_message | safe }}
                 </div>
             </div>
-            <div class="app column large animation-fade animation-tiles animation-delay-2">
-                <div class="lastnews">
-                    <h1>Последние новости</h1>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-lg-2 mb-2 g-2">
+        <div class="col-lg-4">
+            <div class="card bg-light-blue h-100">
+                <div class="card-body text-center">
+                    <p class="text-secondary fs-4 fw-light">{{ date_block.text }}</p>
+                    <p class="text-secondary display-1 fw-light">{{ date_block.num }}</p>
+                    <p class="text-secondary fs-2 fw-light">{{ date_block.desc }}</p>
+                    <a class="btn btn-secondary" href="{{ url('schedule:timetable') }}" role="button">Расписание занятий</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card bg-grass h-100">
+                <div class="card-body">
+                    <h3 class="text-center fw-light">Последние новости</h3>
                     <ul>
                         {% for news in latest_news %}
                             <li>
@@ -29,12 +36,44 @@
                             Последних новостей нет...
                         {% endfor %}
                     </ul>
-                    <div class="buttons">
-                        <a href="{{ url('news:news-list') }}" class="button_primary">Все новости</a>
+                    <div class="text-center">
+                        <a class="btn btn-primary text-secondary" role="button" href="{{ url('news:news-list') }}" class="button_primary">Все новости</a>
                     </div>
                 </div>
             </div>
-            {{ index_blocks.content }}
         </div>
-    </section>
+    </div>
+
+    <div class="row row-cols-1 row-cols-lg-3 mb-2 g-2">
+        <div class="col">
+            <div class="card bg-sun text-center h-100">
+                <div class="card-body">
+                    <img src="/static/images/icons/abiturients.png" alt="Абитуриенты">
+                    <p class="fw-lighter">Набор абитуриентов осуществляется по направлению подготовки
+                        «Информатика и вычислительная техника».
+                        Срок обучения: бакалавр – 4 года, магистр – 2 года.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-orange text-center h-100">
+                <div class="card-body">
+                    <img src="/static/images/icons/technique.png" alt="Техника">
+                    <p class="fw-lighter">Аудиторная работа студентов ведется с использованием в учебном процессе
+                        современной лабораторной базы, оснащенной необходимым оборудованием.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-cyan text-center h-100">
+                <div class="card-body">
+                    <img src="/static/images/icons/graduation.png" alt="Выпускники">
+                    <p class="fw-lighter">Будущие выпускники кафедры получают фундаментальные знания и опыт проектирования и
+                        разработки больших информационных систем.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ index_blocks.content }}
 {% endblock content %}

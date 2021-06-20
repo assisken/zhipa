@@ -1,34 +1,39 @@
-<footer>
-    <div class="footer_box middle center">
-        <div class="width-50 left">
-            <p>© 2021 Кафедра №316 «Системное моделирование и автоматизированное проектирование»</p>
+<footer class="bg-footer bd-footer p-2">
+    <div class="row text-center">
+        <div class="col-lg-6 small text-secondary my-1">
+            © 2021 Кафедра №316 «Системное моделирование и автоматизированное проектирование»
         </div>
-        <div class="width-30">
-            <div class="secnav font-medium">
-                <a href="{{ url('intro') }}">О кафедре</a>
-                <a href="{{ url('abiturients') }}">Абитуриентам</a>
-                <a href="{{ url('contacts') }}">Контакты</a>
-                {# <a href="{$rootPath}about/intro">О кафедре</a>#}
-                {# <a href="{$rootPath}abiturients">Абитуриентам</a>#}
-                {# <a href="{$rootPath}about/contacts">Контакты</a>#}
-            </div>
+        <div class="col-lg-4 my-1">
+            <a href="{{ url('intro') }}">О кафедре</a>
+            <a href="{{ url('abiturients') }}">Абитуриентам</a>
+            <a href="{{ url('contacts') }}">Контакты</a>
         </div>
-        <div class="width-20 right">
-            <img src="{{ static('images/smiap_footer_logo.png') }}" class="footer_logo" alt="СМиАП">
-        </div>
+        <a class="col-lg-2 my-1" href="#" data-bs-toggle="modal" data-bs-target="#authors">
+            <img class="footer_logo" alt="СМиАП" src="{{ static('images/smiap_footer_logo.png') }}">
+        </a>
     </div>
 </footer>
 
-<div id="authorbox">
-    <h2>Designed by</h2>
-    <h1>Sergey Tarasenko</h1>
-    <p class="font-small center">Click on me to close...</p>
+<div class="modal fade" id="authors" tabindex="-1" aria-labelledby="authorsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authorsLabel">Authors</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>The Website is designed by</h6>
+                <p>Sergey Tarasenko</p>
+                <h6>Developed by</h6>
+                <p>Nikita Zhiga</p>
+                <a href="https://github.com/assisken/zhipa" target="_blank">Source code</a>
+            </div>
+        </div>
+    </div>
 </div>
-{# {if isset($subpage_id) && $subpage_id == 'timetable'} #}
-{# <script src="{$resPath}scripts/sticky-week.js" type="text/javascript"></script> #}
-{# {/if} #}
-
 
 <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
 <script type="text/javascript" src="{{ static('scripts/yandexMetric.js') }}"></script>
-<noscript><div><img src="https://mc.yandex.ru/watch/74490271" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/74490271" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
