@@ -30,6 +30,8 @@ $container-max-widths: (
   md: 720px,
   lg: 960px,
   xl: 1140px,
+
+  // Actual override
   xxl: 1024px
 );
 
@@ -37,7 +39,7 @@ $container-max-widths: (
 @import "bootstrap-5.0.1/scss/root";
 @import "bootstrap-5.0.1/scss/reboot";
 @import "bootstrap-5.0.1/scss/type";
+@import "custom";
 
 // TODO: remove when all styles will ready
 @import "bootstrap-5.0.1/scss/bootstrap";
-@import "custom";
