@@ -46,6 +46,27 @@ body {
   background-color: $navbar-light-toggler-bg-color;
 }
 
-.nav-pills {
+.anchor {
+  opacity: 0;
+  text-decoration: none;
+  -moz-osx-font-smoothing: grayscale;
 
+  font-weight: 400;
+  color: rgba(13,110,253,0.5);
+  transition: color 0.15s ease-in-out;
+
+  &:hover, &:active, &:focus {
+    opacity: 1;
+    color: $primary;
+  }
+}
+
+:hover > .anchor {
+  opacity: 1;
+}
+
+.profile-image {
+  border: 2px solid #f7f7f7;
+  border-radius: 50%;
+  width: 60%;
 }

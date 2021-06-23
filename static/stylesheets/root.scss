@@ -14,6 +14,7 @@ $footer: #333;
 $light-blue: #37afff;
 $grass: #b6e135;
 $sun: #fcd135;
+$gray: #f8f8f8;
 
 $custom-colors: (
   "primary": $primary,
@@ -23,7 +24,8 @@ $custom-colors: (
   "footer": $footer,
   "light-blue": $light-blue,
   "grass": $grass,
-  "sun": $sun
+  "sun": $sun,
+  "gray": $gray,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
