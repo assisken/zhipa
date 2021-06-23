@@ -3,30 +3,27 @@
         <header class="navbar navbar-expand">
             <div class="container-fluid">
                 <a href="/">
-                    <img class="d-inline-block align-text-top logo" alt="Кафедра СМиАП"
-                         src="{{ static('images/logo_smiap.png') }}">
+                    <img class="d-inline-block align-text-top logo" alt="Кафедра СМиАП" src="{{ static('images/logo_smiap.png') }}">
                 </a>
-                <img class="d-inline-block align-text-top logo" alt="decorate logo"
-                     src="{{ static('images/decorate_logo.png') }}">
                 <a href="http://www.mai.ru" target="_blank">
                     <img class="logo" alt="Московский авиационный институт" src="{{ static('images/logo_mai.png') }}">
                 </a>
-            </div>
-            <div class="searchbar" style="display: none">
-                <form method="get" action="#">
-                    <input type="text" name="search" placeholder="Поиск по сайту">
-                    <button type="submit" name="getsearch">
-                    </button>
-                </form>
             </div>
         </header>
     </div>
 </div>
 
-<nav class="bg-primary sticky-top navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-md navbar-light bg-primary">
     <div class="container container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -47,13 +44,20 @@
 
                     <li class="nav-item {{ parent }}">
                         {% if is_dropdown %}
-                            <a class="nav-link dropdown-toggle {{ activeitem }}" href="{{ item['link'] }}"
-                               id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="flex-sm-fill text-sm-center nav-link dropdown-toggle {{ activeitem }}"
+                               href="{{ item['link'] }}"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                            >
                                 {{ item['title'] }}
                             </a>
                         {% else %}
-                            <a href="{{ item['link'] }}" class="nav-link {{ activeitem }}">{{ item['title'] }}</a>
+                            <a class="flex-sm-fill text-sm-center nav-link {{ activeitem }}"
+                               href="{{ item['link'] }}"
+                            >
+                                {{ item['title'] }}
+                            </a>
                         {% endif %}
 
                         {% if item['subitems'] %}

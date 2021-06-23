@@ -1,0 +1,47 @@
+@import "open-sans.css";
+
+body {
+  background-image: url(/images/paper.png?046364ea6509);
+  background-position-x: center;
+  background-position-y: top;
+  background-repeat: repeat-y;
+}
+
+.logo {
+  height: 100px;
+  width: auto;
+}
+
+.footer_logo {
+  height: 30px;
+  width: auto;
+}
+
+.fw-light {
+  @extend .fw-light;
+  font-family: "Open Sans Light", sans-serif;
+}
+
+.fw-lighter {
+  @extend .fw-lighter;
+  font-family: "Open Sans Light", sans-serif;
+}
+
+.nav-link {
+  @extend .nav-link;
+
+  border-radius: $nav-link-border-radius;
+  margin: $nav-link-margin-y $nav-link-margin-x;
+
+  &:hover {
+    background-color: $nav-link-hover-bg-color;
+  }
+
+  &.active {
+    background-color: $nav-link-active-bg;
+  }
+}
+
+.navbar-light .navbar-toggler {
+  background-color: $navbar-light-toggler-bg-color;
+}

@@ -3,18 +3,27 @@
 @import "bootstrap-5.0.1/scss/variables";
 @import "bootstrap-5.0.1/scss/mixins";
 
-$custom-colors: (
-  // Default color overrides
-  "primary": #0997ef,
-  "secondary": #fff,
-  "orange": #ff9d4b,
-  "cyan": #56d9c9,
+// Default color overrides
+$primary: #0997ef;
+$secondary: #fff;
+$orange: #ff9d4b;
+$cyan: #56d9c9;
 
-  // Custom colors
-  "footer": #333,
-  "light-blue": #3ec7f3,
-  "grass": #b6e135,
-  "sun": #fcd135
+// Custom colors
+$footer: #333;
+$light-blue: #37afff;
+$grass: #b6e135;
+$sun: #fcd135;
+
+$custom-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "orange": $orange,
+  "cyan": $cyan,
+  "footer": $footer,
+  "light-blue": $light-blue,
+  "grass": $grass,
+  "sun": $sun
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
@@ -25,13 +34,35 @@ $body-bg: #f7f7f7;
 $link-color: #09f;
 $card-border-radius: 2px;
 
+$navbar-light-toggler-bg-color: $secondary;
+$navbar-light-color: $secondary;
+$navbar-light-active-color: $primary;
+$navbar-light-hover-color: $secondary;
+
+$navbar-nav-link-padding-x: 24px;
+$nav-link-margin-x: .25rem;
+$nav-link-margin-y: .25rem;
+$nav-link-padding-y: 12px;
+$nav-link-hover-bg-color: $light-blue;
+$nav-link-active-bg: $secondary;
+$nav-link-border-radius: 50px;
+
+
+$dropdown-padding-y: 10px;
+$dropdown-item-padding-x: 15pt;
+$dropdown-bg: $light-blue;
+$dropdown-link-color: $secondary;
+$dropdown-link-hover-bg: rgba(255, 255, 255, 0.3);
+$dropdown-link-active-bg: rgba(255, 255, 255, 0.8);
+$dropdown-link-active-color: gray;
+
 $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  xl: 1140px,
 
   // Actual override
+  xl: 1023px,
   xxl: 1024px
 );
 
@@ -39,7 +70,7 @@ $container-max-widths: (
 @import "bootstrap-5.0.1/scss/root";
 @import "bootstrap-5.0.1/scss/reboot";
 @import "bootstrap-5.0.1/scss/type";
-@import "custom";
+@import "custom_styles";
 
 // TODO: remove when all styles will ready
 @import "bootstrap-5.0.1/scss/bootstrap";
