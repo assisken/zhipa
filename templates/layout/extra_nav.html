@@ -1,17 +1,21 @@
-<nav class="subnav-horizontal center middle">
+<ul class="nav nav-pills justify-content-center">
     {% for key, item in NAV_ITEMS.items() %}
         {% if item['id'] in ACTIVE_ITEMS %}
-    		{% set delay = 1 %}
             {% for subitem in item['subitems'] %}
     			{% if ACTIVE_ITEMS[-1] == subitem['id'] %}
-    				{% set activeitem = "selected" %}
+    				{% set activeitem = "active" %}
     				{% set delay = "" %}
-    			{% else %}
-    				{% set activeitem = "animation-delay-" %}
-    				{% set delay =+ 1 %}
     			{% endif %}
-    			    <a href="{{ subitem['link'] }}" class="animation-slide-bottom {{ activeitem }}{{ delay }}">{{ subitem['title'] }}</a>
+                    <li class="nav-item">
+    			        <a href="{{ subitem['link'] }}"
+                           class="nav-link {{ activeitem }}"
+                           aria-current="page"
+                        >
+                            {{ subitem['title'] }}
+                        </a>
+                    </li>
                 {% endfor %}
             {% endif %}
     {% endfor %}
-</nav>
+</ul>
+<hr/>

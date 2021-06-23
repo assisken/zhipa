@@ -38,15 +38,17 @@ $navbar-light-toggler-bg-color: $secondary;
 $navbar-light-color: $secondary;
 $navbar-light-active-color: $primary;
 $navbar-light-hover-color: $secondary;
-
 $navbar-nav-link-padding-x: 24px;
+
 $nav-link-margin-x: .25rem;
 $nav-link-margin-y: .25rem;
 $nav-link-padding-y: 12px;
+$nav-link-color: $primary;
 $nav-link-hover-bg-color: $light-blue;
 $nav-link-active-bg: $secondary;
 $nav-link-border-radius: 50px;
 
+$nav-pills-link-active-bg: $primary;
 
 $dropdown-padding-y: 10px;
 $dropdown-item-padding-x: 15pt;
