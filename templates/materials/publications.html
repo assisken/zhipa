@@ -3,10 +3,6 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="width-100 animation-fade">
-		<h1 class="center padding-medium">Научные публикации кафедры СМиАП</h1>
-		<div class="adaptive">
-		    {% include 'layout/publications_table.html' %}
-		</div>
-	</div>
+    <h1 class="text-center mb-3">Научные публикации кафедры СМиАП</h1>
+    {% include 'layout/publications_table.html' %}
 {% endblock content %}

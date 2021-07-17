@@ -1,13 +1,13 @@
-<table style="width: 80%;" class="font-small table_publications">
-    <tr>
+<table class="table table-striped">
+    <tr class="bg-primary text-secondary">
         <th>Название</th>
         <th>Мероприятие</th>
         <th>Авторы</th>
     </tr>
     {% for publication in publications %}
         <tr id="{{ publication.id }}">
-            <td>{{ publication.name }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
-            <td>{{ publication.place }}<a href="#{{ publication.id }}" class="headerlink">#</a></td>
+            <td>{{ publication.name }} <a href="#{{ publication.id }}" class="anchor">#</a></td>
+            <td>{{ publication.place }} <a href="#{{ publication.id }}" class="anchor">#</a></td>
             <td>
                 {% for author in publication.authors %}
                     {% if author.link %}<a href="{{ author.link }}">{% endif %}
