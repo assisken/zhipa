@@ -1,19 +1,16 @@
 {% set default_cover = static('default_cover.png') %}
+{% set news_cover_content = news.newscover.content if news.newscover else 'News cover' %}
 
-<div class="with_image">
-    <a href="{{ news.get_absolute_url() }}">
-        <div class="cover animation-fade animation-delay-2" style="background-image: url({{ news.cover_url | default(default_cover, True) }})">
-            {% if news.newscover and news.newscover.show_content %}
-                <div class="cover-content" style="background-color: {{ news.newscover.color }}aa">
-                    <span>{{ news.newscover.content }}</span>
-                </div>
-                <div class="cover-year" style="background-color: {{ news.newscover.color }}aa">
-                    <span>{{ news.date.strftime('%Y') }}</span>
-                </div>
-            {% endif %}
-        </div>
-    </a>
-    <div class="description">
-        {{ news.description | markdown | safe }}
+<a href="{{ news.get_absolute_url() }}" class="news-title_link" title="{{ news_cover_content }}">
+    <div class="cover">
+        {% if news.newscover and news.newscover.show_content %}
+            <div class="cover-overlay-top" style="background-color: {{ news.newscover.color }}aa">
+                <span>{{ news_cover_content }}</span>
+            </div>
+            <div class="cover-overlay-bottom" style="background-color: {{ news.newscover.color }}aa">
+                <span>{{ news.date.strftime('%Y') }}</span>
+            </div>
+        {% endif %}
+        <img class="img-fluid rounded-start" src="{{ news.cover_url | default(default_cover, True) }}" alt="{{ news_cover_content }}"/>
     </div>
-</div>
+</a>

@@ -17,15 +17,15 @@ $sun: #fcd135;
 $gray: #f8f8f8;
 
 $custom-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "orange": $orange,
-  "cyan": $cyan,
-  "footer": $footer,
-  "light-blue": $light-blue,
-  "grass": $grass,
-  "sun": $sun,
-  "gray": $gray,
+        "primary": $primary,
+        "secondary": $secondary,
+        "orange": $orange,
+        "cyan": $cyan,
+        "footer": $footer,
+        "light-blue": $light-blue,
+        "grass": $grass,
+        "sun": $sun,
+        "gray": $gray,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
@@ -60,15 +60,17 @@ $dropdown-link-hover-bg: rgba(255, 255, 255, 0.3);
 $dropdown-link-active-bg: rgba(255, 255, 255, 0.8);
 $dropdown-link-active-color: gray;
 
-$container-max-widths: (
-  sm: 540px,
-  md: 720px,
-  lg: 960px,
+$pagination-border-radius: 50%;
+$pagination-border-radius-sm: 50%;
+$pagination-border-radius-lg: 50%;
 
-  // Actual override
-  xl: 1023px,
-  xxl: 1024px
+$xl-breakpoint: 1023px;
+$xxl-breakpoint: 1024px;
+$container-max-widths-override: (
+        xl: $xl-breakpoint,
+        xxl: $xxl-breakpoint
 );
+$container-max-widths: map-merge($container-max-widths, $container-max-widths-override);
 
 // Optional Bootstrap components here
 @import "bootstrap-5.0.1/scss/root";

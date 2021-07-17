@@ -19,7 +19,7 @@
             <div class="row g-0">
                 <div class="col-md-4 text-center">
                     {% if not profile.closed %}<a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
-                    <img src="{{ profile.img.url if profile.img else  static('images/user.png')}}"
+                    <img src="{{ profile.img.url if profile.img else static('images/user.png')}}"
                          class="img-fluid rounded-start"
                          alt="{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}"
                     />

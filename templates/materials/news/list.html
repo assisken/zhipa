@@ -11,40 +11,75 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="content">
-  		<div class="top">
-  		    <div style="margin: 0 5px 20px 10px;">
-                <h1 class="bottom-line" style="margin: 20px 10px">Новости</h1>
-  				{% for news in news_list %}
-                    <div class="eventbox flatbox" id="{{ news.pk }}">
-                        <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
+    <h1 class="fw-light mb-3" style="margin: 20px 10px">Новости</h1>
+
+    {% for news in news_list %}
+        <div class="card mb-3" id="{{ news.pk }}">
+            <div class="row g-0">
+                <div class="col-lg-5 col-xl-4">
+                    {% include 'layout/news_cover.html' %}
+                </div>
+                <div class="col-lg-7 col-xl-8">
+                    <div class="card-body">
                         <a href="{{ news.get_absolute_url() }}" class="news-title_link">
-                            <h2 class="bottom-line">{{ news.title }}</h2>
+                            <h5 class="card-title">{{ news.title }}</h5>
                         </a>
-                        {% include 'layout/news_cover.html' %}
-                        <p class="right"><a href="{{ news.get_absolute_url() }}" class="button_primary">Подробнее</a></p>
+                        <p class="card-text"><small
+                                class="text-muted">{{ news.date.strftime('%-d %B %Y') | title }}</small></p>
+                        <div class="description">
+                            {{ news.description | markdown | safe }}
+                        </div>
+                        <a class="btn btn-primary text-secondary" href="{{ news.get_absolute_url() }}">Подробнее</a>
                     </div>
-  				{% else %}
-  					<h1 class="bottom-line" style="margin: 20px 10px">На данный момент новостей нет...</h1>
-  				{% endfor %}
-  		    </div>
-  		</div>
-  		<div class="pagination center font-large padding-large">
-            {% if is_paginated %}
-                {% if page_obj.has_previous() %}
-                    <a href="{{ url('news:news-list', kwargs={'number': page_obj.previous_page_number()}) }}">&laquo;</a>
-                {% else %}
-                    <a href="#" class="disable">&laquo;</a>
-                {% endif %}
-                {% for page_num in range(page_obj.paginator.num_pages) %}
-                    <a href="{{ url('news:news-list', kwargs={'number': page_num + 1}) }}" class="{{ 'selected' if page_num + 1== page_obj.number else '' }}">{{ page_num + 1 }}</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h5 style="margin: 20px 10px">На данный момент новостей нет...</h5>
+    {% endfor %}
+
+    {% if is_paginated %}
+        {% set disabled_previous = '' if page_obj.has_previous() else 'disabled' %}
+        {% set disabled_next = '' if page_obj.has_next() else 'disabled' %}
+        {% set previous_page_number = page_obj.previous_page_number() if page_obj.has_previous() else 1 %}
+        {% set next_page_number = page_obj.next_page_number() if page_obj.has_next() else 1 %}
+
+        <nav aria-label="Page pagination">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ disabled_previous }}">
+                    <a class="page-link"
+                       href="{{ url('news:news-list', kwargs={'number': previous_page_number}) }}"
+                       aria-label="Previous"
+                    >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                {% for page in page_obj.paginator.get_elided_page_range(page_obj.number, on_each_side=2, on_ends=2) %}
+                    {% set active = 'active' if page == page_obj.number else '' %}
+
+                    <li class="page-item {{ active }}" aria-current="page">
+                        {% if page == page_obj.paginator.ELLIPSIS %}
+                            <a class="page-link disable">{{ page }}</a>
+                        {% else %}
+                            <a class="page-link"
+                               href="{{ url('news:news-list', kwargs={'number': page}) }}"
+                            >
+                                {{ page }}
+                            </a>
+                        {% endif %}
+                    </li>
                 {% endfor %}
-                {% if page_obj.has_next() %}
-                    <a href="{{ url('news:news-list', kwargs={'number': page_obj.next_page_number()}) }}">&raquo;</a>
-                {% else %}
-                    <a href="#" class="disable">&raquo;</a>
-                {% endif %}
-            {% endif %}
-  		</div>
-  	</div>
+
+                <li class="page-item {{ disabled_next }}">
+                    <a class="page-link"
+                       href="{{ url('news:news-list', kwargs={'number': next_page_number}) }}"
+                       aria-label="Next"
+                    >
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock content %}

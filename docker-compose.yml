@@ -30,6 +30,8 @@ services:
     container_name: smiap-postgres
     image: postgres:11
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=smiap
       - POSTGRES_DB=smiap
