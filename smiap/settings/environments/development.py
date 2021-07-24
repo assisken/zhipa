@@ -46,6 +46,6 @@ development_components = [
     "../components/debug_toolbar.py",
 ]
 
-Path(settings.MEDIA_ROOT).mkdir(exist_ok=True)
+Path(settings.MEDIA_ROOT).mkdir(exist_ok=True, parents=True)
 
 include(*development_components)
