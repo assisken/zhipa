@@ -1,13 +1,14 @@
 {% for item in schedule %}
-    <div class="card mb-2 rounded">
+    <div class="card mb-2">
         <div class="row g-0">
-            <div class="col-md-1 p-2 fw-bold text-center bg-primary text-secondary rounded-start">
+            <div class="col-md-1 p-3 text-center bg-primary text-secondary fw-bold">
                 <p class="mb-0">{{ item.date }}</p>
             </div>
-            <div class="col rounded-end">
+            <div class="col">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-2 mb-2 mb-md-0 text-center">{{ item.time }}</div>
+                        <div class="col mb-2 mb-md-0 text-center text-md-start">
                             {% if item.date.startswith('По договоренности') or item.date == '' %}
                                 По договорённости
                             {% else %}
