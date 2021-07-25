@@ -1,0 +1,32 @@
+{% for item in schedule %}
+    <div class="card mb-2 rounded">
+        <div class="row g-0">
+            <div class="col-md-1 p-2 fw-bold text-center bg-primary text-secondary rounded-start">
+                <p class="mb-0">{{ item.date }}</p>
+            </div>
+            <div class="col rounded-end">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            {% if item.date.startswith('По договоренности') or item.date == '' %}
+                                По договорённости
+                            {% else %}
+                                <p class="mb-0 lead">{{ item.name }}</p>
+                                <p class="mb-0 text-muted">
+                                    {% for teacher in item.teachers.all() %}
+                                        {% if teacher.staff %}
+                                            <a href="{{ teacher.get_absolute_url() }}">{{ teacher }}</a>
+                                        {% else %}
+                                            {{ teacher }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-2 text-center">{{ item.place }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

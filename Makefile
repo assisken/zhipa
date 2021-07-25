@@ -31,3 +31,6 @@ test:
 	${PYTHON} ./manage.py compress --engine jinja2 --force
 	${PYTHON} ./manage.py migrate --no-input
 	${PYTHON} ./manage.py test --noinput
+
+update-initial-data:
+	docker exec -it smiap-app ./manage.py dumpdata --format=json --indent=4 -o init/initial.json

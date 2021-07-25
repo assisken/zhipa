@@ -6,25 +6,45 @@ from funcy import last
 
 
 class NewsLexer(mistune.InlineLexer):
-    several_images = re.compile(
+    grid_images = re.compile(
         r"!(grid\d+)?"  # !grid2[Title](Any link)(Any link)(Any link)
         r"(\[(.*)\])?"  # or ![Title](Any link)(Any link)
         r"(\((.+)\))+"  # or !grid100(Any link)
     )
 
-    def enable_several_images(self):
-        self.rules.several_images = self.several_images
-        self.default_rules.insert(0, "several_images")
+    def enable_grid_images(self):
+        self.rules.grid_images = self.grid_images
+        self.default_rules.insert(0, "grid_images")
 
     @staticmethod
-    def get_items(m: Match[str]) -> Tuple[str, str, List[str]]:
+    def get_grid_images(m: Match[str]) -> Tuple[int, str, List[str]]:
         grid = m.group(1) if m.group(1) else "grid1"
         title = m.group(3) if m.group(3) else ""
         image_names = m.group(5).split(")(")
-        return grid, title, image_names
+        return int(grid.replace("grid", "")), title, image_names
 
-    def output_several_images(self, m: Match[str]):
-        return self.renderer.several_images(*self.get_items(m))
+    def output_grid_images(self, m: Match[str]):
+        return self.renderer.grid_images(*self.get_grid_images(m))
+
+    carousel = re.compile(
+        r"!carousel(\d)?"  # !carousel[Title](Any link)(Any link)(...)
+        r"(\[(.*)\])?"  # or !carousel(Any link)
+        r"(\((.+)\))+"  #
+    )
+
+    def enable_carousel(self):
+        self.rules.carousel = self.carousel
+        self.default_rules.insert(0, "carousel")
+
+    @staticmethod
+    def get_carousel(m: Match[str]) -> Tuple[int, str, List[str]]:
+        number = m.group(1) if m.group(1) else "1"
+        title = m.group(3) if m.group(3) else ""
+        image_names = m.group(5).split(")(")
+        return int(number), title, image_names
+
+    def output_carousel(self, m: Match[str]):
+        return self.renderer.carousel(*self.get_carousel(m))
 
 
 class NewsRenderer(mistune.Renderer):
@@ -34,38 +54,95 @@ class NewsRenderer(mistune.Renderer):
         text = re.sub("</?p>", "", text)
         quote = text.rsplit("\n", maxsplit=2)
         if len(quote) == 1:
-            template = "<blockquote><p><q>{text}</q></p></blockquote>"
+            template = '<blockquote class="blockquote"><p>{author}</p></blockquote>'
         else:
-            template = (
-                "<blockquote><p><q>{text}</q></p><footer>{author}</footer></blockquote>"
-            )
+            template = """
+            <figure>
+                <blockquote class="blockquote"><p>{text}</p></blockquote>
+                <figcaption class="blockquote-footer">{author}</figcaption>
+            </figure>
+            """
         return template.format(text=" ".join(quote[:-1]), author=last(quote)).strip()
 
-    def several_images(self, grid, title, image_names):
-        figure_tmpl = """
-        <figure class="column">
-                <a href="{path}" data-lightbox="roadtrip" data-title="{title}">
-                    <img src="{path}" alt="">
-                </a>
-            </figure>
+    def grid_images(self, grid_size: int, title: str, image_names: List[str]):
+        image_tmpl = """
+        <a class="pop col-md-{size}">
+            <img src="{path}" alt="" class="img-fluid">
+        </a>
         """
 
         return """
-        <div class="figures center {grid}">
-            {figures}
-            <figcaption>{title}</figcaption>
-        </div>
+        <figure class="text-center">
+            <div class="row">
+                {images}
+            </div>
+            <figcaption class="figure-caption text-center p-2">{title}</figcaption>
+        </figure>
         """.format(
-            figures="".join(
-                figure_tmpl.format(path=f"{{{name}}}", title=title)
+            images="".join(
+                image_tmpl.format(path=f"{{{name}}}", title=title, size=12 // grid_size)
                 for name in image_names
             ),
-            grid=grid,
             title=title,
+        )
+
+    def carousel(self, number: int, title: str, image_names: List[str]):
+        image_tmpl = """
+        <div class="carousel-item {active}">
+            <img src="{path}" class="d-block w-100">
+        </div>
+        """
+        buttons_tmpl = """
+        <button
+           type="button"
+           data-bs-target="#carousel{number}"
+           data-bs-slide-to="{i}"
+           class="{active}"
+           aria-current="{current}"
+        />
+        """
+
+        return """
+        <figure>
+            <div id="carousel{number}" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {buttons}
+                </div>
+                <div class="carousel-inner">
+                    {images}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel{number}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel{number}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <figcaption class="figure-caption text-center">{title}</figcaption>
+        </figure>
+        """.format(  # noqa
+            title=title,
+            number=number,
+            images="".join(
+                image_tmpl.format(path=f"{{{name}}}", active="active" if i == 0 else "")
+                for i, name in enumerate(image_names)
+            ),
+            buttons="".join(
+                buttons_tmpl.format(
+                    i=i,
+                    active="active" if i == 0 else "",
+                    current=i == 0,
+                    number=number,
+                )
+                for i, _ in enumerate(image_names)
+            ),
         )
 
 
 __renderer = NewsRenderer()
 __lexer = NewsLexer(__renderer)
-__lexer.enable_several_images()
+__lexer.enable_carousel()
+__lexer.enable_grid_images()
 MD = mistune.Markdown(renderer=NewsRenderer(), inline=__lexer)

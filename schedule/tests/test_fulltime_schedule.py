@@ -18,7 +18,7 @@ class FulltimeScheduleTest(TestCase):
 
     def test_empty_schedule(self):
         empty_week = "2"
-        expect = "На данной неделе занятия по расписанию отсутствуют"
+        expect = "На текущую неделю расписание отсутствует"
 
         for group in self.groups:
             url = self.url_pattern.format(

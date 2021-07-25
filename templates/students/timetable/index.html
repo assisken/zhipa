@@ -1,0 +1,80 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="p-md-3">
+        <aside class="card bg-light-blue h-100 mb-3">
+            <div class="card-body text-center">
+                <p class="text-secondary mb-0 fs-4 fw-light">{{ date_block.text }}</p>
+                <p class="text-secondary mb-0 fs-1">{{ date_block.num }} {{ date_block.desc }}</p>
+            </div>
+        </aside>
+        <div class="fw-light mb-3 text-center">
+            <h1>Расписание занятий</h1>
+            {% if show_weeks %}
+                <h2>{{ course }}&nbsp;Курс &emsp; {{ group_name }} &emsp; {{ week }}&nbsp;неделя</h2>
+            {% else %}
+                <h2>{{ course }}&nbsp;Курс &emsp; {{ group_name }}</h2>
+            {% endif %}
+
+            <form class="inline">
+                <select id="groups" name="group" onchange="this.form.submit()">
+                    <option value="" selected disabled>Группа</option>
+                    {% for group in groups %}
+                        <option value="{{ group }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if show_weeks %}
+                    <select id="weeks" name="week" onchange="this.form.submit()">
+                        <option value="" selected disabled>Неделя</option>
+                        {% for week in range(weeks) %}
+                            <option value="{{ week + 1 }}">{{ week + 1 }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </form>
+        </div>
+        <div>
+            {% if is_fulltime %}
+                {% include 'students/timetable/timetable_fulltime.html' %}
+            {% else %}
+                {% include 'students/timetable/timetable_extramural.html' %}
+            {% endif %}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var groups = $('#groups');
+            var weeks = $('#weeks');
+            weeks.prop('value', "{{ week }}").selectric('refresh');
+            groups.prop('value', "{{ group_name }}").selectric('refresh');
+
+            groups.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ group }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
+
+            weeks.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ week }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
+{% endblock content %}

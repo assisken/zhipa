@@ -7,25 +7,41 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="about animation-fade">
-        {{ flatpage.content }}
-        <div class="pagination center font-large padding-large">
-            <a
-                    href="{{ url('history', kwargs={'number': 1}) }}"
-                    class="{{ 'disable' if current <= 1 else '' }}"
-            >«</a>
+    {{ flatpage.content }}
+
+    <nav aria-label="Page pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{ disabled_previous }}">
+                <a class="page-link"
+                   href="{{ url('history', kwargs={'number': 1}) }}"
+                   aria-label="Previous"
+                >
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
             {% for num in available %}
-                <a
-                        href="{{ url('history', kwargs={'number': num}) }}"
-                        class="{{ 'selected' if num == current else '' }}"
-                >{{ num }}</a>
+                {% set active = 'active' if num == current else '' %}
+
+                <li class="page-item {{ active }}" aria-current="page">
+                    <a class="page-link"
+                       href="{{ url('history', kwargs={'number': num}) }}"
+                    >
+                        {{ num }}
+                    </a>
+                </li>
             {% endfor %}
-            <a
-                    href="{{ url('history', kwargs={'number': available|length}) }}"
-                    class="{{ 'disable' if current >= available|length else '' }}"
-            >»</a>
-        </div>
-    </div>
+
+            <li class="page-item {{ disabled_next }}">
+                <a class="page-link"
+                   href="{{ url('history', kwargs={'number': available|length}) }}"
+                   aria-label="Next"
+                >
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock content %}
 
 {% block history_nav %}

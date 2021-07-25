@@ -9,31 +9,14 @@
 	<meta name="keywords" content="смиап smiap маи мати системное моделирование автоматизированное проектирование инженерная графика ИТ программирование autocad веб web php java c c++ расписание учебные пособия информационные технологии">
 
     {% compress css %}
-	    <link rel="stylesheet" href="{% sass_src 'stylesheets/smiig-styles.scss' %}">
+	    <link rel="stylesheet" href="{% sass_src 'stylesheets/root.scss' %}">
     {% endcompress %}
 
-	<link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
 	<link rel="icon" type="image/x-icon" href="{{ static('favicon.ico') }}">
 
-	<link rel="stylesheet" type="text/css" href="{{ static('stylesheets/lightbox.min.css') }}">
-
-	<!--[if lt IE 8]>
-	<link rel="stylesheet" href="{{ static('stylesheets/comedown-min.css') }}">
-	<![endif]-->
-
-	<!--[if lt IE 9]>
-	<style>
-		body {
-			min-width: 1024px;
-		}
-	</style>
-	<script src="{{ static('scripts/html5shiv.min.js') }}"></script>
-	<![endif]-->
+    <script src="{{ static('scripts/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ static('scripts/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
 	<script src="{{ static('scripts/lib.js') }}" type="text/javascript"></script>
-
-	<!-- vk share -->
-	<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 
     <title>
         {% block title %}{{ APP_TITLE }}{% endblock title %}
@@ -44,8 +27,10 @@
 <body>
     {% include 'layout/header.html' %}
 
-    <div class="container">
-        {% block content %}{% endblock content %}
+    <div class="container-md bg-secondary my-4 p-2">
+        <main>
+            {% block content %}{% endblock content %}
+        </main>
     </div>
 
     {% include 'layout/footer.html' %}

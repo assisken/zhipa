@@ -1,0 +1,106 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
+{% endblock head %}
+
+{% block content %}
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="width-100 animation-fade">
+        <aside class="width-20 top subnav-vertical animation-fade animation-delay-3">
+            <div id="week-bar" class="app" style="margin-top: 30px;">
+                <div class="studyweeks materialbox" style="background: #3EC7F3; padding-bottom: 10px;">
+
+                    <span class="word start" style="font-size: 1.5em; padding: 10px 0 0;">{{ date_block.text }}</span>
+                    <span class="number" style="font-size: 6em">{{ date_block.num }}</span>
+                    <span class="word">{{ date_block.desc }}</span>
+                </div>
+            </div>
+        </aside>
+        <div class="width-75 timetables animation-fade animation-delay-4">
+            <h1 class="margin-large">Расписания занятий</h1>
+            <div class="stageblock spanel flatbox padding-large">
+                <form class="inline">
+                    <select id="teachers" name="teacher" onchange="this.form.submit()">
+                        <option value="" selected disabled>Преподаватели</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher }}">{{ teacher }}</option>
+                        {% endfor %}
+                    </select>
+                    <select id="weeks" name="week" onchange="this.form.submit()">
+                        <option value="" selected disabled>Неделя</option>
+                        {% for week in range(weeks) %}
+                            <option value="{{ week + 1 }}">{{ week + 1 }}</option>
+                        {% endfor %}
+
+                    </select>
+                </form>
+                <h2>Преподаватель &emsp; {{ teacher }} &emsp; {{ week }} неделя</h2>
+            </div>
+            <div>
+                <table border="1" class="timetable table-responsive">
+                    <tr>
+                        <th rowspan="2" width="60">День</th>
+                        <th rowspan="2">Время</th>
+                        <th colspan="2">{{ teacher }}</th>
+                    </tr>
+                    <tr class="subhead">
+                        <th style="background: #a4e2ff">Название предмета</th>
+                        <th style="background: #a4e2ff">Ауд.</th>
+                    </tr>
+                    {% for day in schedule.keys() %}
+                        <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
+                            <td rowspan="{{ schedule[day] | length + 1 }}">
+                                {{ '%02d' % day.day }}.{{ '%02d' % day.month }}<br>{{ day.week_day }}
+                            </td>
+                            {% for item in schedule[day] %}
+                                <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;с {{ item.starts_at.strftime('%H:%M') }}<br>
+                                        по {{ item.ends_at.strftime('%H:%M') }}</td>
+                                    <td>{{ item.name }} {{ item.type }}<br>
+                                        {{ item.groups.all() | join(", ") }}
+                                    </td>
+                                    <td>{{ item.places.all() | join('<br>') | safe }}</td>
+                                </tr>
+                            {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">На данной неделе занятия по расписанию отсутствуют</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            var teachers = $('#teachers');
+            var weeks = $('#weeks');
+            teachers.prop('value', "{{ teacher }}").selectric('refresh');
+            weeks.prop('value', "{{ week }}").selectric('refresh');
+
+            teachers.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ teacher }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
+
+            weeks.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ week }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
+{% endblock content %}

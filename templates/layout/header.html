@@ -1,66 +1,76 @@
-<!-- Scroll Up Button -->
-<a href="#header" id="scrollup" class="font-medium">
-    <img src="{{ static('images/icons/up.png') }}" alt="Наверх">
-</a>
+<div class="bg-primary">
+    <div class="container">
+        <header class="navbar navbar-expand">
+            <div class="container-fluid">
+                <a href="/">
+                    <img class="d-inline-block align-text-top logo" alt="Кафедра СМиАП" src="{{ static('images/logo_smiap.png') }}">
+                </a>
+                <a href="http://www.mai.ru" target="_blank">
+                    <img class="logo" alt="Московский авиационный институт" src="{{ static('images/logo_mai.png') }}">
+                </a>
+            </div>
+        </header>
+    </div>
+</div>
 
-<header id="header">
-
-	<div class="logo middle center">
-		<a href="/"><img src="{{ static('images/logo_smiap.png') }}" class="smiig_logo" alt="Кафедра СМиАП"></a>
-		<img src="{{ static('images/decorate_logo.png') }}" class="decorate_logo" alt="decorate logo">
-
-		<div class="searchbar" style="display: none">
-			<form method="get" action="#">
-				<input type="text" name="search" placeholder="Поиск по сайту">
-				<button type="submit" name="getsearch">
-
-				</button>
-			</form>
-		</div>
-		<a href="http://www.mai.ru" target="_blank">
-            <img src="{{ static('images/logo_mai.png') }}" class="mati_logo" alt="Московский авиационный институт">
-        </a>
-	</div>
-
-	<div class="hamburger">
-		<div class="hamburger-line"></div>
-		<div class="hamburger-line"></div>
-		<div class="hamburger-line"></div>
-	</div>
-
-	<div class="mainmenu">
-		<nav class="menustring center">
-            {% for key, item in NAV_ITEMS.items() if not item['hidden'] %}
-		    	{% if item['id'] in ACTIVE_ITEMS %}
-		    		{% set activeitem = " menustring_activeitem" %}
-                {% else %}
-                    {% set activeitem = "" %}
-		    	{% endif %}
-
-		    	{% if item['subitems'] == [] and (item['submenu'] == True) %}
-		    		{% set parent = " menustring_parent" %}
-		    	{% else %}
-		    		{% set parent = "" %}
-		    	{% endif %}
-
-                <div class="menustring_item{{ activeitem }}{{ parent }}">
-                    {% if item['link'] %}
-                        <a href="{{ item['link'] }}" class="menustring_item_a">{{ item['title'] }}</a>
+<nav class="navbar navbar-expand-md navbar-light bg-primary">
+    <div class="container container-fluid">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% for key, item in NAV_ITEMS.items() if not item['hidden'] %}
+                    {% if item['id'] in ACTIVE_ITEMS %}
+                        {% set activeitem = "active" %}
                     {% else %}
-                        <span class="">{{ item['title'] }}</span>
+                        {% set activeitem = "" %}
                     {% endif %}
 
-		    	    {% if item['subitems'] %}
-    	    			<div class="menustring_subitem">
-    	    				<div class="menustring_linksbox">
-    	    				{% for subitem in item['subitems'] %}
-    	    					<a href="{{ subitem['link'] }}">{{ subitem['title'] }}</a>
-    	    				{% endfor %}
-    	    				</div>
-    	    			</div>
-    	    		{% endif %}
-		    	</div>
-            {% endfor %}
-		</nav>
-	</div>
-</header>
+                    {% set is_dropdown = item['subitems'] != [] %}
+                    {% if is_dropdown %}
+                        {% set parent = "dropdown" %}
+                    {% else %}
+                        {% set parent = "" %}
+                    {% endif %}
+
+                    <li class="nav-item {{ parent }}">
+                        {% if is_dropdown %}
+                            <a class="flex-sm-fill text-sm-center nav-link dropdown-toggle {{ activeitem }}"
+                               href="{{ item['link'] }}"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                            >
+                                {{ item['title'] }}
+                            </a>
+                        {% else %}
+                            <a class="flex-sm-fill text-sm-center nav-link {{ activeitem }}"
+                               href="{{ item['link'] }}"
+                            >
+                                {{ item['title'] }}
+                            </a>
+                        {% endif %}
+
+                        {% if item['subitems'] %}
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% for subitem in item['subitems'] %}
+                                    <li><a class="dropdown-item" href="{{ subitem['link'] }}">{{ subitem['title'] }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>

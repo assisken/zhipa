@@ -69,15 +69,24 @@ class TeachState(Flag):
         return self.value & comp.value > 0
 
 
+# TODO: Check if bug in django-constance
+def _to_date(_date) -> date:
+    if isinstance(_date, date):
+        return _date
+    elif isinstance(_date, str):
+        return date.fromisoformat(_date)
+    raise ValueError(f"Type {type(_date)} for date ({date!r}) is not supported")
+
+
 class TeachTime:
     month_start = 9
 
     def __init__(self, now=date.today()):
         self.now = now
         self.weeks_in_semester: int = config.WEEKS_IN_SEMESTER
-        self.__autumn_start1: date = config.AUTUMN_SEMESTER_START
-        self.__spring_start: date = config.SPRING_SEMESTER_START
-        self.__autumn_start2: date = config.NEW_YEAR_AUTUMN_SEMESTER_START
+        self.__autumn_start1: date = _to_date(config.AUTUMN_SEMESTER_START)
+        self.__spring_start: date = _to_date(config.SPRING_SEMESTER_START)
+        self.__autumn_start2: date = _to_date(config.NEW_YEAR_AUTUMN_SEMESTER_START)
         self.__autumn_end = self.__autumn_start1 + timedelta(
             days=7 * self.weeks_in_semester
         )

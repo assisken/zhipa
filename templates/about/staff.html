@@ -1,5 +1,10 @@
 {% extends 'layout/base.html' %}
 
+{% block head %}
+    <script src="{{ static('scripts/anchor.min.js') }}"></script>
+    <script>anchors.add('anchor');</script>
+{% endblock head %}
+
 {% block title %}
     Сотрудники кафедры :: О кафедре :: {{ APP_TITLE }}
 {% endblock title %}
@@ -7,75 +12,64 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="about animation-fade">
-		<div class="lectures">
-		    <h1 class="center padding-large">Сотрудники кафедры № 316</h1>
-            {% for profile in leaders %}
-                <div id="{{ profile.get_kebab_fio() }}" class="leader">
+    <h1 class="fw-light mb-3 text-center">Сотрудники кафедры № 316</h1>
+
+    {% for profile in leaders %}
+        <div id="{{ profile.get_kebab_fio() }}" class="card mb-4 bg-gray">
+            <div class="row g-0">
+                <div class="col-md-4 text-center">
                     {% if not profile.closed %}<a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
-                    {% if profile.img %}
-                        <img src="{{ profile.img.url }}"
-                             class="user-photo animation-fade animation-delay-2"
-                             alt="{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}"
-                        />
-                    {% else %}
-                        <img src="{{ static('images/user.png') }}"
-                             class="user-photo animation-fade animation-delay-2"
-                             alt="{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}"
-                        />
-                    {% endif %}
+                    <img src="{{ profile.img.url if profile.img else static('images/user.png')}}"
+                         class="img-fluid rounded-start"
+                         alt="{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}"
+                    />
                     {% if not profile.closed %}</a>{% endif %}
-                    <div class="text">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
                         {% if not profile.closed %}<a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
-                        <h2 class="animation-fade animation-delay-5" style="margin:1em 0 0.5em 0">
+                        <h5 class="card-title text-center">
                             {{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}
-                            <a href="#{{ profile.get_kebab_fio() }}" class="headerlink">#</a>
-                        </h2>
+                            <a href="#{{ profile.get_kebab_fio() }}" class="anchor">#</a>
+                        </h5>
                         {% if not profile.closed %}</a>{% endif %}
-                        <h2 class="animation-fade animation-delay-5">
-                            <small style="color:#777">{{ profile.regalia }}</small>
-                        </h2>
-                        <p class="animation-fade animation-delay-7" style="text-indent: 0">
-                            {{ profile.description }}
-                        </p>
+                        <h6 class="card-text text-muted text-center">{{ profile.regalia }}</h6>
+                        <p class="card-text">{{ profile.description }}</p>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
 
-		    <div class="grid3-2 animation-fade animation-delay-4">
-		        <div class="other">
-                    {% for profile in lecturers %}
-			        	<figure id="{{ profile.get_kebab_fio() }}" class="column none">
-                            {% if not profile.closed %}<a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
-                            {% if profile.img %}
-                                <img class="user-photo" src="{{ profile.img.url }}" alt="{{ profile.lastname }}">
-                            {% else %}
-                                <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}">
-                            {% endif %}
-                            {% if not profile.closed %}</a>{% endif %}
-			                <figcaption class="photo-caption">
-                                {% if not profile.closed %}<a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
-                                <h2>
-                                    {{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}
-                                    <a href="#{{ profile.get_kebab_fio() }}" class="headerlink">#</a>
-                                </h2>
-                                {% if not profile.closed %}</a>{% endif %}
-                                <h2 class="animation-fade animation-delay-7">
-                                    <small style="color:#777">{{ profile.regalia }}</small>
-                                </h2>
-                                {% if profile.description %}
-                                    <p>{{ profile.description }}</p>
-                                {% endif %}
-                            </figcaption>
-			            </figure>
-                    {% else %}
-                        <div class="column none">
-                            <p>Сотрудники не найдены</p>
-			            </div>
+    <div class="row">
+        {% for profile in lecturers %}
+            <figure class="figure col-sm-6 col-md-4 px-lg-4 text-center" id="{{ profile.get_kebab_fio() }}">
+                {% if not profile.closed %}
+                    <a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
+                {% if not profile.closed %}</a>{% endif %}
+                <img class="figure-img img-fluid profile-image profile-image-borders"
+                     src="{{ profile.img.url if profile.img else static('images/user.png') }}"
+                     alt="{{ profile.lastname }}"
+                />
+                <figcaption class="figure-caption">
+                    {% if not profile.closed %}
+                        <a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
+                    <h6 class="text-body">
+                        {{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}
+                        <a href="#{{ profile.get_kebab_fio() }}" class="anchor">#</a>
+                    </h6>
+                    {% if not profile.closed %}</a>{% endif %}
+                    <strong>{{ profile.regalia }}</strong>
+                    {% if profile.description %}
+                        <p>{{ profile.description }}</p>
+                    {% endif %}
+                </figcaption>
+            </figure>
+        {% else %}
+            <div class="column none">
+                <p>Сотрудники не найдены</p>
+            </div>
 
-			        {% endfor %}
-		        </div>
-			</div>
-		</div>
-	</div>
+        {% endfor %}
+    </div>
 {% endblock content %}

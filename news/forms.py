@@ -42,10 +42,10 @@ class NewsForm(forms.ModelForm):
         )
         value: str = self.data["text"]
         for line in value.splitlines():
-            match = NewsLexer.several_images.match(line)
+            match = NewsLexer.grid_images.match(line)
             if not match:
                 continue
-            _, _, text_images = NewsLexer.get_items(match)
+            _, _, text_images = NewsLexer.get_grid_images(match)
             if not frozenset(text_images) <= images:
                 raise ValidationError(
                     {"text": "Text contains image that does not exist"}

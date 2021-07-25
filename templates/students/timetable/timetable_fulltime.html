@@ -1,0 +1,41 @@
+{% for date in schedule.keys() %}
+    <div class="card mb-2 rounded">
+        <div class="row g-0">
+            <div class="col-md-1 p-2 text-center bg-primary text-secondary rounded-start fw-bold">
+                {% if date %}
+                    <p class="mb-0">{{ date.date }}</p>
+                    <p class="mb-0 fs-4">{{ date.week_day }}</p>
+                {% else %}
+                    По&nbsp;договорённости с&nbsp;преподавателем
+                {% endif %}
+            </div>
+            <div class="col rounded-end">
+                {% for item in schedule[date] %}
+                    <div class="row d-flex align-items-center g-0 {{ loop.cycle('bg-gray-200', '') }}">
+                        <div class="col-2 text-center p-2">{{ item.time }}</div>
+                        <div class="col p-2">
+                            <p class="mb-0 lead">
+                                {{ item.name }}
+                                <abbr title="{{ item_type_by_abbr.get(item.item_type, '') }}">
+                                    {{ item.item_type }}
+                                </abbr>
+                            </p>
+                            <p class="mb-0 text-muted">
+                                {% for teacher in item.teachers.all() %}
+                                    {% if teacher.staff %}
+                                        <a href="{{ teacher.get_absolute_url() }}">{{ teacher }}</a>
+                                    {% else %}
+                                        {{ teacher }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="col-2 p-2 text-center">{{ item.place }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% else %}
+    На текущую неделю расписание отсутствует. Пожалуйста, убедитесь, что выбрана верная группа и указана правильная неделя.
+{% endfor %}

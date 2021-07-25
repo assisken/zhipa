@@ -20,63 +20,97 @@
 
 {% block content %}
     {% include 'layout/extra_nav.html' %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a title="К новостям" href="{{ url('news:news-list') }}">Новости</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a title="Выбрать год"
+                       href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y') }) }}">
+                        {{ news.date.strftime('%Y') }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a title="Выбрать месяц"
+                       href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m') }) }}">
+                        {{ news.date.strftime('%m') }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a title="Выбрать день"
+                       href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m'), 'date__day': news.date.strftime('%d') }) }}">
+                        {{ news.date.strftime('%d') }}
+                    </a>
+                </li>
+            </ol>
+        </nav>
 
-    <div class="content">
-        <div class="top {{ '' if news.hidden else ' width-80' }}">
-            <div style="margin: 10px;">
-                <div class="eventbox flatbox">
-                    {% if news.hidden %}
-                        <h1>Как эта новость выглядит в списке новостей</h1>
-                        <div class="news-preview">
-                            <div class="eventbox flatbox" id="{{ news.pk }}">
-                                <span class="news-date">{{ news.date.strftime('%-d %B %Y') | title }}</span>
-                                <a href="{{ news.get_absolute_url() }}" class="news-title_link">
-                                    <h2 class="bottom-line">{{ news.title }}</h2>
-                                </a>
-                                {% include 'layout/news_cover.html' %}
-                                <p class="right"><a href="{{ news.get_absolute_url() }}" class="button_primary">Подробнее</a></p>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <span class="category"><a href="{{ url('news:news-list') }}">Новости</a></span>
-                    <span class="news-date">
-                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y') }) }}">{{ news.date.strftime('%Y') }}</a>/
-                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m') }) }}">{{ news.date.strftime('%m') }}</a>/
-                        <a href="{{ url('news:news-list', kwargs={'date__year': news.date.strftime('%Y'), 'date__month': news.date.strftime('%m'), 'date__day': news.date.strftime('%d') }) }}">{{ news.date.strftime('%d') }}</a>
-                    </span>
-                    <article style="margin-top: 10px">
-                        <h1 class="bottom-line">{{ news.title }}</h1>
-                        {{ news.text | news_text(news.id) | safe }}
+        <article>
+            <h1 class="fw-light mb-3 text-center">{{ news.title }}</h1>
+            {{ news.text | news_text(news.id) | safe }}
+        </article>
+    </div>
 
-                        <div class="share">
-                            <script type="text/javascript">document.write(VK.Share.button(
-                                {
-                                    title: '{{ news.title }}',
-                                    noparse: false,
-                                    {% if news.cover %}image: 'http://smiap.ru{{ news.cover.url }}',{% endif %}
-                                }
-                                ));
-                            </script>
-                        </div>
-                    </article>
+    {% if not news.hidden %}
+        <aside class="news-aside" style="margin: 5px;">
+            {% if last_news %}
+                <h4 class="bottom-line">Последние новости</h4>
+                {% for n in last_news %}
+                    <div class="row p-1">
+                        <span class="col-md-2 text-muted text-end">{{ n.date.strftime('%-d %B %Y') | title }}</span>
+                        <a class="col" href="{{ n.get_absolute_url() }}"><span>{{ n.title }}</span></a>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </aside>
+    {% endif %}
+
+    {% if news.hidden %}
+        <h3>Как эта новость выглядела бы в списке новостей</h3>
+        <div class="card mb-3" id="{{ news.pk }}">
+            <div class="row g-0">
+                <div class="col-lg-5 col-xl-4">{% include 'layout/news_cover.html' %}</div>
+                <div class="col-lg-7 col-xl-8">
+                    <div class="card-body">
+                        <a href="{{ news.get_absolute_url() }}" class="news-title_link">
+                            <h5 class="card-title">{{ news.title }}</h5>
+                        </a>
+                        <p class="card-text">
+                            <small class="text-muted">{{ news.date.strftime('%-d %B %Y') | title }}</small>
+                        </p>
+                        <div class="description">{{ news.description | markdown | safe }}</div>
+                        <a class="btn btn-primary text-secondary" href="{{ news.get_absolute_url() }}">Подробнее</a>
+                    </div>
                 </div>
             </div>
         </div>
-        {% if not news.hidden %}
-            <div class="width-20 top">
-                    <aside class="news-aside" style="margin: 5px;">
-                        {% if last_news %}
-                            <h2 class="bottom-line">Последние новости</h2>
-                            {% for n in last_news %}
-                            <div class="compact">
-                                <span class="news-date">{{ n.date.strftime('%-d %B %Y') | title }}</span>
-                                <a href="{{ n.get_absolute_url() }}"><h3>{{ n.title }}</h3></a>
-                            </div>
-                            {% endfor %}
-                        {% endif %}
-                    </aside>
+    {% endif %}
+
+    <div class="modal fade" id="image-modal" tabindex="-1" role="dialog" aria-labelledby="imagePreview"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Предпросмотр</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <a href="" class="image-link" target="_blank">
+                    <img src="" class="image-preview" style="width: 100%;" alt="large image preview"/>
+                </a>
             </div>
-        {% endif %}
+        </div>
     </div>
-    <script type="text/javascript" src="{{ static('scripts/lightbox.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $('.pop').on('click', function () {
+                let imageSrc = $(this).find('img').attr('src')
+                $('.image-preview').attr('src', imageSrc);
+                $('.image-link').attr('href', imageSrc);
+                $('#image-modal').modal('show');
+            });
+        });
+    </script>
 {% endblock content %}

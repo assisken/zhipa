@@ -9,6 +9,14 @@ from main.utils.date import TeachTime, date_block
 
 from .models import ExtramuralSchedule, FullTimeSchedule, Group, Schedule, Teacher
 
+ITEM_TYPE_BY_ABBR = {
+    "ЛК": "Лекция",
+    "ПЗ": "Практическое занятие",
+    "ЛР": "Лабораторная работа",
+    "КСР": "Контрольная самостоятельная работа",
+    "Экзамен": "Экзамен",
+}
+
 
 def get_items(**kwargs):
     schedule = kwargs.get("schedule")
@@ -29,7 +37,7 @@ class Date:
 
 
 class GroupTimetableView(TemplateView):
-    template_name = "materials/timetable/index.html"
+    template_name = "students/timetable/index.html"
     schedule = FullTimeSchedule
     schedule_type = Schedule.STUDY
     study_form = Group.FULL_TIME if schedule == FullTimeSchedule else Group.EXTRAMURAL
@@ -81,6 +89,7 @@ class GroupTimetableView(TemplateView):
                 .distinct(),
                 "session": self.schedule_type == Schedule.SESSION,
                 "is_fulltime": self.schedule == FullTimeSchedule,
+                "item_type_by_abbr": ITEM_TYPE_BY_ABBR,
             },
         )
 
@@ -122,12 +131,13 @@ class ExtramuralGroupTimetableView(TemplateView):
                 .distinct(),
                 "session": self.schedule_type == Schedule.SESSION,
                 "is_fulltime": self.schedule == FullTimeSchedule,
+                "item_type_by_abbr": ITEM_TYPE_BY_ABBR,
             },
         )
 
 
 class TeacherTimetableView(TemplateView):
-    template_name = "materials/timetable/teachers.html"
+    template_name = "students/timetable/teachers.html"
 
     def get(self, request, *args, **kwargs):
         teach_time = TeachTime()

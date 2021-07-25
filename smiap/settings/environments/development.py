@@ -1,5 +1,7 @@
 import os
+from pathlib import Path
 
+from django.conf import settings
 from split_settings.tools import include
 
 from smiap.settings.components.general import REST_FRAMEWORK
@@ -43,5 +45,7 @@ DATABASES = {
 development_components = [
     "../components/debug_toolbar.py",
 ]
+
+Path(settings.MEDIA_ROOT).mkdir(exist_ok=True, parents=True)
 
 include(*development_components)
