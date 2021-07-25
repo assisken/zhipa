@@ -1,4 +1,4 @@
-<div class="bg-primary">
+<div class="bg-primary d-none d-md-block">
     <div class="container">
         <header class="navbar navbar-expand">
             <div class="container-fluid">
@@ -44,7 +44,7 @@
 
                     <li class="nav-item {{ parent }}">
                         {% if is_dropdown %}
-                            <a class="flex-sm-fill text-sm-center nav-link dropdown-toggle {{ activeitem }}"
+                            <a class="flex-fill text-center nav-link dropdown-toggle {{ activeitem }}"
                                href="{{ item['link'] }}"
                                role="button"
                                data-bs-toggle="dropdown"
@@ -53,7 +53,7 @@
                                 {{ item['title'] }}
                             </a>
                         {% else %}
-                            <a class="flex-sm-fill text-sm-center nav-link {{ activeitem }}"
+                            <a class="flex-fill text-center nav-link {{ activeitem }}"
                                href="{{ item['link'] }}"
                             >
                                 {{ item['title'] }}
