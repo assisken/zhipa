@@ -72,24 +72,24 @@ CONSTANCE_CONFIG = OrderedDict(
 )
 
 CONSTANCE_CONFIG_FIELDSETS = {
-    'Настройки расписания': (
-        'AUTUMN_SEMESTER_START',
-        'SPRING_SEMESTER_START',
-        'NEW_YEAR_AUTUMN_SEMESTER_START',
-        'WEEKS_IN_SEMESTER'
+    "Настройки расписания": (
+        "AUTUMN_SEMESTER_START",
+        "SPRING_SEMESTER_START",
+        "NEW_YEAR_AUTUMN_SEMESTER_START",
+        "WEEKS_IN_SEMESTER",
     ),
-    'Парсер МАИ': {
-        'collapse': True,
-        'fields': (
-        'MAI_DAY_CONTAINER_SELECTOR',
-        'MAI_ITEM_CONTAINER_SELECTOR',
-        'MAI_DATE_SELECTOR',
-        'MAI_DAY_OF_WEEK_SELECTOR',
-        'MAI_TIME_SELECTOR',
-        'MAI_TYPE_SELECTOR',
-        'MAI_TITLE_SELECTOR',
-        'MAI_TEACHER_SELECTOR',
-        'MAI_PLACE_XPATH_SELECTOR',
-    )
+    "Парсер МАИ": {
+        "collapse": True,
+        "fields": (
+            "MAI_DAY_CONTAINER_SELECTOR",
+            "MAI_ITEM_CONTAINER_SELECTOR",
+            "MAI_DATE_SELECTOR",
+            "MAI_DAY_OF_WEEK_SELECTOR",
+            "MAI_TIME_SELECTOR",
+            "MAI_TYPE_SELECTOR",
+            "MAI_TITLE_SELECTOR",
+            "MAI_TEACHER_SELECTOR",
+            "MAI_PLACE_XPATH_SELECTOR",
+        ),
     },
 }

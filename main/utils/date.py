@@ -75,7 +75,7 @@ def _to_date(_date) -> date:
         return _date
     elif isinstance(_date, str):
         return date.fromisoformat(_date)
-    raise ValueError(f'Type {type(_date)} for date ({date!r}) is not supported')
+    raise ValueError(f"Type {type(_date)} for date ({date!r}) is not supported")
 
 
 class TeachTime:

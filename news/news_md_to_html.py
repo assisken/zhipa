@@ -21,13 +21,13 @@ class NewsLexer(mistune.InlineLexer):
         grid = m.group(1) if m.group(1) else "grid1"
         title = m.group(3) if m.group(3) else ""
         image_names = m.group(5).split(")(")
-        return int(grid.replace('grid', '')), title, image_names
+        return int(grid.replace("grid", "")), title, image_names
 
     def output_grid_images(self, m: Match[str]):
         return self.renderer.grid_images(*self.get_grid_images(m))
 
     carousel = re.compile(
-        r"!carousel(\d)?"    # !carousel[Title](Any link)(Any link)(...)
+        r"!carousel(\d)?"  # !carousel[Title](Any link)(Any link)(...)
         r"(\[(.*)\])?"  # or !carousel(Any link)
         r"(\((.+)\))+"  #
     )
@@ -122,21 +122,22 @@ class NewsRenderer(mistune.Renderer):
             </div>
             <figcaption class="figure-caption text-center">{title}</figcaption>
         </figure>
-        """.format(
+        """.format(  # noqa
             title=title,
             number=number,
             images="".join(
-                image_tmpl.format(path=f"{{{name}}}", active='active' if i == 0 else '')
+                image_tmpl.format(path=f"{{{name}}}", active="active" if i == 0 else "")
                 for i, name in enumerate(image_names)
             ),
             buttons="".join(
                 buttons_tmpl.format(
                     i=i,
-                    active='active' if i == 0 else '',
+                    active="active" if i == 0 else "",
                     current=i == 0,
                     number=number,
-                ) for i, _ in enumerate(image_names)
-            )
+                )
+                for i, _ in enumerate(image_names)
+            ),
         )
 
 
