@@ -11,10 +11,10 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <h1 class="fw-light mb-3" style="margin: 20px 10px">Новости</h1>
+    <h1 class="fw-light mb-3 text-center">Новости</h1>
 
     {% for news in news_list %}
-        <div class="card mb-3" id="{{ news.pk }}">
+        <div class="card rounded mb-3" id="{{ news.pk }}">
             <div class="row g-0">
                 <div class="col-lg-5 col-xl-4">
                     {% include 'layout/news_cover.html' %}

@@ -12,7 +12,7 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <h1 class="text-center fw-light mb-3">Сотрудники кафедры № 316</h1>
+    <h1 class="fw-light mb-3 text-center">Сотрудники кафедры № 316</h1>
 
     {% for profile in leaders %}
         <div id="{{ profile.get_kebab_fio() }}" class="card mb-4 bg-gray">

@@ -11,6 +11,9 @@
                 <span>{{ news.date.strftime('%Y') }}</span>
             </div>
         {% endif %}
-        <img class="img-fluid rounded-start" src="{{ news.cover_url | default(default_cover, True) }}" alt="{{ news_cover_content }}"/>
+        <img class="img-fluid rounded-start w-100"
+             src="{{ news.cover_url | default(default_cover, True) }}"
+             alt="{{ news_cover_content }}"
+        />
     </div>
 </a>

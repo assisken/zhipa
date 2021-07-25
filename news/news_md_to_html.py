@@ -66,17 +66,17 @@ class NewsRenderer(mistune.Renderer):
 
     def grid_images(self, grid_size: int, title: str, image_names: List[str]):
         image_tmpl = """
-        <a class="col-md-{size}" href="{path}" data-lightbox="roadtrip" data-title="{title}">
+        <a class="pop col-md-{size}">
             <img src="{path}" alt="" class="img-fluid">
         </a>
         """
 
         return """
-        <figure>
+        <figure class="text-center">
             <div class="row">
                 {images}
             </div>
-            <figcaption class="figure-caption text-center">{title}</figcaption>
+            <figcaption class="figure-caption text-center p-2">{title}</figcaption>
         </figure>
         """.format(
             images="".join(
