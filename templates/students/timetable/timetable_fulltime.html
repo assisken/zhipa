@@ -1,7 +1,7 @@
 {% for date in schedule.keys() %}
-    <div class="card mb-2 rounded">
+    <div class="card mb-2">
         <div class="row g-0">
-            <div class="col-md-1 p-2 text-center bg-primary text-secondary rounded-start fw-bold">
+            <div class="col-md-1 p-2 text-center bg-primary text-secondary fw-bold">
                 {% if date %}
                     <p class="mb-0">{{ date.date }}</p>
                     <p class="mb-0 fs-4">{{ date.week_day }}</p>
@@ -9,7 +9,7 @@
                     По&nbsp;договорённости с&nbsp;преподавателем
                 {% endif %}
             </div>
-            <div class="col rounded-end">
+            <div class="col">
                 {% for item in schedule[date] %}
                     <div class="row d-flex align-items-center g-0 {{ loop.cycle('bg-gray-200', '') }}">
                         <div class="col-2 text-center p-2">{{ item.time }}</div>
