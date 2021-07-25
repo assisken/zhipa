@@ -1,7 +1,7 @@
 {% extends "layout/base.html" %}
 
 {% block head %}
-    	<link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
+    <link rel="stylesheet" href="{{ static('stylesheets/selectric.css') }}">
 {% endblock head %}
 
 {% block content %}
@@ -75,34 +75,32 @@
     </div>
 
     <script type="text/javascript">
-	$(function() {
-	    var teachers = $('#teachers');
-	    var weeks = $('#weeks');
-        teachers.prop('value', "{{ teacher }}").selectric('refresh');
-        weeks.prop('value', "{{ week }}").selectric('refresh');
+        $(function () {
+            var teachers = $('#teachers');
+            var weeks = $('#weeks');
+            teachers.prop('value', "{{ teacher }}").selectric('refresh');
+            weeks.prop('value', "{{ week }}").selectric('refresh');
 
-        teachers.selectric({
-        	optionsItemBuilder: function(itemData) {
-        		if (itemData.value === "{{ teacher }}"){
-        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
-        		}
-        		else{
-        			return itemData.text;
-        		}
-		    }
-        });
+            teachers.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ teacher }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
 
-        weeks.selectric({
-        	optionsItemBuilder: function(itemData) {
-        		if (itemData.value === "{{ week }}"){
-        			return itemData.value.length ? '<span class="mark"><b>'+itemData.text+'</b></span>' : itemData.text;
-        		}
-        		else{
-        			return itemData.text;
-        		}
-		    }
+            weeks.selectric({
+                optionsItemBuilder: function (itemData) {
+                    if (itemData.value === "{{ week }}") {
+                        return itemData.value.length ? '<span class="mark"><b>' + itemData.text + '</b></span>' : itemData.text;
+                    } else {
+                        return itemData.text;
+                    }
+                }
+            });
         });
-	});
     </script>
     <script type="text/javascript" src="{{ static('scripts/jquery.selectric.min.js') }}"></script>
 {% endblock content %}

@@ -29,7 +29,7 @@ class Date:
 
 
 class GroupTimetableView(TemplateView):
-    template_name = "materials/timetable/index.html"
+    template_name = "students/timetable/index.html"
     schedule = FullTimeSchedule
     schedule_type = Schedule.STUDY
     study_form = Group.FULL_TIME if schedule == FullTimeSchedule else Group.EXTRAMURAL
@@ -127,7 +127,7 @@ class ExtramuralGroupTimetableView(TemplateView):
 
 
 class TeacherTimetableView(TemplateView):
-    template_name = "materials/timetable/teachers.html"
+    template_name = "students/timetable/teachers.html"
 
     def get(self, request, *args, **kwargs):
         teach_time = TeachTime()

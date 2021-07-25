@@ -1,27 +1,23 @@
-<table border="1" class="timetable table-responsive">
-    <tr>
-        <th rowspan="2" width="60">День</th>
-        <th rowspan="2">Время</th>
-        <th colspan="2">{{ group_name }}</th>
-    </tr>
-    <tr class="subhead">
-        <th style="background: #a4e2ff">Название предмета</th>
-        <th style="background: #a4e2ff">Ауд.</th>
+<table border="1" class="table">
+    <tr class="bg-primary text-secondary text-center">
+        <th>День</th>
+        <th>Время</th>
+        <th>Название предмета</th>
+        <th>Ауд.</th>
     </tr>
     {% for date in schedule.keys() %}
-        <tr class="{{ loop.cycle('odd', 'even') }}" style="border-bottom: rgba(0,0,0,0.08) solid 1px;">
-            {% if date %}
-                <td rowspan="{{ schedule[date] | length + 1 }}">
-                    {{ date.date }}<br>{{ date.week_day }}
-                </td>
-            {% else %}
-                <td class="rotated" rowspan="{{ schedule[date] | length + 1 }}">
+        <tr>
+            <td class="text-center" rowspan="{{ schedule[date] | length + 1 }}">
+                {% if date %}
+                    <p class="mb-0">{{ date.date }}</p>
+                    <p class="mb-0 fs-4">{{ date.week_day }}</p>
+                {% else %}
                     По&nbsp;договорённости с&nbsp;преподавателем
-                </td>
-            {% endif %}
+                {% endif %}
+            </td>
             {% for item in schedule[date] %}
-                <tr>
-                    <td>{{ item.time }}</td>
+                <tr class="align-middle {{ loop.cycle('table-active', '') }}">
+                    <td class="text-center">{{ item.time }}</td>
                     <td>{{ item.name }} {{ item.item_type }}<br>
                         {% for teacher in item.teachers.all() %}
                             {% if teacher.staff %}
@@ -31,7 +27,7 @@
                             {% endif %}
                         {% endfor %}
                     </td>
-                    <td>{{ item.place }}</td>
+                    <td class="text-center">{{ item.place }}</td>
                 </tr>
             {% endfor %}
     {% else %}
