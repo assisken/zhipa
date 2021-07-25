@@ -5,25 +5,22 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="content">
-        {% include 'layout/extra_nav.html' %}
-		<div class="eventbox">
-            <div class="with_image">
-                <div class="width-20 top">
-                    {% if profile.img %}
-                        <div class="padding-hz-large width-90">
-                            <img class="user-photo animation-fade animation-delay-2" src="{{ profile.img.url }}" alt="{{ profile.lastname }}" style="width: 100%">
-                        </div>
-                    {% else %}
-                        <img class="user-photo" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}" style="width: 100%">
-                    {% endif %}
-                </div>
-                <div class="width-80">
-                    <h1 class="bottom-line">{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}</h1>
-                    <p><b>{{ profile.regalia }}</b></p>
-                    <p>{{ profile.description }}</p>
-                </div>
-            </div>
+    {% include 'layout/extra_nav.html' %}
+
+    <div class="p-3 row">
+        <figure class="col-md-3">
+            {% if profile.img %}
+                <img class="figure-img img-fluid profile-image-borders" src="{{ profile.img.url }}"
+                     alt="{{ profile.lastname }}">
+            {% else %}
+                <img class="figure-img img-fluid profile-image-borders" src="{{ static('images/user.png') }}" alt="{{ profile.lastname }}"
+                     style="width: 100%">
+            {% endif %}
+        </figure>
+        <div class="col">
+            <h1 class="h4">{{ profile.lastname }} {{ profile.firstname }} {{ profile.middlename }}</h1>
+            <p class="text-muted"><b>{{ profile.regalia }}</b></p>
+            <p>{{ profile.description }}</p>
         </div>
     </div>
 {% endblock content %}

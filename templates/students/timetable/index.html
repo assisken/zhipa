@@ -7,15 +7,21 @@
 {% block content %}
     {% include 'layout/extra_nav.html' %}
 
-    <div class="width-100 animation-fade">
-        <aside class="card bg-light-blue h-100">
+    <div class="p-md-3">
+        <aside class="card bg-light-blue h-100 mb-3">
             <div class="card-body text-center">
                 <p class="text-secondary mb-0 fs-4 fw-light">{{ date_block.text }}</p>
                 <p class="text-secondary mb-0 fs-1">{{ date_block.num }} {{ date_block.desc }}</p>
             </div>
         </aside>
-        <h1>Расписания занятий</h1>
-        <div>
+        <div class="text-center">
+            <h1>Расписания занятий</h1>
+            {% if show_weeks %}
+                <h2>{{ course }}&nbsp;Курс &emsp; {{ group_name }} &emsp; {{ week }}&nbsp;неделя</h2>
+            {% else %}
+                <h2>{{ course }}&nbsp;Курс &emsp; {{ group_name }}</h2>
+            {% endif %}
+
             <form class="inline">
                 <select id="groups" name="group" onchange="this.form.submit()">
                     <option value="" selected disabled>Группа</option>
@@ -32,11 +38,6 @@
                     </select>
                 {% endif %}
             </form>
-            {% if show_weeks %}
-                <h2>{{ course }} Курс &emsp; {{ group_name }} &emsp; {{ week }} неделя</h2>
-            {% else %}
-                <h2>{{ course }} Курс &emsp; {{ group_name }}</h2>
-            {% endif %}
         </div>
         <div>
             {% if is_fulltime %}

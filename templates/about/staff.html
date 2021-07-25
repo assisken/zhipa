@@ -47,7 +47,7 @@
                 {% if not profile.closed %}
                     <a title="Открыть профиль" href="{{ profile.get_profile_url() }}">{% endif %}
                 {% if not profile.closed %}</a>{% endif %}
-                <img class="figure-img img-fluid profile-image"
+                <img class="figure-img img-fluid profile-image profile-image-borders"
                      src="{{ profile.img.url if profile.img else static('images/user.png') }}"
                      alt="{{ profile.lastname }}"
                 />

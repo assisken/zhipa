@@ -9,6 +9,13 @@ from main.utils.date import TeachTime, date_block
 
 from .models import ExtramuralSchedule, FullTimeSchedule, Group, Schedule, Teacher
 
+ITEM_TYPE_BY_ABBR = {
+    'ЛК': 'Лекция',
+    'ПЗ': 'Практическое занятие',
+    'ЛР': 'Лабораторная работа',
+    'КСР': 'Контрольная самостоятельная работа'
+}
+
 
 def get_items(**kwargs):
     schedule = kwargs.get("schedule")
@@ -16,8 +23,8 @@ def get_items(**kwargs):
 
     items = (
         schedule.objects.prefetch_related("teachers")
-        .filter(**filter_cond)
-        .order_by("date", "time")
+            .filter(**filter_cond)
+            .order_by("date", "time")
     )
     return items
 
@@ -46,7 +53,7 @@ class GroupTimetableView(TemplateView):
         groups = Group.objects.only("name").filter(study_form=self.study_form)
         group_name = request.GET.get("group", groups.first().name)
         show_weeks = (
-            self.schedule_type == Schedule.STUDY and self.schedule == FullTimeSchedule
+                self.schedule_type == Schedule.STUDY and self.schedule == FullTimeSchedule
         )
         week = request.GET.get("week", teach_time.week) if show_weeks else None
 
@@ -77,10 +84,11 @@ class GroupTimetableView(TemplateView):
                 "date_block": date_block(teach_time),
                 "course": group.course if group_name else 0,
                 "study_forms": Group.objects.order_by("-study_form")
-                .values_list("study_form")
-                .distinct(),
+                    .values_list("study_form")
+                    .distinct(),
                 "session": self.schedule_type == Schedule.SESSION,
                 "is_fulltime": self.schedule == FullTimeSchedule,
+                "item_type_by_abbr": ITEM_TYPE_BY_ABBR,
             },
         )
 
@@ -100,8 +108,8 @@ class ExtramuralGroupTimetableView(TemplateView):
         group = Group.objects.get(name=group_name)
         items = (
             self.schedule.objects.prefetch_related("teachers")
-            .filter(group=group)
-            .order_by("name")
+                .filter(group=group)
+                .order_by("name")
         )
 
         weeks = teach_time.weeks_in_semester if len(groups) > 0 else 0
@@ -118,10 +126,11 @@ class ExtramuralGroupTimetableView(TemplateView):
                 "date_block": date_block(teach_time),
                 "course": group.course if group_name else 0,
                 "study_forms": Group.objects.order_by("-study_form")
-                .values_list("study_form")
-                .distinct(),
+                    .values_list("study_form")
+                    .distinct(),
                 "session": self.schedule_type == Schedule.SESSION,
                 "is_fulltime": self.schedule == FullTimeSchedule,
+                "item_type_by_abbr": ITEM_TYPE_BY_ABBR,
             },
         )
 
@@ -150,8 +159,8 @@ class TeacherTimetableView(TemplateView):
         )
         items = (
             FullTimeSchedule.objects.prefetch_related("group", "teachers")
-            .filter(week=week, teachers__exact=teacher)
-            .order_by("date", "time")
+                .filter(week=week, teachers__exact=teacher)
+                .order_by("date", "time")
         )
         schedule = defaultdict(list)
         for item in items:

@@ -65,10 +65,13 @@ body {
   opacity: 1;
 }
 
-.profile-image {
+.profile-image-borders {
   border: 2px solid #f7f7f7;
   border-radius: 50%;
-  width: 60%;
+}
+
+.profile-image {
+    width: 60%;
 }
 
 .cover {
