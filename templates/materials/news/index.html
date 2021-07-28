@@ -59,7 +59,7 @@
                 <h4 class="bottom-line">Последние новости</h4>
                 {% for n in last_news %}
                     <div class="row p-1">
-                        <span class="col-md-2 text-muted text-end">{{ n.date.strftime('%-d %B %Y') | title }}</span>
+                        <span class="col-md-2 text-muted text-md-end">{{ n.date.strftime('%-d %B %Y') | title }}</span>
                         <a class="col" href="{{ n.get_absolute_url() }}"><span>{{ n.title }}</span></a>
                     </div>
                 {% endfor %}

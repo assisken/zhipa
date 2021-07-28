@@ -14,7 +14,7 @@
     <h1 class="fw-light mb-3 text-center">Новости</h1>
 
     {% for news in news_list %}
-        <div class="card rounded mb-3" id="{{ news.pk }}">
+        <div class="card mb-3" id="{{ news.pk }}">
             <div class="row g-0">
                 <div class="col-lg-5 col-xl-4">
                     {% include 'layout/news_cover.html' %}
@@ -55,7 +55,7 @@
                     </a>
                 </li>
 
-                {% for page in page_obj.paginator.get_elided_page_range(page_obj.number, on_each_side=2, on_ends=2) %}
+                {% for page in page_obj.paginator.get_elided_page_range(page_obj.number) %}
                     {% set active = 'active' if page == page_obj.number else '' %}
 
                     <li class="page-item {{ active }}" aria-current="page">
