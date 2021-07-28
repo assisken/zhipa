@@ -11,7 +11,9 @@ from .models import News
 class NewsListView(ListView):
     class Paginator(OldPaginator):
         def get_elided_page_range(self, number=1, *, on_each_side=2, on_ends=1):
-            return super().get_elided_page_range(number=number, on_each_side=on_each_side, on_ends=on_ends)
+            return super().get_elided_page_range(
+                number=number, on_each_side=on_each_side, on_ends=on_ends
+            )
 
     model = News
     queryset = News.objects.filter(hidden=False).prefetch_related("newscover")
