@@ -142,8 +142,8 @@ class TeachTime:
             return TeachState.SPRING_SEMESTER
         elif self.__spring_end <= now < self.__autumn_start2:
             return TeachState.SUMMER_HOLIDAYS
-
-        raise ValueError("Undefined type of TeachTime")
+        else:
+            return TeachState.AUTUMN_SEMESTER
 
 
 def get_year_from_string(string: str) -> Optional[str]:
