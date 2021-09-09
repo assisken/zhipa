@@ -152,9 +152,6 @@ FIXTURE_DIRS = (
 
 AUTH_USER_MODEL = "main.User"
 
-# Redgreentests settings
-TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
-
 # REST Framework config
 REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",

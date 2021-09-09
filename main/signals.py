@@ -12,7 +12,7 @@ from main.utils.unify import unify_fio
 def delete_is_available_returned(sender: FlatPage, instance: FlatPage, **kwargs):
     url = instance.url[1:] if instance.url.startswith("/") else instance.url
     if any(url == str(urlpattern.pattern) for urlpattern in urlpatterns):
-        raise ProtectedError("This page cannot be deleted", instance)
+        raise ProtectedError("This page cannot be deleted", {instance})
 
 
 @receiver(signals.pre_save, sender=Profile)
