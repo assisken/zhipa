@@ -1,5 +1,7 @@
 {% extends 'layout/base.html' %}
 
+{% from 'layout/news_cover.html' import news_cover %}
+
 {% block title %}
     Новости :: Материалы :: {{ APP_TITLE }}
 {% endblock title %}
@@ -17,7 +19,7 @@
         <div class="card mb-3" id="{{ news.pk }}">
             <div class="row g-0">
                 <div class="col-lg-5 col-xl-4">
-                    {% include 'layout/news_cover.html' %}
+                    {{ news_cover(news) }}
                 </div>
                 <div class="col-lg-7 col-xl-8">
                     <div class="card-body">

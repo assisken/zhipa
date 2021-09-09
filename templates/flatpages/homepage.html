@@ -1,5 +1,7 @@
 {% extends 'layout/base.html' %}
 
+{% from 'layout/news_cover.html' import news_cover %}
+
 {% block content %}
     <div class="row row-cols-1 mb-2">
         <div class="col">
@@ -18,12 +20,14 @@
                     <p class="text-secondary fs-4 fw-light">{{ date_block.text }}</p>
                     <p class="text-secondary display-1 fw-light">{{ date_block.num }}</p>
                     <p class="text-secondary fs-2 fw-light">{{ date_block.desc }}</p>
-                    <a class="btn btn-secondary" href="{{ url('schedule:timetable') }}" role="button">Расписание занятий</a>
+                    <a class="btn btn-secondary" href="{{ url('schedule:timetable') }}" role="button">
+                        Расписание занятий
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-lg-8">
-            <div class="card bg-grass h-100">
+            <div class="card bg-grass h-100 d-block d-md-none">
                 <div class="card-body">
                     <h3 class="text-center fw-light">Последние новости</h3>
                     <ul>
@@ -37,9 +41,41 @@
                         {% endfor %}
                     </ul>
                     <div class="text-center">
-                        <a class="btn btn-primary text-secondary" role="button" href="{{ url('news:news-list') }}" class="button_primary">Все новости</a>
+                        <a class="btn btn-primary text-secondary" role="button" href="{{ url('news:news-list') }}"
+                           class="button_primary">Все новости</a>
                     </div>
                 </div>
+            </div>
+
+            <div id="carouselExampleCaptions" class="card carousel slide d-none d-md-block" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for i in range(latest_news | length) %}
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ i }}"
+                                class="{{ 'active' if loop.first else '' }}"
+                                aria-current="{{ 'true' if loop.first else '' }}"
+                                aria-label="Slide {{ i + 1 }}"></button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner">
+                    {% for news in latest_news %}
+                        <div class="carousel-item align-center {{ 'active' if loop.first else '' }}">
+                            {{ news_cover(news, False) }}
+                            <div class="carousel-caption bg-black-transparent">
+                                <h5>{{ news.title }}</h5>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
     </div>
