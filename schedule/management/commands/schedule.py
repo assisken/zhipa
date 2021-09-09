@@ -1,6 +1,5 @@
 from django.core.management import BaseCommand, call_command
 from django.core.management.base import CommandParser
-from termcolor import cprint
 
 from main.utils.exceptions import GroupListIsEmpty
 from schedule.management.scripts.schedule import ScheduleParser, ScheduleType
@@ -70,7 +69,7 @@ class Command(BaseCommand):
             try:
                 parser.parse()
             except GroupListIsEmpty:
-                cprint("There is no any student group.", "red", attrs=["bold"])
+                print("There is no any student group.")
                 print("Please, check that they got from lms.")
 
         if options["clean"]:

@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.core.management import BaseCommand
 from django.core.management.base import CommandParser
-from termcolor import cprint
 
 from main.utils.exceptions import LmsDoesNotRespondError, LmsRespondsAnEmptyListError
 from schedule.management.scripts.groups import fetch_groups, fetch_groups_from_csv
@@ -39,19 +38,14 @@ class Command(BaseCommand):
                     settings.LMS_URL, settings.LMS_PASSWORD, settings.DEPARTMENT
                 )
             except LmsDoesNotRespondError as e:
-                cprint(
-                    "Seems like lms does not response with 200 code.",
-                    attrs=["bold", "underline"],
-                )
+                print("Seems like lms does not response with 200 code.")
                 print(
                     "Please, update website url or check that website does respond on url:"
                 )
                 print(e.args[0])
             except LmsRespondsAnEmptyListError as e:
-                cprint(
-                    "Lms responds an empty list, null or false that does not correct.",
-                    "red",
-                    attrs=["bold"],
+                print(
+                    "Lms responds an empty list, null or false that does not correct."
                 )
                 print("Please, check url and call with developers or administration.")
                 print(e.args[0])
