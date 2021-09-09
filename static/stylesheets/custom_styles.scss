@@ -119,6 +119,6 @@ body {
 }
 
 .carousel-item img {
-  height: 20rem;
-  overflow: hidden;
+  height: 19rem;
+  object-fit: cover;
 }

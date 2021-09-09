@@ -15,6 +15,7 @@ $light-blue: #37afff;
 $grass: #b6e135;
 $sun: #fcd135;
 $gray: #f8f8f8;
+$black-transparent: rgba(0, 0, 0, 0.4);
 
 $custom-colors: (
         "primary": $primary,
@@ -26,6 +27,7 @@ $custom-colors: (
         "grass": $grass,
         "sun": $sun,
         "gray": $gray,
+        "black-transparent": $black-transparent,
 
         // Bootstrap colors
         "gray-100": $gray-100,
