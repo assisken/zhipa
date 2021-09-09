@@ -22,10 +22,10 @@ class GroupCourseFilter(admin.SimpleListFilter):
         return sorted({(c.course, f"{c.course} курс") for c in courses})
 
     def queryset(self, request, queryset: QuerySet):
-        value = self.value()
-        if value:
+        course = self.value()
+        if course:
             return queryset.filter(
-                semester__gte=int(value) * 2 - 1, semester__lte=value * 2
+                semester__gte=int(course) * 2 - 1, semester__lte=int(course) * 2
             )
 
 
