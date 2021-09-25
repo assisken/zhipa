@@ -8,7 +8,7 @@ from .admin_views import (
     AddExtramuralSchedule,
     GetGroupExtramuralScheduleXlsxView,
     GetGroupFulltimeScheduleXlsxView,
-    GetTeacherSessionSchedule,
+    GetTeacherSchedule,
 )
 from .models import ExtramuralSchedule, FullTimeSchedule, Group, Teacher
 
@@ -121,7 +121,7 @@ class FullTimeScheduleAdmin(admin.ModelAdmin):
             ),
             path(
                 "get-teacher-schedule/",
-                GetTeacherSessionSchedule.as_view(schedule=FullTimeSchedule),
+                GetTeacherSchedule.as_view(schedule=FullTimeSchedule),
             ),
         ]
         return my_urls + urls
@@ -153,7 +153,7 @@ class ExtramuralScheduleAdmin(admin.ModelAdmin):
             ),
             path(
                 "get-teacher-schedule/",
-                GetTeacherSessionSchedule.as_view(schedule=ExtramuralSchedule),
+                GetTeacherSchedule.as_view(schedule=ExtramuralSchedule),
             ),
         ]
         return my_urls + urls

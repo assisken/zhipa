@@ -128,3 +128,4 @@ static/news
 /*.json
 /import
 *.sql.gz
+/*.xlsx

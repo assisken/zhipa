@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% load compress sass_tags static %}
+
+{% block extrastyle %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% sass_src 'stylesheets/custom_styles.scss' %}">
+    {% endcompress %}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css" %}">
+
+    <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'scripts/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block branding %}
+    <a href="{% url 'admin:index' %}">
+        <img class="d-inline-block align-text-top logo" alt="Кафедра СМиАП" src="{% static 'images/logo_smiap.png' %}">
+    </a>
+{% endblock %}

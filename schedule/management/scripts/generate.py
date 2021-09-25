@@ -1,16 +1,29 @@
 import re
-from typing import Any, Dict, Iterable
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, Optional
 
-from constance import config
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
 from schedule.models import FullTimeSchedule, Group, Schedule, Teacher
 
 
-def gen_groups_table(groups: Iterable[Group], from_week: int, wb_path: str) -> str:
+@dataclass
+class Config:
+    template_path: str
+    from_week: int
+    to_week: int
+    print_item_name: bool
+    print_item_type: bool
+    print_places: bool
+    print_groups: Optional[bool] = True
+    print_teachers: Optional[bool] = True
+    schedule_type: Optional[str] = Schedule.STUDY
+
+
+def gen_groups_table(groups: Iterable[Group], config: Config) -> str:
     filename = "groups"
-    wb = load_workbook(wb_path)
+    wb = load_workbook(config.template_path)
     sh: Worksheet = wb["all"]
 
     for index, group in enumerate(groups):
@@ -18,21 +31,26 @@ def gen_groups_table(groups: Iterable[Group], from_week: int, wb_path: str) -> s
 
         sh.cell(1, col, value=group.name)
 
-        for week in range(config.WEEKS_IN_SEMESTER, from_week - 1, -1):
+        for week in range(config.to_week, config.from_week - 1, -1):
             item: FullTimeSchedule
             for item in FullTimeSchedule.objects.filter(
                 group=group, week=week
             ).order_by("week", "date"):
+                if not item.name:
+                    continue
+
                 date = item.date
                 if not date:
                     raise ValueError(f"Item {item} has no date")
 
-                item_type = item.item_type
-                item_name = item.name
-                if not item_name:
-                    continue
-                place = item.place
-                teachers = ", ".join(str(teacher) for teacher in item.teachers.all())
+                item_type = item.item_type if config.print_item_type else ""
+                item_name = item.name if config.print_item_name else ""
+                place = item.place if config.print_places else ""
+                teachers = (
+                    ", ".join(str(teacher) for teacher in item.teachers.all())
+                    if config.print_teachers
+                    else ""
+                )
 
                 if len(item_name) > 57:
                     name_splitted = re.split(r"[ \-,.]", item_name)
@@ -62,10 +80,11 @@ def gen_groups_table(groups: Iterable[Group], from_week: int, wb_path: str) -> s
 
 
 def gen_teachers_table(
-    teachers: Iterable[Teacher], schedule_type: str, wb_path: str
+    teachers: Iterable[Teacher],
+    config: Config,
 ) -> str:
     filename = "teachers"
-    wb = load_workbook(wb_path)
+    wb = load_workbook(config.template_path)
     sh: Worksheet = wb["all"]
 
     for index, teacher in enumerate(teachers):
@@ -73,13 +92,16 @@ def gen_teachers_table(
 
         sh.cell(1, col, value=str(teacher))
 
-        for week in range(config.WEEKS_IN_SEMESTER, 0, -1):
+        for week in range(config.to_week, config.from_week, -1):
             items: Dict[str, Dict[str, Any]] = {}
             item: FullTimeSchedule
 
-            filter_cond = {"teachers__exact": teacher, "schedule_type": schedule_type}
-            if schedule_type == Schedule.STUDY:
-                filter_cond["week"] = week
+            filter_cond = {
+                "teachers__exact": teacher,
+                "schedule_type": config.schedule_type,
+            }
+            if config.schedule_type == Schedule.STUDY:
+                filter_cond["week"] = week  # type: ignore
             for item in FullTimeSchedule.objects.filter(**filter_cond):
                 try:
                     existing = items[item.key()]
@@ -97,11 +119,15 @@ def gen_teachers_table(
                     existing["groups"] |= {str(item.group)}
 
             for _, value in items.items():
-                groups = ", ".join(sorted(value["groups"]))
-                item_type = value["item_type"]
-                item_name = value["name"]
                 week_day = value["week_day"]
-                place = value["place"]
+                groups = (
+                    "\n" + ", ".join(sorted(value["groups"]))
+                    if config.print_groups
+                    else ""
+                )
+                item_type = value["item_type"] if config.print_item_type else ""
+                item_name = value["name"] if config.print_item_name else ""
+                place = value["place"] if config.print_places else ""
                 if not item_name:
                     continue
 
@@ -116,7 +142,7 @@ def gen_teachers_table(
                     fill_items(
                         sh,
                         col,
-                        content=f"{item_name} {item_type}\n{groups}",
+                        content=f"{item_name} {item_type}{groups}",
                         place=place,
                         week_day=week_day,
                         time=value["time"],
