@@ -6,6 +6,8 @@ from split_settings.tools import include
 
 from smiap.settings.components.general import REST_FRAMEWORK
 
+SECRET_KEY = "under_development"
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",

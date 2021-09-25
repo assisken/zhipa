@@ -1,25 +1,42 @@
+import os
 import re
+import tempfile
 from datetime import datetime
 from typing import List, Optional, Tuple, Type
 
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages import add_message
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core.files.uploadedfile import UploadedFile
 from django.db.models import QuerySet
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from schedule.management.scripts.generate import gen_groups_table, gen_teachers_table
+from schedule.management.scripts.generate import (
+    Config,
+    gen_groups_table,
+    gen_teachers_table,
+)
 from smiap.settings.components.logging import log
 
 from .forms import (
     TEACHER_FORMAT,
     ExtramuralScheduleForm,
     GetGroupScheduleForm,
-    GetTeacherSessionScheduleForm,
+    GetTeacherScheduleForm,
 )
 from .models import ExtramuralSchedule, FullTimeSchedule, Schedule, Teacher
+
+
+def save_uploaded_file(file: UploadedFile) -> str:
+    with tempfile.NamedTemporaryFile(
+        mode="wb", delete=False, suffix=f"_{file.name}"
+    ) as dest:
+        for chunk in file.chunks():
+            dest.write(chunk)
+    return os.path.join(tempfile.gettempdir(), dest.name)
 
 
 class AddExtramuralSchedule(PermissionRequiredMixin, TemplateView):
@@ -154,6 +171,7 @@ class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
         "has_change_permission": False,
         "add": True,
         "has_view_permission": True,
+        "has_file_field": True,
         "has_editable_inline_admin_formsets": True,
     }
 
@@ -166,17 +184,33 @@ class GetGroupFulltimeScheduleXlsxView(PermissionRequiredMixin, TemplateView):
         return render(request, self.template_name, self.render)
 
     def post(self, request, *args, **kwargs):
-        form = GetGroupScheduleForm(request.POST)
+        form = GetGroupScheduleForm(request.POST, request.FILES)
         if not form.is_valid():
             self.render.update(
                 {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
             )
             return render(request, self.template_name, self.render)
 
+        default_template_path = "excel/group_template.xlsx"
+        template = request.FILES.get("template")
+        file_path = (
+            staticfiles_storage.path(default_template_path)
+            if template is None
+            else save_uploaded_file(template)
+        )
         groups = form.cleaned_data["groups"]
-        from_week = form.cleaned_data["from_week"]
+        config = Config(
+            template_path=file_path,
+            from_week=form.cleaned_data["from_week"],
+            to_week=form.cleaned_data["to_week"],
+            print_item_name=form.cleaned_data["print_item_name"],
+            print_item_type=form.cleaned_data["print_item_type"],
+            print_teachers=form.cleaned_data["print_teachers"],
+            print_places=form.cleaned_data["print_places"],
+        )
+
         try:
-            filename = gen_groups_table(groups, from_week, "group_template.xlsx")
+            filename = gen_groups_table(groups, config)
         except AttributeError:
             form.add_error("groups", "Превышен максимальный лимит групп")
             self.render.update({"form": form, "errors": form.errors})
@@ -203,10 +237,10 @@ class GetGroupExtramuralScheduleXlsxView(GetGroupFulltimeScheduleXlsxView):
     schedule = ExtramuralSchedule
 
 
-class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
+class GetTeacherSchedule(GetGroupFulltimeScheduleXlsxView):
     template_name = "admin/schedule/get_schedule.html"
     render = {
-        "form": GetTeacherSessionScheduleForm(),
+        "form": GetTeacherScheduleForm(),
         "change": False,
         "is_popup": False,
         "save_as": True,
@@ -215,6 +249,7 @@ class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
         "has_change_permission": False,
         "add": True,
         "has_view_permission": True,
+        "has_file_field": True,
         "has_editable_inline_admin_formsets": True,
     }
 
@@ -228,14 +263,31 @@ class GetTeacherSessionSchedule(GetGroupFulltimeScheduleXlsxView):
         return render(request, self.template_name, self.render)
 
     def post(self, request, *args, **kwargs):
-        form = GetTeacherSessionScheduleForm(request.POST)
+        form = GetTeacherScheduleForm(request.POST)
         if not form.is_valid():
             self.render.update(
                 {"form": form, "errors": form.errors, "opts": FullTimeSchedule._meta}
             )
             return render(request, self.template_name, self.render)
 
-        schedule_type = form.cleaned_data["schedule_type"]
+        default_template_path = "excel/group_template.xlsx"
+        template = request.FILES.get("template")
+        file_path = (
+            staticfiles_storage.path(default_template_path)
+            if template is None
+            else save_uploaded_file(template)
+        )
+        config = Config(
+            template_path=file_path,
+            from_week=form.cleaned_data["from_week"],
+            to_week=form.cleaned_data["to_week"],
+            print_item_name=form.cleaned_data["print_item_name"],
+            print_item_type=form.cleaned_data["print_item_type"],
+            print_groups=form.cleaned_data["print_groups"],
+            print_places=form.cleaned_data["print_places"],
+            schedule_type=form.cleaned_data["schedule_type"],
+        )
+
         teachers = form.cleaned_data["teachers"]
-        filename = gen_teachers_table(teachers, schedule_type, "teacher_template.xlsx")
+        filename = gen_teachers_table(teachers, config)
         return super()._send_xlsx(filename)

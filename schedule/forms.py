@@ -1,8 +1,9 @@
 import re
 from typing import List
 
+from constance import config
 from django import forms
-from django.contrib.admin import widgets as admin_widgets
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.exceptions import ValidationError
 
 from .models import ExtramuralSchedule, Group, Schedule, Teacher
@@ -89,51 +90,145 @@ class ExtramuralScheduleForm(GeneralForm):
             yield date, time, item, _teachers, place
 
 
+MIN_GROUP_COUNT = 1
+MAX_GROUP_COUNT = 16
+
+
 def check_max_group_count(value: List[str]):
-    minimum = 1
-    maximum = 16
     count = len(value)
-    if count > maximum or count < minimum:
-        raise ValidationError(f"Пожалуйста, выберите от {minimum} до {maximum} групп")
+    if count > MAX_GROUP_COUNT or count < MIN_GROUP_COUNT:
+        raise ValidationError(
+            f"Пожалуйста, выберите от {MIN_GROUP_COUNT} до {MAX_GROUP_COUNT} групп"
+        )
+
+
+MIN_TEACHER_COUNT = 1
+MAX_TEACHER_COUNT = 16
 
 
 def check_max_teacher_count(value: List[str]):
-    minimum = 1
-    maximum = 16
     count = len(value)
-    if count > maximum or count < minimum:
+    if count > MAX_TEACHER_COUNT or count < MIN_TEACHER_COUNT:
         raise ValidationError(
-            f"Пожалуйста, выберите от {minimum} до {maximum} преподавателей"
+            f"Пожалуйста, выберите от {MIN_TEACHER_COUNT} до {MAX_TEACHER_COUNT} преподавателей"
         )
 
 
 class GetGroupScheduleForm(GeneralForm):
+    template = forms.FileField(
+        allow_empty_file=True,
+        required=False,
+        label="Шаблон",
+        help_text=f"""
+        Шаблон по-умолчанию доступен <a href="{staticfiles_storage.url('excel/group_template.xlsx')}">здесь</a>
+        """.strip(),
+    )
     groups = forms.ModelMultipleChoiceField(
         queryset=Group.objects.order_by("-study_form", "degree", "semester", "name"),
         required=True,
         initial=Group.objects.filter(study_form=Group.FULL_TIME),
         validators=(check_max_group_count,),
+        label="Группы",
+        help_text=f"Выберите от {MIN_GROUP_COUNT} до {MAX_GROUP_COUNT} групп",
     )
-    from_week = forms.IntegerField(min_value=1, max_value=17)
+    from_week = forms.IntegerField(
+        min_value=1,
+        max_value=config.WEEKS_IN_SEMESTER - 1,
+        initial=1,
+        label="От недели",
+        help_text="От какой недели будет составляться расписание",
+    )
+    to_week = forms.IntegerField(
+        min_value=2,
+        max_value=config.WEEKS_IN_SEMESTER,
+        initial=config.WEEKS_IN_SEMESTER,
+        label="До недели",
+        help_text="До какой недели будет составляться расписание",
+    )
+    print_item_name = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать название предмета",
+        help_text="Отображать названия учебных дисциплин",
+    )
+    print_item_type = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать тип предмета",
+        help_text="Отображать тип занятия (ЛК, ПР, КР и т.д.)",
+    )
+    print_teachers = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать преподавателей",
+        help_text="Отображать ФИО преподавателей по дисциплинам",
+    )
+    print_places = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать места",
+        help_text="Отображать места проведения занятий",
+    )
 
 
-class GetTeacherSessionScheduleForm(GeneralForm):
+class GetTeacherScheduleForm(GeneralForm):
+    template = forms.FileField(
+        allow_empty_file=True,
+        required=False,
+        label="Шаблон",
+        help_text=f"""
+        Шаблон по-умолчанию доступен <a href="{staticfiles_storage.url('excel/group_template.xlsx')}">здесь</a>
+        """.strip(),
+    )
     teachers = forms.ModelMultipleChoiceField(
         queryset=Teacher.objects.all(),
         required=True,
         initial=Teacher.objects.filter(staff__isnull=False),
         validators=(check_max_teacher_count,),
+        label="Преподаватели",
+        help_text=f"Выберите от {MIN_TEACHER_COUNT} до {MAX_TEACHER_COUNT} преподавателей",
     )
     schedule_type = forms.ChoiceField(
-        choices=Schedule.SCHEDULE_TYPES, required=True, initial=Schedule.STUDY
-    )
-
-
-class GetTeacherScheduleForm(GeneralForm):
-    groups = forms.ModelMultipleChoiceField(
-        queryset=Teacher.objects.all(),
+        choices=Schedule.SCHEDULE_TYPES,
         required=True,
-        widget=admin_widgets.FilteredSelectMultiple(
-            verbose_name=Teacher._meta.verbose_name or "Teacher", is_stacked=False
-        ),
+        initial=Schedule.STUDY,
+        label="Тип расписания",
+    )
+    from_week = forms.IntegerField(
+        min_value=1,
+        max_value=config.WEEKS_IN_SEMESTER - 1,
+        initial=1,
+        label="От недели",
+        help_text="От какой недели будет составляться расписание",
+    )
+    to_week = forms.IntegerField(
+        min_value=2,
+        max_value=config.WEEKS_IN_SEMESTER,
+        initial=config.WEEKS_IN_SEMESTER,
+        label="До недели",
+        help_text="До какой недели будет составляться расписание",
+    )
+    print_item_name = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать название предмета",
+        help_text="Отображать названия учебных дисциплин",
+    )
+    print_item_type = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать тип предмета",
+        help_text="Отображать тип занятия (ЛК, ПР, КР и т.д.)",
+    )
+    print_groups = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать группы",
+        help_text="Отображать преподаваемые группы",
+    )
+    print_places = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Отображать места",
+        help_text="Отображать места проведения занятий",
     )

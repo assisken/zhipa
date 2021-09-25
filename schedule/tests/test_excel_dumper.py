@@ -16,12 +16,12 @@ class TestExcelDumper(TestCase):
 
     def test_group_dump_creates(self):
         path = os.path.join(
-            BASE_DIR, "schedule", "tests", "files", "group_template.xlsx"
+            BASE_DIR, "schedule", "tests", "files", "group_template.excel"
         )
         gen_groups_table(self.groups, from_week=1, wb_path=path)
 
     def test_teacher_dump_creates(self):
         path = os.path.join(
-            BASE_DIR, "schedule", "tests", "files", "teacher_template.xlsx"
+            BASE_DIR, "schedule", "tests", "files", "teacher_template.excel"
         )
         gen_teachers_table(self.teachers, Schedule.STUDY, wb_path=path)

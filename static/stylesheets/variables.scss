@@ -1,0 +1,80 @@
+@import "bootstrap-5.0.1/scss/functions";
+@import "bootstrap-5.0.1/scss/mixins";
+@import "bootstrap-5.0.1/scss/variables";
+
+// Default color overrides
+$primary: #0997ef;
+$secondary: #fff;
+$orange: #ff9d4b;
+$cyan: #56d9c9;
+
+// Custom colors
+$footer: #333;
+$light-blue: #37afff;
+$grass: #b6e135;
+$sun: #fcd135;
+$gray: #f8f8f8;
+$black-transparent: rgba(0, 0, 0, 0.4);
+
+$custom-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "orange": $orange,
+        "cyan": $cyan,
+        "footer": $footer,
+        "light-blue": $light-blue,
+        "grass": $grass,
+        "sun": $sun,
+        "gray": $gray,
+        "black-transparent": $black-transparent,
+  // Bootstrap colors
+        "gray-100": $gray-100,
+        "gray-200": $gray-200,
+        "gray-300": $gray-300,
+        "gray-400": $gray-400,
+        "gray-500": $gray-500,
+);
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// Default variable overrides
+$font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 11pt;
+$body-bg: #f7f7f7;
+$link-color: #09f;
+$card-border-radius: 2px;
+
+$navbar-light-toggler-bg-color: $secondary;
+$navbar-light-color: $secondary;
+$navbar-light-active-color: $primary;
+$navbar-light-hover-color: $secondary;
+$navbar-nav-link-padding-x: 24px;
+
+$nav-link-margin-x: .25rem;
+$nav-link-margin-y: .25rem;
+$nav-link-padding-y: 12px;
+$nav-link-color: $primary;
+$nav-link-hover-bg-color: $light-blue;
+$nav-link-active-bg: $secondary;
+$nav-link-border-radius: 50px;
+
+$nav-pills-link-active-bg: $primary;
+
+$dropdown-padding-y: 10px;
+$dropdown-item-padding-x: 15pt;
+$dropdown-bg: $light-blue;
+$dropdown-link-color: $secondary;
+$dropdown-link-hover-bg: rgba(255, 255, 255, 0.3);
+$dropdown-link-active-bg: rgba(255, 255, 255, 0.8);
+$dropdown-link-active-color: gray;
+
+$pagination-border-radius: 50%;
+$pagination-border-radius-sm: 50%;
+$pagination-border-radius-lg: 50%;
+
+$xl-breakpoint: 1023px;
+$xxl-breakpoint: 1024px;
+$container-max-widths-override: (
+        xl: $xl-breakpoint,
+        xxl: $xxl-breakpoint
+);
+$container-max-widths: map-merge($container-max-widths, $container-max-widths-override);
