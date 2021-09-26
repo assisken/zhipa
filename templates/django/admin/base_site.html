@@ -2,9 +2,7 @@
 {% load compress sass_tags static %}
 
 {% block extrastyle %}
-    {% compress css %}
-        <link rel="stylesheet" href="{% sass_src 'stylesheets/custom_styles.scss' %}">
-    {% endcompress %}
+    <link rel="stylesheet" href="{% sass_src 'stylesheets/custom_styles.scss' %}">
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css" %}">
 
     <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
