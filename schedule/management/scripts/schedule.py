@@ -44,8 +44,10 @@ def job_counter(total: int):
 
 
 class ScheduleParser:
-    teach_url = "https://mai.ru/education/schedule/detail.php?group={group}&week={week}"
-    session_url = "https://mai.ru/education/schedule/session.php?group={group}"
+    teach_url = (
+        "https://mai.ru/education/studies/schedule/index.php?group={group}&week={week}"
+    )
+    session_url = "https://mai.ru/education/studies/schedule/session.php?group={group}"
 
     def __init__(
         self, schedule_type: ScheduleType, force: bool = False, hidden: bool = False
