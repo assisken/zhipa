@@ -29,7 +29,6 @@ def app_processor(request):
             "title": "Материалы",
             "link": "/materials/news",
             "subitems": [
-                {"id": "news", "title": "Новости", "link": "/materials/news"},
                 {
                     "id": "publications",
                     "title": "Публикации",
