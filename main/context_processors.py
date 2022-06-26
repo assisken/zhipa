@@ -27,7 +27,7 @@ def app_processor(request):
         "materials": {
             "id": "materials",
             "title": "Материалы",
-            "link": "/materials/news",
+            "link": "/materials/publications",
             "subitems": [
                 {
                     "id": "publications",
@@ -39,8 +39,13 @@ def app_processor(request):
                     "title": "Учебные пособия",
                     "link": "/materials/tutorials",
                 },
-                # {"id": "session", "title": "Расписание сессии заочной формы", "link": "/materials/session"}
             ],
+        },
+        "news": {
+            "id": "news",
+            "title": "Новости",
+            "link": "/news",
+            "subitems": [],
         },
         "abiturients": {
             "id": "abiturients",
@@ -63,18 +68,7 @@ def app_processor(request):
             "id": "students",
             "title": "Студентам",
             "link": "/students/timetable",
-            "subitems": [
-                {
-                    "id": "timetable",
-                    "title": "Расписания очных занятий",
-                    "link": "/students/timetable",
-                },
-                {
-                    "id": "extramural",
-                    "title": "Расписания заочных занятий",
-                    "link": "/students/timetable/extramural",
-                },
-            ],
+            "subitems": [],
         },
         "profile": {
             "id": "profile",
@@ -106,22 +100,6 @@ def app_processor(request):
 
     teach_time = TeachTime()
     teach_state = teach_time.teach_state
-
-    if teach_state == TeachState.HOLIDAYS or teach_time.week >= 17:
-        nav_items["students"]["subitems"].append(
-            {
-                "id": "session",
-                "title": "Расписания очной сессии",
-                "link": "/students/session",
-            },
-        )
-        nav_items["students"]["subitems"].append(
-            {
-                "id": "ex-session",
-                "title": "Расписания заочной сессии",
-                "link": "/students/timetable/ex-session",
-            }
-        )
 
     if request.path == "/":
         active_items = "home"

@@ -70,11 +70,31 @@ urlpatterns = [
     path("conferences", RedirectView.as_view(pattern_name="conferences")),
     path("abiturients", RedirectView.as_view(pattern_name="abiturients")),
     path("materials", RedirectView.as_view(pattern_name="news:news-list")),
+    path("materials/news", RedirectView.as_view(pattern_name="news:news-list")),
     path(
         "materials/timetable", RedirectView.as_view(pattern_name="schedule:timetable")
     ),
     path(
         "materials/timetable/extramural",
         RedirectView.as_view(pattern_name="schedule:timetable-extramural"),
+    ),
+    path("students", views.flatpage, {"url": "/students"}, name="students"),
+
+    # Temp redirects from deprecated schedule
+    path("students/timetable", RedirectView.as_view(pattern_name="students"), name="timetable"),
+    path(
+        "students/timetable/extramural",
+        RedirectView.as_view(pattern_name="students"),
+        name="timetable-extramural",
+    ),
+    path(
+        "students/session",
+        RedirectView.as_view(pattern_name="students"),
+        name="timetable-session",
+    ),
+    path(
+        "students/timetable/ex-session",
+        RedirectView.as_view(pattern_name="students"),
+        name="timetable-extramural-session",
     ),
 ]
