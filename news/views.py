@@ -20,14 +20,14 @@ class NewsListView(ListView):
     paginate_by = 5
     page_kwarg = "number"
     context_object_name = "news_list"
-    template_name = "materials/news/list.html"
+    template_name = "news/list.html"
     paginator_class = Paginator
 
 
 class NewsDetailView(DetailView):
     model = News
     context_object_name = "news"
-    template_name = "materials/news/index.html"
+    template_name = "news/index.html"
 
     def get_context_data(self, **kwargs):
         self.object: News
@@ -46,7 +46,7 @@ class NewsDetailView(DetailView):
 class NewsDateListView(ListView):
     model = News
     context_object_name = "news_list"
-    template_name = "materials/news/list.html"
+    template_name = "news/list.html"
 
     def get_queryset(self):
         return News.objects.filter(hidden=False, **self.kwargs)
@@ -70,7 +70,7 @@ class NewsDateListView(ListView):
 class NewsDateDetailView(DetailView):
     model = News
     context_object_name = "news"
-    template_name = "materials/news/index.html"
+    template_name = "news/index.html"
 
     def get_object(self, queryset: QuerySet = None):
         return get_object_or_404(self.model, **self.kwargs)
@@ -79,7 +79,7 @@ class NewsDateDetailView(DetailView):
 class NewsUrlDetailView(DetailView):
     model = News
     context_object_name = "news"
-    template_name = "materials/news/index.html"
+    template_name = "news/index.html"
 
     def get_object(self, queryset: QuerySet = None):
         kwargs = {

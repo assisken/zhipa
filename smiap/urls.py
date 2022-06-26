@@ -24,11 +24,12 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(("api_v1.urls", "api_v1"), namespace="api-v1")),
-    path("materials/", include(("news.urls", "news"), namespace="news")),
-    path("students/", include(("schedule.urls", "schedule"), namespace="schedule")),
     path("", include("main.urls", namespace="")),
+    path("", include(("news.urls", "news"), namespace="news")),
     # Plugins
     path("", include("django.contrib.flatpages.urls")),
+    # Deprecated. Now it's just flatpage /students
+    # path("students/", include(("schedule.urls", "schedule"), namespace="schedule")),
 ]
 
 if DEBUG:
