@@ -71,9 +71,7 @@ urlpatterns = [
     path("abiturients", RedirectView.as_view(pattern_name="abiturients")),
     path("materials", RedirectView.as_view(pattern_name="news:news-list")),
     path("materials/news", RedirectView.as_view(pattern_name="news:news-list")),
-    path(
-        "materials/timetable", RedirectView.as_view(pattern_name="timetable")
-    ),
+    path("materials/timetable", RedirectView.as_view(pattern_name="timetable")),
     path(
         "materials/timetable/extramural",
         RedirectView.as_view(pattern_name="timetable-extramural"),
