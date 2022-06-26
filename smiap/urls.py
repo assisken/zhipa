@@ -28,7 +28,6 @@ urlpatterns = [
     path("", include(("news.urls", "news"), namespace="news")),
     # Plugins
     path("", include("django.contrib.flatpages.urls")),
-    
     # Deprecated. Now it's just flatpage /students
     # path("students/", include(("schedule.urls", "schedule"), namespace="schedule")),
 ]

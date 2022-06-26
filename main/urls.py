@@ -79,9 +79,12 @@ urlpatterns = [
         RedirectView.as_view(pattern_name="schedule:timetable-extramural"),
     ),
     path("students", views.flatpage, {"url": "/students"}, name="students"),
-
     # Temp redirects from deprecated schedule
-    path("students/timetable", RedirectView.as_view(pattern_name="students"), name="timetable"),
+    path(
+        "students/timetable",
+        RedirectView.as_view(pattern_name="students"),
+        name="timetable",
+    ),
     path(
         "students/timetable/extramural",
         RedirectView.as_view(pattern_name="students"),

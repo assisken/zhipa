@@ -1,6 +1,5 @@
 from django.contrib.sites.models import Site
 
-from main.utils.date import TeachState, TeachTime
 from smiap.settings.components.app import BRAND
 
 
@@ -97,9 +96,6 @@ def app_processor(request):
     #     last_item = {"id": "login", "title": "Войти",
     #                  "link": "/auth/login?next={}".format(request.path), "subitems": []}
     # nav_items.append(last_item)
-
-    teach_time = TeachTime()
-    teach_state = teach_time.teach_state
 
     if request.path == "/":
         active_items = "home"
